@@ -20,6 +20,10 @@ const loginForm = document.getElementById('login-form');
   const newPassword = document.getElementById('newpassword');
   const confirmPassword = document.getElementById('confirm');
 
+  const API_URL = window.location.hostname.includes("localhost")
+  ? "http://localhost:4000"
+  : "https://safepoint-api.onrender.com";
+
   showRegister.addEventListener('click', () => {
     loginForm.style.display = 'none';
     registerForm.style.display = 'block';
@@ -72,7 +76,7 @@ getOtp.addEventListener('click', async () => {
   }
 
   try {
-    const res = await fetch('http://localhost:4000/api/auth/send-reset-otp', {
+    const res = await fetch(`${API_URL}/api/auth/send-reset-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -113,7 +117,7 @@ resetPassword.addEventListener('click', async () => {
   const email = document.getElementById('forgot-email').value.trim();
 
   try {
-    const res = await fetch('http://localhost:4000/api/auth/verify-otp', {
+    const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otp }),
@@ -140,7 +144,7 @@ confirmPassword.addEventListener('click', async () => {
   const email = document.getElementById('again-email').value.trim();
 
   try {
-    const res = await fetch('http://localhost:4000/api/auth/reset-password', {
+    const res = await fetch(`${API_URL}/api/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ newPassword, email }),
@@ -171,7 +175,7 @@ async function register() {
   const region = document.getElementById('region').value;
 
   try {
-    const res = await fetch('http://localhost:4000/api/auth/register', {
+    const res = await fetch(`${API_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, region }),
@@ -199,7 +203,7 @@ async function login() {
   const password = document.getElementById('login-password').value;
 
   try {
-    const res = await fetch('http://localhost:4000/api/auth/login', {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

@@ -9,12 +9,16 @@ const DeleteReturnButton = document.getElementById('delete_return_btn');
 const deleteDeviceForm = document.getElementById('delete-device-form');
 const deleteDevice = document.getElementById('delete-submit-device');
 
+  const API_URL = window.location.hostname.includes("localhost")
+  ? "https://safepoint-api.onrender.com"
+  : "http://localhost:4000";
+
 let devices =[]
 
 
 async function UserNameGet() {
   try {
-    const res = await fetch('http://localhost:4000/api/user/data', {
+    const res = await fetch(`${API_URL}/api/user/data`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
@@ -55,7 +59,7 @@ UserNameGet();
 
 async function fetchDevices() {
   try {
-    const res = await fetch('http://localhost:4000/api/devices/data', {
+    const res = await fetch(`${API_URL}/api/devices/data`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
@@ -135,7 +139,7 @@ deviceForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const response = await fetch('http://localhost:4000/api/devices/add', {
+    const response = await fetch(`${API_URL}/api/devices/add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -176,7 +180,7 @@ deleteDeviceForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const response = await fetch('http://localhost:4000/api/devices/delete', {
+    const response = await fetch(`${API_URL}/api/devices/delete`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

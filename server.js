@@ -14,7 +14,24 @@ const PORT = process.env.PORT || 4000;
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+
+// CORS налаштування
+const allowedOrigins = [
+  "http://localhost:4000",
+  "https://safepoint-bei0.onrender.com"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
 app.use(cookieParser({Credentials: true}));
 
 
