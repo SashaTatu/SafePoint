@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="assets/favicon/favicon.png" type="image/x-icon">
+    <title>SafePoint</title>
+</head>
+<body>
+    <header>
+        <div class="header-container-left">
+            <input type="checkbox" id="checkbox">
+            <label for="checkbox" class="toggler">
+                <span class="ball"></span>
+                <i class="ri-sun-line sun"></i>
+                <i class="ri-moon-line moon"></i>
+            </label>
+            <h1>SafePoint</h1>
+        </div>
+        <div class="header-container-right">
+            <p id="user-avatar" class="avatar"></p>
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+    <div class="add-device-conteiner" style="display: none;" id="add-device-container">
+        <div class="add-device">
+            <div class="add-device-header">
+                <i class="fas fa-arrow-left" data-toggle="tooltip" title="Повернутися" id="return_btn"></i>
+                <h2>Додати пристрій</h2>
+            </div>
+            <form id="device-form">
+                <input type="text" id="device-id" placeholder="ID пристрою">
+                <input type="text" id="device-address" placeholder="Адреса, де розташован пристрій">
+                <button type="submit" id="submit-device">Додати пристрій</button>
+            </form>
+        </div>
+    </div>
+    <div class="delete-device-conteiner" style="display: none;" id="delete-device-container">
+        <div class="delete-device">
+            <div class="delete-device-header">
+                <i class="fas fa-arrow-left" data-toggle="tooltip" title="Повернутися" id="delete_return_btn"></i>
+                <h2>Видалити пристрій</h2>
+            </div>
+            <form id="delete-device-form">
+                <p>Якщо ви впевнені що хочете видалити пристрій введіть ID пристрою</p>
+                <input type="text" id="delete-device-id" placeholder="ID пристрою">
+                <button type="submit" id="submit-delete-device">Видалити пристрій</button>
+            </form>
+        </div>
+    </div>
+    <main>
+        <div id="device-container" class="shelter-grid"></div>
+    </main>
+    <footer>
+        <div class="fa-plus-button" onclick="AddDeviceConteiner()"><i class="fas fa-plus"></i></div>
+    </footer>
+<script src="js/index.js"></script>
+</body>
+</html>

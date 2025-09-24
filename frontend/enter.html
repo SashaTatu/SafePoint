@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/enter.css">
+    <link rel="icon" href="assets/favicon/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>SafePoint</title>
+</head>
+<body>
+    <header>
+        <input type="checkbox" id="checkbox">
+        <label for="checkbox" class="toggler">
+            <span class="ball"></span>
+            <i class="ri-sun-line sun"></i>
+            <i class="ri-moon-line moon"></i>
+        </label>
+        <div class="overlay"></div>
+    </header>
+    <main>
+        <div class="login-container" id="login-form">
+            <h1>SafePoint</h1>
+            <p class="subtitle">Вхід</p>
+            <input type="text" placeholder="Введіть пошту" id="login-email">
+            <input type="password" placeholder="Введіть пароль" id="login-password">
+            <p class="forgot" id="forgot-password">Забули пароль?</p>
+            <button onclick="login()">Увійти</button>
+            <p class="register">Немає аккаунту? <span id="show-register">Зареєструйтесь</span></p>
+        </div>
+        <div class="login-container" id="register-form" style="display: none;">
+            <h1>SafePoint</h1>
+            <p class="subtitle">Реєстрація</p>
+            <input type="text" placeholder="Введіть прізвище та ім'я" id="register-fullname">
+            <input type="text" placeholder="Введіть пошту" id="register-email">
+            <input type="password" placeholder="Створіть пароль" id="register-password">
+            <select id="region" name="region" class="region-select">
+                <option value="" disabled selected>Оберіть область</option>
+                <option value="vinnytska">Вінницька</option>
+                <option value="dnipropetrovska">Дніпропетровська</option>
+                <option value="volynska">Волинська</option>
+                <option value="donetska">Донецька</option>
+                <option value="zhytomyrska">Житомирська</option>
+                <option value="zakarpatska">Закарпатська</option>
+                <option value="zaporizka">Запорізька</option>
+                <option value="ivano-frankivska">Івано-Франківська</option>
+                <option value="kyivska">Київська</option>
+                <option value="kirovohradska">Кіровоградська</option>
+                <option value="luhanska">Луганська</option>
+                <option value="lvivska">Львівська</option>
+                <option value="mykolaivska">Миколаївська</option>
+                <option value="odeska">Одеська</option>
+                <option value="poltavska">Полтавська</option>
+                <option value="rivnenska">Рівненська</option>
+                <option value="sumska">Сумська</option>
+                <option value="ternopilska">Тернопільська</option>
+                <option value="kharkivska">Харківська</option>
+                <option value="khersonska">Херсонська</option>
+                <option value="khmelnytska">Хмельницька</option>
+                <option value="cherkaska">Черкаська</option>
+                <option value="chernivetska">Чернівецька</option>
+                <option value="chernihivska">Чернігівська</option>
+                <option value="kyiv">м. Київ</option>
+                <option value="sevastopol">м. Севастополь</option>
+                <option value="crimea">Автономна Республіка Крим</option>
+            </select>
+            <button onclick="register()">Зареєструватися</button>
+            <p class="register">Вже маєте аккаунт? <span id="show-login">Увійдіть</span></p>
+        </div>
+
+
+        <div class="login-container" id="forgot-form" style="display: none;">
+            <h1>SafePoint</h1>
+            <p class="subtitle">Скидання пароля</p>
+            <input type="text" placeholder="Введіть пошту" id="forgot-email">
+            <div class="code-input" id="otp-input" style="display: none;">
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+            </div>
+            <button onclick="sendOtp()" id="get-otp" >Отримати код для скидання пароля</button>
+            <button id="reset-password" style="display: none;">Створити новий пароль пароль</button>
+            <p class="register"><span id="close-forgot">Повернутися</span></p>
+        </div>
+
+        <div class="login-container" id="reset-password-form" style="display: none;">
+            <h1>SafePoint</h1>
+            <p class="subtitle">Скидання пароля</p>
+            <input type="text" placeholder="Введіть пошту" id="again-email">
+            <input type="text" placeholder="Введіть новий пароль" id="newpassword">
+            <button id="confirm">Підтвердити</button>
+        </div>
+    </main>
+    <script src="js/app.js"></script>
+    <script src="js/enter.js"></script>
+</body>
+</html>
