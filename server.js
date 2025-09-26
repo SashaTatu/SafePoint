@@ -13,7 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 connectDB();
 
-app.use(express.json());
+
 
 // CORS налаштування
 const allowedOrigins = [
@@ -33,7 +33,7 @@ app.use(cors({
 }));
 
 app.use(cookieParser({Credentials: true}));
-
+app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,4 +60,5 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Сервер працює на http://localhost:${PORT}`);
+  console.log(`Сервер працює на http://safepoint-bei0.onrender.com`);
 });
