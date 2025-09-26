@@ -16,9 +16,11 @@ connectDB();
 
 
 const allowedOrigins = [
-  "http://localhost:3000",                 // якщо фронт локально
-  "https://safepoint-bei0.onrender.com"    // твій прод-фронтенд
+  "http://localhost:3000",
+  "https://safepoint-bei0.onrender.com",   // фронт на render
+  "https://safepoint-api.onrender.com"     // бекенд (теж треба дозволити)
 ];
+
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -35,6 +37,7 @@ app.options(/.*/, cors({
   origin: allowedOrigins,
   credentials: true
 }));
+
 
 app.use(cookieParser());
 app.use(express.json());
