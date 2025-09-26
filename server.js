@@ -15,10 +15,9 @@ connectDB();
 
 
 
-// CORS налаштування
 const allowedOrigins = [
-  "http://localhost:4000",
-  "https://safepoint-bei0.onrender.com"
+  "http://localhost:3000",                 // якщо фронт локально
+  "https://safepoint-bei0.onrender.com"    // твій прод-фронтенд
 ];
 
 app.use(cors({
@@ -32,7 +31,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(cookieParser({Credentials: true}));
+app.use(cookieParser());
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
@@ -59,6 +58,5 @@ app.get('/main', (req, res) => {
 app.use(express.static(path.join(__dirname, 'frontend')));
 // Запуск сервера
 app.listen(PORT, () => {
-  console.log(`Сервер працює на http://localhost:${PORT}`);
-  console.log(`Сервер працює на http://safepoint-bei0.onrender.com`);
+  console.log(`✅ Сервер працює на порті ${PORT}`);
 });
