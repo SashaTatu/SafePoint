@@ -5,9 +5,9 @@ import cors from 'cors';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/mongodb.js';
-import authRouter from './routes/authRoutes.js';
-import userRouter from './routes/userRoudes.js';
-import deviceRoutes from './routes/deviceRoutes.js';
+import authRouter from './routes/authRouter.js';
+import userRouter from './routes/userRouter.js';
+import deviceRoutes from './routes/deviceRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -28,6 +28,11 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true
+}));
+
+app.options(/.*/, cors({
+  origin: allowedOrigins,
   credentials: true
 }));
 
