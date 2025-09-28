@@ -57,5 +57,5 @@ app.get('/main', (req, res) => {
 app.use(express.static(path.join(__dirname, 'frontend')));
 // Запуск сервера
 app.listen(PORT, () => {
-  console.log(`✅ Сервер працює на порті ${PORT}`);
+  console.log(`✅ Сервер працює на порті http://localhost:${PORT}`);
 });
