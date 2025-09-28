@@ -9,9 +9,7 @@ const DeleteReturnButton = document.getElementById('delete_return_btn');
 const deleteDeviceForm = document.getElementById('delete-device-form');
 const deleteDevice = document.getElementById('delete-submit-device');
 
-  const API_URL = window.location.hostname.includes("localhost")
-  ? "http://localhost:4000"
-  : "https://safepoint-api.onrender.com";
+  const API_URL =  "https://safepoint-bei0.onrender.com";
 
 let devices =[]
 
