@@ -110,6 +110,8 @@ function renderDeviceCards(devices) {
 fetchDevices()
 
 
+
+
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
@@ -120,6 +122,18 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// Відкрити модальне вікно
+document.getElementById("edit-profile-btn").addEventListener("click", () => {
+  document.getElementById("editModal").style.display = "flex";
+});
+
+// Закрити модальне вікно при кліку поза ним
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("editModal");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
 logoutBtn.addEventListener('click', async () => {
   try {

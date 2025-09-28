@@ -21,14 +21,28 @@
             <h1>SafePoint</h1>
         </div>
         <div class="header-container-right">
-            <p id="user-avatar" class="avatar"></p>
+            <p id="user-avatar" class="avatar">O</p>
             <i class="fas fa-bell"></i>
             <div id="user-menu" class="user-menu hidden">
-                <button id="logout-btn">
+                <button id="edit-profile-btn" class="edit">
+                    <i class="fas fa-user-edit"></i> Редагувати профіль
+                </button>
+                <button id="logout-btn" class="logout">
                     <i class="fas fa-sign-out-alt"></i> Вийти
                 </button>
             </div>
         </div>
+
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <h2>Редагувати профіль</h2>
+                <input type="text" placeholder="">
+                <input type="region" placeholder="">
+                <button id="save-profile">Зберегти</button>
+            </div>
+        </div>
+
     </header>
     <div class="add-device-conteiner" style="display: none;" id="add-device-container">
         <div class="add-device">
