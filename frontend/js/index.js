@@ -122,8 +122,8 @@ async function fetchUser() {
 
     if (res.ok && data.success) {
       // 🔹 Підставляємо в поля форми
-      document.getElementById("name-input").value = data.data.name;
-      document.getElementById("region-input").value = data.data.region;
+      document.getElementById("name").value = data.data.name;
+      document.getElementById("region").value = data.data.region;
     } else {
       alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
     }
