@@ -77,8 +77,7 @@ getOtp.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/send-reset-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-      credentials: 'include'
+      body: JSON.stringify({ email })
     });
 
     const data = await res.json();
@@ -118,8 +117,7 @@ resetPassword.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp }),
-      credentials: 'include'
+      body: JSON.stringify({ email, otp })
     });
 
     const data = await res.json();
@@ -145,8 +143,7 @@ confirmPassword.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ newPassword, email }),
-      credentials: 'include'
+      body: JSON.stringify({ newPassword, email })
     });
 
     const data = await res.json();
@@ -176,8 +173,7 @@ async function register() {
     const res = await fetch(`${API_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, region }),
-      credentials: 'include'
+      body: JSON.stringify({ name, email, password, region })
     });
 
     const data = await res.json();
@@ -204,8 +200,7 @@ async function login() {
     const res = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include'
+      body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
