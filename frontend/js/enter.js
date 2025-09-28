@@ -20,7 +20,7 @@ const loginForm = document.getElementById('login-form');
   const newPassword = document.getElementById('newpassword');
   const confirmPassword = document.getElementById('confirm');
 
-  const API_URL = "https://safepoint-api.onrender.com";
+  const API_URL =  "https://safepoint-api.onrender.com";
 
   showRegister.addEventListener('click', () => {
     loginForm.style.display = 'none';
@@ -77,7 +77,8 @@ getOtp.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/send-reset-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email }),
+      credentials: 'include'
     });
 
     const data = await res.json();
@@ -117,7 +118,8 @@ resetPassword.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp })
+      body: JSON.stringify({ email, otp }),
+      credentials: 'include'
     });
 
     const data = await res.json();
@@ -143,7 +145,8 @@ confirmPassword.addEventListener('click', async () => {
     const res = await fetch(`${API_URL}/api/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ newPassword, email })
+      body: JSON.stringify({ newPassword, email }),
+      credentials: 'include'
     });
 
     const data = await res.json();
@@ -173,7 +176,8 @@ async function register() {
     const res = await fetch(`${API_URL}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, region })
+      body: JSON.stringify({ name, email, password, region }),
+      credentials: 'include'
     });
 
     const data = await res.json();
@@ -200,7 +204,8 @@ async function login() {
     const res = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
     });
 
     const data = await res.json();

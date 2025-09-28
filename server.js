@@ -27,8 +27,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Обробка preflight запитів (OPTIONS)
-app.options('*', cors());
+
 
 
 app.use(cookieParser());
