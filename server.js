@@ -16,21 +16,14 @@ connectDB();
 
 
 const allowedOrigins = [
-  "http://localhost:3000",
+  "http://localhost:4000",
   "https://safepoint-bei0.onrender.com",
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: 'https://safepoint-bei0.onrender.com', 
   credentials: true
 }));
-
 
 
 app.use(cookieParser());
