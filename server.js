@@ -17,7 +17,7 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:4000",
-  "https://safepoint-bei0.onrender.com",
+  "https://safepoint-api.onrender.com",
 ];
 
 app.use(cors({
