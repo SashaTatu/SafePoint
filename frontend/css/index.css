@@ -152,6 +152,35 @@ header {
   cursor: pointer;
 }
 
+.user-menu {
+    position: absolute;
+    top: 40px; 
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    padding: 8px;
+    z-index: 100;
+  }
+
+  .user-menu.hidden {
+    display: none;
+  }
+
+  .user-menu button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .user-menu button:hover {
+    background: #f5f5f5;
+  }
+
 /* Add Device Modal */
 .add-device-conteiner {
   position: fixed;

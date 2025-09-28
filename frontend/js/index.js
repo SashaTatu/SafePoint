@@ -8,6 +8,9 @@ const deleteContainer = document.getElementById('delete-device-container');
 const DeleteReturnButton = document.getElementById('delete_return_btn');
 const deleteDeviceForm = document.getElementById('delete-device-form');
 const deleteDevice = document.getElementById('delete-submit-device');
+const avatar = document.getElementById('user-avatar');
+const menu = document.getElementById('user-menu');
+const logoutBtn = document.getElementById('logout-btn');
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
 
@@ -106,10 +109,45 @@ function renderDeviceCards(devices) {
 
 fetchDevices()
 
+
+avatar.addEventListener('click', () => {
+  menu.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (e) => {
+  if (!avatar.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.add('hidden');
+  }
+});
+
+
+logoutBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch(`${API_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert('✅ Ви успішно вийшли з системи');
+      window.location.href = '../enter.html';
+    } else {
+      alert('❌ Помилка: ' + (data.message || 'Невідома помилка'));
+    }
+  } catch (error) {
+    console.error('❌ Помилка запиту:', error);
+    alert('❌ Сервер недоступний або сталася помилка');
+  }
+});
+
+
+
 checkbox.addEventListener('change', () => {
   document.body.classList.toggle('dark', checkbox.checked);
 });
-
 
 
 function AddDeviceConteiner() {
