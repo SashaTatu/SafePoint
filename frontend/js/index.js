@@ -121,7 +121,7 @@ async function fetchUser() {
     const data = await res.json();
 
     if (res.ok && data.success) {
-      // 🔹 Підставляємо в поля форми
+
       document.getElementById("name").value = data.data.name;
       document.getElementById("region").value = data.data.region;
     } else {
@@ -145,8 +145,8 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Відкрити модальне вікно
 document.getElementById("edit-profile-btn").addEventListener("click", () => {
+  fetchUser();
   document.getElementById("editModal").style.display = "flex";
 });
 
