@@ -20,7 +20,7 @@ const loginForm = document.getElementById('login-form');
   const newPassword = document.getElementById('newpassword');
   const confirmPassword = document.getElementById('confirm');
 
-  const API_URL =  "https://safepoint-api.onrender.com";
+  const API_URL =  "https://safepoint-bei0.onrender.com";
 
   showRegister.addEventListener('click', () => {
     loginForm.style.display = 'none';
