@@ -110,6 +110,29 @@ function renderDeviceCards(devices) {
 fetchDevices()
 
 
+async function fetchUser() {
+  try {
+    const res = await fetch(`${API_URL}/api/auth/getuser`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      // 🔹 Підставляємо в поля форми
+      document.getElementById("name-input").value = data.data.name;
+      document.getElementById("region-input").value = data.data.region;
+    } else {
+      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
+    }
+  } catch (err) {
+    console.error('❌ Помилка запиту:', err);
+  }
+}
+
+
 
 
 avatar.addEventListener('click', () => {
