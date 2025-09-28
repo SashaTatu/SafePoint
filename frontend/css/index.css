@@ -207,106 +207,7 @@ header {
 }
 
 
-/* ====== Базові стилі контейнерів (login + modal) ====== */
-.box-container {
-  background-color: #fff;
-  padding: 35px 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-  width: 340px;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  animation: fadeInScale 0.3s ease forwards;
-}
-
-.box-container h1,
-.box-container h2 {
-  margin-bottom: 12px;
-  color: #445f3b;
-  font-size: 22px;
-}
-
-.subtitle {
-  font-size: 16px;
-  margin-bottom: 20px;
-  color: #666;
-}
-
-/* ====== Поля вводу ====== */
-input[type="text"],
-input[type="password"],
-.box-container input,
-.box-container select {
-  width: 90%;
-  padding: 12px;
-  margin: 10px 0 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  background-color: #fff;
-  color: #333;
-}
-
-input:focus,
-.box-container input:focus,
-.box-container select:focus {
-  border-color: #445f3b;
-  outline: none;
-  box-shadow: 0 0 6px rgba(68, 95, 59, 0.3);
-}
-
-select {
-  width: 95%;
-}
-
-/* ====== Кнопки ====== */
-button,
-.box-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: #445f3b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
-  margin-top: 10px;
-}
-
-button:hover,
-.box-container button:hover {
-  background-color: #33462c;
-  transform: translateY(-2px);
-}
-
-/* ====== Код підтвердження ====== */
-.code-input {
-  width: 90%;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin: 15px auto;
-}
-
-.code-box {
-  width: 20px;
-  height: 20px;
-  font-size: 24px;
-  text-align: center;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
-}
-
-.code-box:focus {
-  border-color: #445f3b;
-  outline: none;
-}
-
-/* ====== Модальне вікно ====== */
+/* ===== Модальне вікно (стиль як login-container) ===== */
 .modal {
   display: none; 
   position: fixed;
@@ -319,11 +220,65 @@ button:hover,
 }
 
 .modal-content {
-  composes: box-container; /* спільні стилі */
-  width: 380px;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  width: 350px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeInScale 0.3s ease forwards;
 }
 
-/* ====== Анімації ====== */
+/* Заголовок */
+.modal-content h2 {
+  margin-bottom: 10px;
+  color: #445f3b;
+}
+
+/* Інпут як у login */
+.modal-content input,
+.modal-content select {
+  width: 90%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.modal-content select {
+  width: 100%;
+  color: #555;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #445f3b;
+  outline: none;
+}
+
+/* Кнопка як у login */
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  background-color: #445f3b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #33462c;
+}
+
+/* Анімація */
 @keyframes fadeInScale {
   from {
     opacity: 0;
