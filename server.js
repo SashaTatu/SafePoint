@@ -54,12 +54,8 @@ app.get('/main', (req, res) => {
 app.use('/api/devices', deviceRoutes);
 
 app.get('/device/:deviceId', (req, res) => {
-  const deviceId = req.params.deviceId;
-  console.log("Device ID:", deviceId);
-
-  res.sendFile(path.join(__dirname, 'frontend', 'devices.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
 });
-
 
 
 
