@@ -44,20 +44,19 @@ app.use('/api/auth', authRouter);
 
 app.use('/api/user', userRouter);
 
-app.use('/api/devices', deviceRoutes);
 
-app.get('/api/test', (req, res) => {
-  res.json({
-    message: 'Сервер працює!',
-    status: 'ok',
-    time: new Date().toISOString()
-  });
-});
 
 
 app.get('/main', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
+
+app.use('/api/devices', deviceRoutes);
+
+app.get('/device', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'devices.html'));
+});
+
 
 
 app.use(express.static(path.join(__dirname, 'frontend')));
