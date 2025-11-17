@@ -287,7 +287,7 @@ DeleteReturnButton.addEventListener('click', () => {
 nextButton.addEventListener('click', async () => {
 
   try {
-    const res = await fetch(`${API_URL}/api/device/${device.deviceId}`, {
+    const res = await fetch(`${API_URL}/api/device/:deviceId`, {
       method: 'GET',
       credentials: 'include'
     });
