@@ -3,23 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/enter.css">
-    <link rel="icon" href="assets/favicon/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="assets/favicon/favicon.png" type="image/x-icon">
     <title>SafePoint</title>
 </head>
 <body>
     <header>
-        <input type="checkbox" id="checkbox">
-        <label for="checkbox" class="toggler">
-            <span class="ball"></span>
-            <i class="ri-sun-line sun"></i>
-            <i class="ri-moon-line moon"></i>
-        </label>
-        <div class="overlay"></div>
+        <div class="header-container-left">
+            <input type="checkbox" id="checkbox">
+            <label for="checkbox" class="toggler">
+                <span class="ball"></span>
+                <i class="ri-sun-line sun"></i>
+                <i class="ri-moon-line moon"></i>
+            </label>
+            <h1>SafePoint</h1>
+        </div>
+        <div class="header-container-right">
+            <p id="user-avatar" class="avatar">O</p>
+            <i class="fas fa-bell"></i>
+            <div id="user-menu" class="user-menu hidden">
+                <button id="edit-profile-btn" class="edit">
+                    <i class="fas fa-user-edit"></i> Редагувати профіль
+                </button>
+                <button id="logout-btn" class="logout">
+                    <i class="fas fa-sign-out-alt"></i> Вийти
+                </button>
+            </div>
+        </div>
     </header>
-<body>
-    
+    <footer>
+        <div class="footer-nav">
+            <button class="nav-btn">
+                <i class="ri-home-5-line"></i>
+            </button>
+
+            <button class="nav-btn">
+                <i class="ri-layout-grid-line"></i>
+            </button>
+
+            <button class="nav-btn">
+                <i class="ri-user-3-line"></i>
+            </button>
+        </div>
+    </footer>
+    <script src="js/device.js"></script>
 </body>
 </html>
