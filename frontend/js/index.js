@@ -103,7 +103,7 @@ function renderDeviceCards(devices) {
         <p><strong>Адреса:</strong> ${device.address}</p>
         <p><strong>Статус:</strong> <span class="status-${device.status}">${device.status}</span></p>
       </div>
-      <a id="nextButton" class="shelter-footer-link">Перейти до пристрою>
+      <a id="nextButton" class="shelter-footer-link">Перейти до пристрою</a>
     `;
     container.appendChild(card);
   });
