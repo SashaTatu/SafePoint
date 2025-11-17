@@ -38,3 +38,24 @@ function generateAvatar(userName) {
 
 
 UserNameGet();
+
+
+const buttons = document.querySelectorAll(".footer-nav .nav-btn");
+const activeBg = document.querySelector(".footer-nav .active-bg");
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const index = btn.dataset.index;
+
+    // рух капсули
+    const buttonRect = btn.getBoundingClientRect();
+    const navRect = document.querySelector(".footer-nav").getBoundingClientRect();
+    const offset = buttonRect.left - navRect.left;
+
+    activeBg.style.left = offset + "px";
+
+    // виділення кнопки
+    buttons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});

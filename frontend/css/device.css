@@ -1,3 +1,14 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* блокує scroll */
+  max-width: 100%;
+  overscroll-behavior: none; /* блокує "протягування" */
+  touch-action: none; /* блокує рух жестами */
+}
+
+
 :root {
   --color-bg-light: azure;
   --color-bg-dark: #1e1e1e;
@@ -21,7 +32,6 @@ html, body {
 body {
   background-color: var(--color-bg-light);
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,7 +82,7 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-right: 40px;
+  margin-right: 2%;
 }
 
 
@@ -208,44 +218,150 @@ header {
 
 
 .footer-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 380px;
+    position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
 
-  background: #0d0d14;
-  padding: 14px 24px;
-  border-radius: 40px;
-
+  background: var(--color-bg-light);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+  
 }
 
+
+/* базові кнопки */
 .footer-nav .nav-btn {
-  background: none;
-  border: none;
-  outline: none;
-
-  width: 42px;
-  height: 42px;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 8%;
+  margin-right: 8%;
 
-  border-radius: 50%;
-  font-size: 22px;
-  color: white;
+  flex-direction: row;
+  gap: 8px;
 
-  transition: 0.25s;
+  background: transparent;
+  border: none;
+
+  padding: 10px 14px;
+  border-radius: 20px;
+
+  font-size: 20px;
+  color: var(--color-primary);
+
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.footer-nav .nav-btn:active,
-.footer-nav .nav-btn:hover {
-  background: rgba(255,255,255,0.12);
+.footer-nav .nav-btn span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* активна кнопка-капсула */
+.footer-nav .nav-btn.active {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 10px 18px;
+}
+
+/* іконки всередині активної кнопки */
+.footer-nav .nav-btn.active i {
+  color: var(--color-text-light);
+}
+
+/* анімація при натисканні */
+.footer-nav .nav-btn:active {
+  transform: scale(0.95);
+}
+
+
+/* --- MOBILE ADAPTATION --- */
+@media (max-width: 600px) {
+
+  body {
+    padding: 0;
+  }
+
+  /* Header */
+  header {
+    height: 50px;
+    padding: 0 12px;
+  }
+
+  .header-container-right {
+    margin-right: 5%;
+    gap: 15px;
+  }
+
+  .header-container-left {
+    gap: 10px;
+  }
+
+  /* Theme switch */
+  .toggler {
+    width: 45px;
+    height: 24px;
+  }
+
+  .ball {
+    width: 20px;
+    height: 20px;
+  }
+
+  #checkbox:checked + .toggler .ball {
+    transform: translateX(21px) translateY(-50%);
+  }
+
+  /* Avatar */
+  .avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .fa-bell {
+    font-size: 20px;
+  }
+
+  /* User menu */
+  .user-menu {
+    width: 160px;
+    right: 20px;
+    top: 55px;
+  }
+
+  .user-menu button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  /* Footer nav */
+  .footer-nav {
+    height: 70px;
+  }
+
+  .footer-nav .nav-btn {
+    margin-left: 4%;
+    margin-right: 4%;
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .footer-nav .nav-btn i {
+    font-size: 18px;
+  }
+
+  .footer-nav .nav-btn span {
+    font-size: 12px;
+  }
+
+  .footer-nav .nav-btn.active {
+    padding: 8px 14px;
+  }
 }
