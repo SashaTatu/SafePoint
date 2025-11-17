@@ -144,3 +144,20 @@ export const ShowAllDevices = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
 }
+
+export const GetDeviceById = async (req, res) => {
+  const { deviceId } = req.params;
+  
+  const device = await Device.findById(deviceId);
+
+  if (!device) return res.status(404).json({ success: false, error: 'Пристрій не знайдено' });
+
+  res.json({
+    success: true,
+    deviceId: device._id,
+    address: device.address,
+    status: device.status
+  });
+};
+
+  

@@ -55,9 +55,6 @@ app.use('/api/devices', deviceRoutes);
 
 
 app.get('/device/:deviceId', (req, res) => {
-  const deviceId = req.params.deviceId; 
-  console.log("Відкриваємо пристрій:", deviceId);
-
   res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
 });
 

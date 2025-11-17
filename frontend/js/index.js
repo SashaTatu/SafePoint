@@ -11,6 +11,7 @@ const deleteDevice = document.getElementById('delete-submit-device');
 const avatar = document.getElementById('user-avatar');
 const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
+const nextButton = document.getElementById('nextButton');
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
 
@@ -102,7 +103,7 @@ function renderDeviceCards(devices) {
         <p><strong>Адреса:</strong> ${device.address}</p>
         <p><strong>Статус:</strong> <span class="status-${device.status}">${device.status}</span></p>
       </div>
-      <a href="/device/${device.deviceId}" class="shelter-footer-link">Перейти до пристрою</a>
+      <p> id="nextButton" class="shelter-footer-link">Перейти до пристрою</p>
     `;
     container.appendChild(card);
   });
@@ -280,6 +281,32 @@ DeleteReturnButton.addEventListener('click', () => {
   deleteContainer.style.display = 'none';
 
 });
+
+
+
+nextButton.addEventListener('click', async () => {
+
+  try {
+    const res = await fetch(`${API_URL}/api/device/${device.deviceId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      alert('✅Ви успішно ввійшли в систему.');
+      window.location.href = '../device.html';  
+      
+    } else {
+      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
+    }
+  } catch (err) {
+    console.error('❌ Помилка запиту:', err);
+    alert('❌ Сервер недоступний або сталася помилка');
+  }
+})
 
 
   
