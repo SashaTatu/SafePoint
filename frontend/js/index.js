@@ -103,7 +103,7 @@ function renderDeviceCards(devices) {
         <p><strong>Адреса:</strong> ${device.address}</p>
         <p><strong>Статус:</strong> <span class="status-${device.status}">${device.status}</span></p>
       </div>
-      <a id="nextButton" class="shelter-footer-link">Перейти до пристрою</a>
+      <a scr="${API_URL}/device/${device.deviceId}" class="shelter-footer-link">Перейти до пристрою</a>
     `;
     container.appendChild(card);
   });
@@ -284,29 +284,6 @@ DeleteReturnButton.addEventListener('click', () => {
 
 
 
-nextButton.addEventListener('click', async () => {
-
-  try {
-    const res = await fetch(`${API_URL}/api/device/:deviceId`, {
-      method: 'GET',
-      credentials: 'include'
-    });
-
-
-    const data = await res.json();
-
-    if (res.ok && data.success) {
-      alert('✅Ви успішно ввійшли в систему.');
-      window.location.href = '../device.html';  
-      
-    } else {
-      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
-    }
-  } catch (err) {
-    console.error('❌ Помилка запиту:', err);
-    alert('❌ Сервер недоступний або сталася помилка');
-  }
-})
 
 
   
