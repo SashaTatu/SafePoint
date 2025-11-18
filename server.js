@@ -45,7 +45,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
 
-
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.get('/main', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
