@@ -1,5 +1,5 @@
 const API_URL =  "https://safepoint-bei0.onrender.com";
-
+const avatar = document.getElementById('user-avatar');
 
 async function UserNameGet() {
   try {
