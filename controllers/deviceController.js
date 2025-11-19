@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 
 export const registerDevice = async (req, res) => {
-  const { deviceId } = req.body;
+  const { deviceId, mac } = req.body;
 
   if (!deviceId || typeof deviceId !== 'string' || !deviceId.trim()) {
     return res.status(400).json({ success: false, message: 'Некоректний deviceId' });
@@ -18,7 +18,7 @@ export const registerDevice = async (req, res) => {
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
-      trusted: false, 
+      mac: mac.trim(), 
       status: 'pending'
     });
 
