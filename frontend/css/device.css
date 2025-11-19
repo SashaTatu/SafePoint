@@ -504,6 +504,45 @@ header {
   }
 }
 
+.sensor-data-container {
+    background-color: #445f3b;
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.sensor-data-container h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #eafaf0;
+}
+
+.sensor-block p {
+    font-size: 1.2em;
+    margin: 8px 0;
+}
+
+#refresh-data {
+    background-color: #3a5f47;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+#refresh-data:hover {
+    background-color: #284534;
+}
+
+
 /* ============================
       FULL DARK THEME
 ============================ */
