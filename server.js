@@ -34,7 +34,7 @@ app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'enter.html'));
@@ -55,7 +55,7 @@ app.use('/api/devices', deviceRoutes);
 
 
 app.get('/device/:deviceId', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'device.html'));
 });
 
 
