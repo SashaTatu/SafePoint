@@ -15,6 +15,10 @@ export const registerDevice = async (req, res) => {
     if (existing) {
       return res.status(409).json({ success: false, message: 'Такий ID вже існує' });
     }
+    const macexisting = await Device.findOne({ mac: mac.trim() });
+    if (macexisting) {
+      return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
+    }
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
@@ -29,7 +33,7 @@ export const registerDevice = async (req, res) => {
       message: 'Пристрій ESP32 зареєстровано',
       data: {
         deviceId: newDevice.deviceId,
-        trusted: newDevice.trusted,
+        mac: newDevice.mac,
         status: newDevice.status
       }
     });
