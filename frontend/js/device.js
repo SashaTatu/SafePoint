@@ -63,3 +63,26 @@ buttons.forEach(btn => {
     btn.classList.add("active");
   });
 });
+
+avatar.addEventListener('click', () => {
+  menu.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (e) => {
+  if (!avatar.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.add('hidden');
+  }
+});
+
+document.getElementById("edit-profile-btn").addEventListener("click", () => {
+  fetchUser();
+  document.getElementById("editModal").style.display = "flex";
+});
+
+// Закрити модальне вікно при кліку поза ним
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("editModal");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});

@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 const deviceSchema = new mongoose.Schema({
   deviceId: { type: String, required: true, unique: true },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
-  status: { type: String, default: 'pending' },
+  status: { type: String, default: 'В очікуванні' },
+  mac: { type: String, default: '' },
+  temperature: { type: Number, default: '' },
+  humidity: { type: Number, default: '' },
   address: { type: String, default: '' },
   location: { type: String, default: '' }
 });

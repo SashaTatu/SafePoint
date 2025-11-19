@@ -71,7 +71,7 @@ export const addDevice = async (req, res) => {
     device.owner = userId;
     device.address = address;
     device.trusted = true;
-    device.status = 'active';
+    device.status = 'Зачинено';
 
     await device.save();
 
