@@ -365,3 +365,97 @@ header {
     padding: 8px 14px;
   }
 }
+
+/* ============================
+      FULL DARK THEME
+============================ */
+
+body.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+
+/* Header */
+body.dark header {
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+}
+
+/* Avatar */
+body.dark .avatar {
+  border-color: #bbb;
+  color: var(--color-text-light);
+}
+
+/* Notification icon */
+body.dark .fa-bell {
+  color: var(--color-text-light);
+}
+
+/* Toggle switch */
+body.dark .toggler {
+  border-color: #ccc;
+}
+
+body.dark .toggler .ball {
+  background-color: #fff;
+}
+
+/* User menu */
+body.dark .user-menu {
+  background: #2c2c2c;
+  border-color: #4a4a4a;
+  color: var(--color-text-light);
+}
+
+body.dark .user-menu button {
+  color: var(--color-text-light);
+}
+
+body.dark .user-menu button:hover {
+  background: #3a3a3a;
+}
+
+body.dark .user-menu button.edit i {
+  color: #cfcfcf;
+}
+
+body.dark .user-menu button.logout i {
+  color: #ff8a8a;
+}
+
+/* Footer bar */
+body.dark .footer-nav {
+  background: #2e2e2e;
+  box-shadow: 0 -5px 20px rgba(255,255,255,0.1);
+}
+
+/* Footer buttons */
+body.dark .footer-nav .nav-btn {
+  color: #ffffffd0;
+}
+
+body.dark .footer-nav .nav-btn.active {
+  background: var(--color-accent);
+  color: var(--color-text-light);
+}
+
+/* Icons inside buttons */
+body.dark .footer-nav .nav-btn i {
+  color: #fff;
+}
+
+body.dark .footer-nav .nav-btn.active i {
+  color: var(--color-text-light);
+}
+
+/* Mobile adjustments in dark mode */
+@media (max-width: 600px) {
+  body.dark .footer-nav {
+    background: #2e2e2e;
+  }
+
+  body.dark .footer-nav .nav-btn {
+    color: #f5f5f5;
+  }
+}
