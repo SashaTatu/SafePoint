@@ -117,3 +117,27 @@ logoutBtn.addEventListener('click', async () => {
 checkbox.addEventListener('change', () => {
   document.body.classList.toggle('dark', checkbox.checked);
 });
+
+
+
+async function fetchUser() {
+  try {
+    const res = await fetch(`${API_URL}/api/auth/getuser`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+
+      document.getElementById("name").value = data.data.name;
+      document.getElementById("region").value = data.data.region;
+    } else {
+      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
+    }
+  } catch (err) {
+    console.error('❌ Помилка запиту:', err);
+  }
+}
