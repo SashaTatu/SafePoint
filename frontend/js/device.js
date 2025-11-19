@@ -43,6 +43,10 @@ UserNameGet();
 const buttons = document.querySelectorAll(".footer-nav .nav-btn");
 const activeBg = document.querySelector(".footer-nav .active-bg");
 
+checkbox.addEventListener('change', () => {
+  document.body.classList.toggle('dark', checkbox.checked);
+});
+
 buttons.forEach(btn => {
   btn.addEventListener("click", () => {
     const index = btn.dataset.index;
