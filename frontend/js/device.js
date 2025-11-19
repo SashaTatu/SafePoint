@@ -1,5 +1,8 @@
 const API_URL =  "https://safepoint-bei0.onrender.com";
 const avatar = document.getElementById('user-avatar');
+const menu = document.getElementById('user-menu');
+const logoutBtn = document.getElementById('logout-btn');
+const nextButton = document.getElementById('nextButton');
 
 async function UserNameGet() {
   try {
@@ -85,4 +88,32 @@ window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
   }
+});
+
+logoutBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch(`${API_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert('✅ Ви успішно вийшли з системи');
+      window.location.href = '../enter.html';
+    } else {
+      alert('❌ Помилка: ' + (data.message || 'Невідома помилка'));
+    }
+  } catch (error) {
+    console.error('❌ Помилка запиту:', error);
+    alert('❌ Сервер недоступний або сталася помилка');
+  }
+});
+
+
+
+checkbox.addEventListener('change', () => {
+  document.body.classList.toggle('dark', checkbox.checked);
 });
