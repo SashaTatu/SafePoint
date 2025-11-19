@@ -55,7 +55,7 @@ app.use('/api/devices', deviceRoutes);
 
 
 app.get('/device/:deviceId', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'device.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
 });
 
 
