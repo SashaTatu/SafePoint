@@ -144,7 +144,7 @@ async function fetchUser() {
 
 async function fetchSensorData() {
     try {
-        const response = await fetch('/api/device/data'); // API, яке повертає JSON з temperature і humidity
+        const response = await fetch(`${API_URL}/api/auth/getuser`); // API, яке повертає JSON з temperature і humidity
         if (!response.ok) throw new Error('Network response was not ok');
 
         const data = await response.json();
