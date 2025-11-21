@@ -14,13 +14,13 @@ const listBtn = document.getElementById('list-btn');
 sensorBtn.addEventListener('click', () => {
   sensorBtn.classList.toggle('active');
   sensorWrapper.style.display = sensorBtn.classList.contains('active') ? 'flex' : 'none';
-  acesscontainer.style.display = sensorBtn.classList.contains('active') ? 'none' : 'flex';
+  acesscontainer.style.display = sensorBtn.classList.contains('active') ? 'none' : 'block';
   Listcontainer.style.display = sensorBtn.classList.contains('active') ? 'none' : 'flex';
 });
 
 acessBtn.addEventListener('click', () => {
   acessBtn.classList.toggle('active');
-  acesscontainer.style.display = acessBtn.classList.contains('active') ? 'flex' : 'none';
+  acesscontainer.style.display = acessBtn.classList.contains('active') ? 'block' : 'none';
   sensorWrapper.style.display = acessBtn.classList.contains('active') ? 'none' : 'flex';
   Listcontainer.style.display = acessBtn.classList.contains('active') ? 'none' : 'flex'; 
 });
@@ -29,7 +29,7 @@ listBtn.addEventListener('click', () => {
   listBtn.classList.toggle('active');
   Listcontainer.style.display = listBtn.classList.contains('active') ? 'flex' : 'none';
   sensorWrapper.style.display = listBtn.classList.contains('active') ? 'none' : 'flex';
-  acesscontainer.style.display = listBtn.classList.contains('active') ? 'none' : 'flex'; 
+  acesscontainer.style.display = listBtn.classList.contains('active') ? 'none' : 'block'; 
 })
 
 
