@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 export const GetDeviceById = async (req, res) => {
   const { deviceId } = req.params;
   
-  const device = await Device.findById(deviceId);
+  const device = await Device.findOne({ deviceId });
+
 
   if (!device) return res.status(404).json({ success: false, error: 'Пристрій не знайдено' });
 
@@ -31,7 +32,7 @@ export const deviceParameterPost = async (req, res) => {
     }
 
     try {
-        const device = await DeviceModel.findOne({ deviceId });
+        const device = await Device.findOne({ deviceId });
         console.log("FOUND DEVICE:", device);
 
         if (!device) {
@@ -56,7 +57,7 @@ export const deviceParameterGet = async (req, res) => {
     const { deviceId } = req.params;
 
     try {
-        const device = await DeviceModel.findOne({ deviceId });
+        const device = await Device.findOne({ deviceId });
         if (!device) {
             return res.status(404).json({ success: false, message: "Device not found" });
         }
