@@ -18,7 +18,12 @@ export const GetDeviceById = async (req, res) => {
 };
 
 export const deviceParameterPost = async (req, res) => {
+    console.log("POST PARAMS:", req.params);
+    console.log("BODY:", req.body);
+
     const { deviceId } = req.params;
+    console.log("EXTRACTED deviceId:", deviceId);
+
     const { temperature, humidity } = req.body;
 
     if (temperature === undefined || humidity === undefined) {
@@ -27,6 +32,8 @@ export const deviceParameterPost = async (req, res) => {
 
     try {
         const device = await DeviceModel.findOne({ deviceId });
+        console.log("FOUND DEVICE:", device);
+
         if (!device) {
             return res.status(404).json({ success: false, message: "Device not found" });
         }
@@ -38,8 +45,9 @@ export const deviceParameterPost = async (req, res) => {
         await device.save();
 
         return res.status(200).json({ success: true, message: "Data saved successfully" });
+
     } catch (error) {
-        console.error("Error saving device data:", error);
+        console.error("❌ SERVER ERROR:", error);
         return res.status(500).json({ success: false, message: "Server error" });
     }
 };

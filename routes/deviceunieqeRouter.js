@@ -1,7 +1,9 @@
 import express from 'express';
 import { deviceParameterPost, deviceParameterGet, GetDeviceById } from '../controllers/deviceunieqeController.js';
 
-const deviceunieqeRoutes = express.Router();
+
+
+const deviceunieqeRoutes = express.Router({ mergeParams: true });
 
 
 deviceunieqeRoutes.get('/:deviceId/parametersget', deviceParameterGet);
