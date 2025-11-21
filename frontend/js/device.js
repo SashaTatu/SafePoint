@@ -4,12 +4,34 @@ const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
 const sensorBtn = document.getElementById('sensor-btn');
+const acessBtn = document.getElementById('acess-btn');
+const acesscontainer = document.querySelector('.alert-container');
 const sensorWrapper = document.querySelector('.sensor-wrapper');
+const Listcontainer = document.querySelector('.list-container');
+const listBtn = document.getElementById('list-btn');
+
 
 sensorBtn.addEventListener('click', () => {
   sensorBtn.classList.toggle('active');
   sensorWrapper.style.display = sensorBtn.classList.contains('active') ? 'flex' : 'none';
+  acesscontainer.style.display = sensorBtn.classList.contains('active') ? 'none' : 'flex';
+  Listcontainer.style.display = sensorBtn.classList.contains('active') ? 'none' : 'flex';
 });
+
+acessBtn.addEventListener('click', () => {
+  acessBtn.classList.toggle('active');
+  acesscontainer.style.display = acessBtn.classList.contains('active') ? 'flex' : 'none';
+  sensorWrapper.style.display = acessBtn.classList.contains('active') ? 'none' : 'flex';
+  Listcontainer.style.display = acessBtn.classList.contains('active') ? 'none' : 'flex'; 
+});
+
+listBtn.addEventListener('click', () => {
+  listBtn.classList.toggle('active');
+  Listcontainer.style.display = listBtn.classList.contains('active') ? 'flex' : 'none';
+  sensorWrapper.style.display = listBtn.classList.contains('active') ? 'none' : 'flex';
+  acesscontainer.style.display = listBtn.classList.contains('active') ? 'none' : 'flex'; 
+})
+
 
 
 const deviceId = window.location.pathname.split("/")[2];
@@ -108,7 +130,7 @@ async function fetchSensorData(deviceId) {
 
 fetchSensorData(deviceId);
 
-setInterval(() => fetchSensorData(deviceId), 10000);
+setInterval(() => fetchSensorData(deviceId), 5000);
 
 
 avatar.addEventListener('click', () => {
@@ -187,7 +209,4 @@ async function fetchUser() {
 }
 
 
-
-// Кнопка "Оновити"
-document.getElementById('refresh-data').addEventListener('click', fetchSensorData(deviceId));
 

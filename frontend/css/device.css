@@ -508,6 +508,51 @@ header {
   }
 }
 
+.alert-container {
+  width: 250px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #d4f0d4; /* зелений за замовчуванням */
+  color: #000;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.status-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.status-text {
+  font-weight: bold;
+}
+
+.lock-img-container img {
+  width: 80px;
+  margin: 15px 0;
+}
+
+.door-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+/* Колір контейнера в залежності від стану */
+.alert-container.alert-on {
+  background-color: #f8d7da; /* червоний, тривога */
+}
+
+.alert-container.alert-off {
+  background-color: #d4f0d4; /* зелений, спокій */
+}
+
+
 .sensor-wrapper {
     display: none;
     justify-content: center;
@@ -542,21 +587,25 @@ header {
     margin: 10px 0;
 }
 
-.refresh-btn {
-    margin-top: 20px;
-    background: #2f4f2f;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 12px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.25s;
+.list-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto; /* центрування по горизонталі */
+  padding: 15px 20px;
+  background-color: #f0f0f0; /* світло-сірий фон */
+  border-radius: 10px;       /* закруглені кути */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* легка тінь */
+  text-align: center;
 }
 
-.refresh-btn:hover {
-    background: #264226;
+.list-container .list {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0; /* прибираємо відступи заголовка */
 }
+
+
 
 /* 📱 Адаптація для телефону */
 @media (max-width: 480px) {
@@ -571,12 +620,6 @@ header {
 
     .sensor-line {
         font-size: 16px;
-    }
-
-    .refresh-btn {
-        width: 100%;
-        font-size: 15px;
-        padding: 12px;
     }
 }
 

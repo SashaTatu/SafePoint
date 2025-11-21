@@ -73,9 +73,25 @@
     </header>
 
     <main>
-        <div>
+        <div id="alert-container" class="alert-container">
+            <h3>Стан укриття</h3>
             
-        </div>    
+            <div class="status-line">
+                <span>Тривога:</span>
+                <span id="alert-status" class="status-text">Відсутня</span>
+            </div>
+            
+            <div class="status-line">
+                <span>Стан укриття:</span>
+                <span id="door-status" class="status-text">Зачинене</span>
+            </div>
+
+            <div class="lock-img-container">
+                <img id="lock-img" src="assets/lock-closed.png" alt="Замок">
+            </div>
+
+            <button id="door-btn" class="door-btn">Відчинити</button>
+        </div>
         <div class="sensor-wrapper">
             <div class="sensor-card">
                 <h2>Показники датчика</h2>
@@ -86,18 +102,18 @@
                 <p class="sensor-line">
                     Вологість: <span id="humidity">--</span> %
                 </p>
-
-                <button id="refresh-data" class="refresh-btn">Оновити</button>
             </div>
         </div>
-
+        <div class="list-container">
+            <h2 class="list">В процесі розробки</h2>
+        </div>
     </main>
 
     <footer>
         <div class="footer-nav">
             <div class="active-bg"></div> 
             
-            <button class="nav-btn active">
+            <button class="nav-btn active" id="acess-btn">
                 <i class="ri-shield-keyhole-line"></i>
                 <span>Доступ</span>
             </button>
@@ -107,7 +123,7 @@
                 <span>Показники</span>
             </button>
 
-            <button class="nav-btn">
+            <button class="nav-btn" id="list-btn">
                 <i class="ri-file-list-3-line"></i>
                 <span>Список</span>
             </button>
