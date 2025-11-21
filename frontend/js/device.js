@@ -99,7 +99,8 @@ async function fetchSensorData(deviceId) {
 
 fetchSensorData(deviceId);
 
-setInterval(fetchSensorData(deviceId), 10000);
+setInterval(() => fetchSensorData(deviceId), 10000);
+
 
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');

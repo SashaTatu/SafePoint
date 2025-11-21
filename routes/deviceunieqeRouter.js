@@ -4,8 +4,8 @@ import { deviceParameterPost, deviceParameterGet, GetDeviceById } from '../contr
 const deviceunieqeRoutes = express.Router();
 
 
-deviceunieqeRoutes.post('/parameterspost', deviceParameterPost);
-deviceunieqeRoutes.get('/parametersget', deviceParameterGet);
-deviceunieqeRoutes.get('/getId', GetDeviceById);
+deviceunieqeRoutes.get('/:deviceId/parametersget', deviceParameterGet);
+deviceunieqeRoutes.post('/:deviceId/parameterspost', deviceParameterPost);
+deviceunieqeRoutes.get('/:deviceId/getId', GetDeviceById);
 
 export default deviceunieqeRoutes;
