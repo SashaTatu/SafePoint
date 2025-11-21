@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import jwt from "jsonwebtoken";
 
 export const GetDeviceById = async (req, res) => {
-  const { deviceId } = req.body;
+  const { deviceId } = req.params;
   
   const device = await Device.findById(deviceId);
 

@@ -4,6 +4,8 @@ const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
 
+const deviceId = window.location.pathname.split("/")[2];
+
 async function UserNameGet() {
   try {
     const res = await fetch(`${API_URL}/api/user/data`, {
@@ -144,7 +146,7 @@ async function fetchUser() {
 
 async function fetchSensorData() {
     try {
-        const response = await fetch(`${API_URL}/api/device/:deviceId/parameters`); // API, яке повертає JSON з temperature і humidity
+        const response = await fetch(`${API_URL}/api/device/${deviceId}/parameters`); // API, яке повертає JSON з temperature і humidity
         if (!response.ok) throw new Error('Network response was not ok');
 
         const data = await response.json();
