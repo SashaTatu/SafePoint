@@ -1,5 +1,5 @@
 import express from 'express';
-import { deviceParameter, deviceParameterPost, GetDeviceById} from '../controllers/deviceunieqeController.js';
+import { deviceParameterPost, deviceParameterGet, GetDeviceById} from '../controllers/deviceunieqeController.js';
 import userAuth from '../middleware/userAuth.js';
 
 const deviceunieqeRoutes = express.Router();
