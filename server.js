@@ -9,6 +9,12 @@ import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import deviceRoutes from './routes/deviceRouter.js';
 import deviceunieqeRouter from './routes/deviceunieqeRouter.js';
+import PushRouter from './routes/pushRouter.js';
+require('dotenv').config();
+const bodyParser = require('body-parser');
+const webpush = require('web-push');
+
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -32,6 +38,17 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+webpush.setVapidDetails(
+  'mailto:safepoint.notification@gmail.com',
+  process.env.PUBLIC_KEY,
+  process.env.PRIVATEKEY
+);
+
+const subscriptions = [];
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,6 +76,10 @@ app.get('/device/:deviceId', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
 });
 app.use('/api/device', deviceunieqeRouter);
+
+
+
+app.post('/api/push', PushRouter);
 
 
 

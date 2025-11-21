@@ -69,3 +69,5 @@ export const deviceParameterGet = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
     }
 };
+
+

@@ -3,6 +3,8 @@ const avatar = document.getElementById('user-avatar');
 const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
+const axios = require('axios');
+const SECOND_SERVER_URL = 'http://localhost:3001/last-alarm';
 
 const deviceId = window.location.pathname.split("/")[2];
 
@@ -47,6 +49,7 @@ UserNameGet();
 
 const buttons = document.querySelectorAll(".footer-nav .nav-btn");
 const activeBg = document.querySelector(".footer-nav .active-bg");
+
 
 checkbox.addEventListener('change', () => {
   document.body.classList.toggle('dark', checkbox.checked);

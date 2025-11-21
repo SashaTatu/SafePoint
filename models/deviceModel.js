@@ -6,6 +6,7 @@ const deviceSchema = new mongoose.Schema({
   wifipassword : { type: String, default: '' },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   status: { type: String, default: 'В очікуванні' },
+  alart: { type: Boolean, default: false },
   mac: { type: String, default: '' },
   temperature: { type: Number, default: 0 },
   humidity: { type: Number, default: 0 },
