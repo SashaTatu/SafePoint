@@ -99,6 +99,8 @@ async function fetchSensorData(deviceId) {
 
 fetchSensorData(deviceId);
 
+setInterval(fetchSensorData(deviceId), 10000);
+
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
@@ -174,26 +176,8 @@ async function fetchUser() {
   }
 }
 
-async function fetchSensorData() {
-    try {
-        const response = await fetch(`${API_URL}/api/device/${deviceId}/parameters`); // API, яке повертає JSON з temperature і humidity
-        if (!response.ok) throw new Error('Network response was not ok');
 
-        const data = await response.json();
-        document.getElementById('temperature').innerText = data.temperature.toFixed(1);
-        document.getElementById('humidity').innerText = data.humidity.toFixed(1);
-    } catch (error) {
-        console.error('Error fetching sensor data:', error);
-        document.getElementById('temperature').innerText = '--';
-        document.getElementById('humidity').innerText = '--';
-    }
-}
 
 // Кнопка "Оновити"
 document.getElementById('refresh-data').addEventListener('click', fetchSensorData);
 
-// Авто-оновлення кожні 10 секунд
-setInterval(fetchSensorData, 10000);
-
-// Перший виклик при завантаженні сторінки
-fetchSensorData();
