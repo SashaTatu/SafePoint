@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 const deviceSchema = new mongoose.Schema({
   deviceId: { type: String, required: true, unique: true },
+  ssid : { type: String, default: '' },
+  wifipassword : { type: String, default: '' },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   status: { type: String, default: 'В очікуванні' },
   mac: { type: String, default: '' },

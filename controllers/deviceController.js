@@ -1,10 +1,11 @@
 import Device from '../models/deviceModel.js';
+import bcrypt from "bcryptjs";
 import mongoose from 'mongoose';
 import jwt from "jsonwebtoken";
 
 
 export const registerDevice = async (req, res) => {
-  const { deviceId, mac } = req.body;
+  const { deviceId, mac, ssid, wifipassword } = req.body;
 
   if (!deviceId || typeof deviceId !== 'string' || !deviceId.trim()) {
     return res.status(400).json({ success: false, message: 'Некоректний deviceId' });
@@ -20,8 +21,12 @@ export const registerDevice = async (req, res) => {
       return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newDevice = new Device({
       deviceId: deviceId.trim(),
+      ssid: ssid.trim(),
+      wifipassword: hashedPassword,
       mac: mac.trim(), 
       status: 'pending'
     });
