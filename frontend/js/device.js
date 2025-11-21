@@ -72,8 +72,11 @@ buttons.forEach(btn => {
 
 async function fetchSensorData(deviceId) {
     try {
-        const response = await fetch(`/api/device/${deviceId}/parametersget`);
-
+        const response = await fetch(`/api/device/${deviceId}/parametersget`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
         if (!response.ok) {
             throw new Error("Network response was not ok");
         }
