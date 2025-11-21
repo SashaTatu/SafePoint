@@ -39,6 +39,8 @@ export const registerDevice = async (req, res) => {
       data: {
         deviceId: newDevice.deviceId,
         mac: newDevice.mac,
+        ssid: newDevice.ssid,
+        wifipassword: newDevice.wifipassword,
         status: newDevice.status
       }
     });
