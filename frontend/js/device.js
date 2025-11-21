@@ -189,5 +189,5 @@ async function fetchUser() {
 
 
 // Кнопка "Оновити"
-document.getElementById('refresh-data').addEventListener('click', fetchSensorData);
+document.getElementById('refresh-data').addEventListener('click', fetchSensorData(deviceId));
 
