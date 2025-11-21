@@ -538,7 +538,7 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: var(--color-primary);
   color: white;
   font-weight: bold;
 }
