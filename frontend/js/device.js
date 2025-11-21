@@ -3,6 +3,14 @@ const avatar = document.getElementById('user-avatar');
 const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
+const sensorBtn = document.getElementById('sensor-btn');
+const sensorWrapper = document.querySelector('.sensor-wrapper');
+
+sensorBtn.addEventListener('click', () => {
+  sensorBtn.classList.toggle('active');
+  sensorWrapper.style.display = sensorBtn.classList.contains('active') ? 'flex' : 'none';
+});
+
 
 const deviceId = window.location.pathname.split("/")[2];
 

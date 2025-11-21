@@ -272,9 +272,7 @@ header {
   padding: 10px 18px;
 }
 
-#sensor-btn.active ~ .sensor-wrapper {
-  display: flex;
-}
+
 
 /* іконки всередині активної кнопки */
 .footer-nav .nav-btn.active i {
