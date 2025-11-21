@@ -11,23 +11,33 @@ export const registerDevice = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Некоректний deviceId' });
   }
 
+  if (!mac || typeof mac !== 'string' || !mac.trim()) {
+    return res.status(400).json({ success: false, message: 'Некоректний MAC' });
+  }
+
+  if (!ssid || !wifipassword) {
+    return res.status(400).json({ success: false, message: 'Немає Wi-Fi даних' });
+  }
+
   try {
     const existing = await Device.findOne({ deviceId: deviceId.trim() });
     if (existing) {
       return res.status(409).json({ success: false, message: 'Такий ID вже існує' });
     }
+
     const macexisting = await Device.findOne({ mac: mac.trim() });
     if (macexisting) {
       return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
     }
 
-    const hashedPassword = await bcrypt.hash(wifipassword, 10);
+    // ✔ ПРАВИЛЬНО: хешуємо wifipassword  
+    const hashedPassword = await bcrypt.hash(wifipassword.trim(), 10);
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
       ssid: ssid.trim(),
       wifipassword: hashedPassword,
-      mac: mac.trim(), 
+      mac: mac.trim(),
       status: 'pending'
     });
 
@@ -49,6 +59,7 @@ export const registerDevice = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
 };
+
 
 export const addDevice = async (req, res) => {
   const { deviceId, address } = req.body;
