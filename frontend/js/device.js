@@ -94,6 +94,7 @@ async function fetchSensorData(deviceId) {
     }
 }
 
+fetchSensorData(deviceId);
 
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
