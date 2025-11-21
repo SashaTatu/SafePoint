@@ -7,8 +7,8 @@ const deviceSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   status: { type: String, default: 'В очікуванні' },
   mac: { type: String, default: '' },
-  temperature: { type: Number, default: '' },
-  humidity: { type: Number, default: '' },
+  temperature: { type: Number, default: 0 },
+  humidity: { type: Number, default: 0 },
   address: { type: String, default: '' },
   location: { type: String, default: '' }
 });

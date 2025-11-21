@@ -19,39 +19,33 @@ export const GetDeviceById = async (req, res) => {
 };
 
 export const deviceParameterPost = async (req, res) => {
-    console.log("POST PARAMS:", req.params);
-    console.log("BODY:", req.body);
+  const { deviceId } = req.params;
+  const { temperature, humidity } = req.body;
 
-    const { deviceId } = req.params;
-    console.log("EXTRACTED deviceId:", deviceId);
+  if (temperature === undefined || humidity === undefined) {
+    return res.status(400).json({ success: false, message: "Missing temperature or humidity" });
+  }
 
-    const { temperature, humidity } = req.body;
-
-    if (temperature === undefined || humidity === undefined) {
-        return res.status(400).json({ success: false, message: "Missing temperature or humidity" });
+  try {
+    const device = await Device.findOne({ deviceId });
+    if (!device) {
+      return res.status(404).json({ success: false, message: "Device not found" });
     }
 
-    try {
-        const device = await Device.findOne({ deviceId });
-        console.log("FOUND DEVICE:", device);
+    // Змінено на правильні поля
+    device.temperature = temperature;
+    device.humidity = humidity;
+    device.updatedAt = new Date();
 
-        if (!device) {
-            return res.status(404).json({ success: false, message: "Device not found" });
-        }
+    await device.save();
 
-        device.lastTemperature = temperature;
-        device.lastHumidity = humidity;
-        device.updatedAt = new Date();
-
-        await device.save();
-
-        return res.status(200).json({ success: true, message: "Data saved successfully" });
-
-    } catch (error) {
-        console.error("❌ SERVER ERROR:", error);
-        return res.status(500).json({ success: false, message: "Server error" });
-    }
+    return res.status(200).json({ success: true, message: "Data saved successfully" });
+  } catch (error) {
+    console.error("❌ SERVER ERROR:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
+
 
 export const deviceParameterGet = async (req, res) => {
     const { deviceId } = req.params;
@@ -63,11 +57,11 @@ export const deviceParameterGet = async (req, res) => {
         }
 
         return res.status(200).json({
-            success: true,
-            data: [{
-                temperature: device.lastTemperature,
-                humidity: device.lastHumidity
-            }]
+          success: true,
+          data: [{
+            temperature: device.temperature,
+            humidity: device.humidity
+          }]
         });
 
     } catch (error) {
