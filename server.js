@@ -8,6 +8,7 @@ import connectDB from './config/mongodb.js';
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import deviceRoutes from './routes/deviceRouter.js';
+import deviceunieqRouter from './routes/deviceUniqueRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -57,7 +58,7 @@ app.use('/api/devices', deviceRoutes);
 app.get('/device/:deviceId', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'device.html'));
 });
-
+app.use('/api/device/:deviceId', deviceunieqRouter);
 
 
 
