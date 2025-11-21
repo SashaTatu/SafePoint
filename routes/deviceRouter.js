@@ -8,6 +8,6 @@ deviceRoutes.post('/register', registerDevice);
 deviceRoutes.post('/add', userAuth, addDevice);
 deviceRoutes.delete('/delete',  deleteDevice);
 deviceRoutes.get('/data', userAuth, ShowAllDevices);
-deviceRoutes.get('/parameters', deviceParameter);
+deviceRoutes.get('/parameters', userAuth, deviceParameter);
 
 export default deviceRoutes;

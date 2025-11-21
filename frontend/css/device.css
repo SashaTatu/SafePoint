@@ -258,6 +258,8 @@ header {
   transition: 0.3s ease;
 }
 
+
+
 .footer-nav .nav-btn span {
   font-size: 14px;
   font-weight: 500;
@@ -268,6 +270,10 @@ header {
   background: var(--color-primary);
   color: var(--color-text-light);
   padding: 10px 18px;
+}
+
+.nav-btn.active ~.sensor-wrapper {
+    display: flex;
 }
 
 /* іконки всередині активної кнопки */
@@ -505,7 +511,7 @@ header {
 }
 
 .sensor-wrapper {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
