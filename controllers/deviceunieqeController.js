@@ -17,11 +17,11 @@ export const GetDeviceById = async (req, res) => {
   });
 };
 
-export const deviceParameter = async (req, res) => {
-  const { deviceId } = req.params;
+export const deviceParameterPost = async (req, res) => {
+    const { deviceId } = req.params;
     const { temperature, humidity } = req.body;
 
-    if (!temperature || !humidity) {
+    if (temperature === undefined || humidity === undefined) {
         return res.status(400).json({ success: false, message: "Missing temperature or humidity" });
     }
 
@@ -31,7 +31,6 @@ export const deviceParameter = async (req, res) => {
             return res.status(404).json({ success: false, message: "Device not found" });
         }
 
-        
         device.lastTemperature = temperature;
         device.lastHumidity = humidity;
         device.updatedAt = new Date();
@@ -42,5 +41,28 @@ export const deviceParameter = async (req, res) => {
     } catch (error) {
         console.error("Error saving device data:", error);
         return res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+export const deviceParameterGet = async (req, res) => {
+    const { deviceId } = req.params;
+
+    try {
+        const device = await DeviceModel.findOne({ deviceId });
+        if (!device) {
+            return res.status(404).json({ success: false, message: "Device not found" });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: [{
+                temperature: device.lastTemperature,
+                humidity: device.lastHumidity
+            }]
+        });
+
+    } catch (error) {
+        console.error('❌ Помилка отримання пристрою:', error);
+        return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
     }
 };

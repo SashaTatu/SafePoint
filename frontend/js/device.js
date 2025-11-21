@@ -69,6 +69,32 @@ buttons.forEach(btn => {
   });
 });
 
+
+async function fetchSensorData(deviceId) {
+    try {
+        const response = await fetch(`/api/device/${deviceId}/parameters`);
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const json = await response.json();
+
+        if (!json.success) {
+            throw new Error(json.message || "Unknown error");
+        }
+
+        const sensorData = json.data[0]; 
+
+        document.getElementById("temperature").textContent = sensorData.temperature ?? "--";
+        document.getElementById("humidity").textContent = sensorData.humidity ?? "--";
+
+    } catch (err) {
+        console.error("Error fetching sensor data:", err);
+    }
+}
+
+
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
