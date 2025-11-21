@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 
 export const registerDevice = async (req, res) => {
-  const { deviceId, mac, ssid, wifipassword } = req.body;
+  const { deviceId, mac } = req.body;
 
   if (!deviceId || typeof deviceId !== 'string' || !deviceId.trim()) {
     return res.status(400).json({ success: false, message: 'Некоректний deviceId' });
@@ -15,9 +15,6 @@ export const registerDevice = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Некоректний MAC' });
   }
 
-  if (!ssid || !wifipassword) {
-    return res.status(400).json({ success: false, message: 'Немає Wi-Fi даних' });
-  }
 
   try {
     const existing = await Device.findOne({ deviceId: deviceId.trim() });
@@ -30,13 +27,8 @@ export const registerDevice = async (req, res) => {
       return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
     }
 
-    // ✔ ПРАВИЛЬНО: хешуємо wifipassword  
-    const hashedPassword = await bcrypt.hash(wifipassword.trim(), 10);
-
     const newDevice = new Device({
       deviceId: deviceId.trim(),
-      ssid: ssid.trim(),
-      wifipassword: hashedPassword,
       mac: mac.trim(),
       status: 'pending'
     });
