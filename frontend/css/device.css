@@ -504,42 +504,76 @@ header {
   }
 }
 
-.sensor-data-container {
-    background-color: #445f3b;
+.sensor-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.sensor-card {
+    background: #3f5f3f;
     color: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 340px;
+    padding: 25px 30px;
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease;
 }
 
-.sensor-data-container h2 {
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #eafaf0;
+.sensor-card:hover {
+    transform: translateY(-4px);
 }
 
-.sensor-block p {
-    font-size: 1.2em;
-    margin: 8px 0;
+.sensor-card h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
-#refresh-data {
-    background-color: #3a5f47;
+.sensor-line {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.refresh-btn {
+    margin-top: 20px;
+    background: #2f4f2f;
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-size: 16px;
     cursor: pointer;
-    font-size: 15px;
-    transition: background 0.2s;
+    transition: background 0.25s;
 }
 
-#refresh-data:hover {
-    background-color: #284534;
+.refresh-btn:hover {
+    background: #264226;
+}
+
+/* 📱 Адаптація для телефону */
+@media (max-width: 480px) {
+    .sensor-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .sensor-card h2 {
+        font-size: 18px;
+    }
+
+    .sensor-line {
+        font-size: 16px;
+    }
+
+    .refresh-btn {
+        width: 100%;
+        font-size: 15px;
+        padding: 12px;
+    }
 }
 
 

@@ -76,14 +76,21 @@
         <div>
             
         </div>    
-        <div class="sensor-data-container">
-            <h2>Показники датчика</h2>
-            <div class="sensor-block">
-                <p>Температура: <span id="temperature">--</span> °C</p>
-                <p>Вологість: <span id="humidity">--</span> %</p>
-                <button id="refresh-data">Оновити</button>
+        <div class="sensor-wrapper">
+            <div class="sensor-card">
+                <h2>Показники датчика</h2>
+
+                <p class="sensor-line">
+                    Температура: <span id="temperature">--</span> °C
+                </p>
+                <p class="sensor-line">
+                    Вологість: <span id="humidity">--</span> %
+                </p>
+
+                <button id="refresh-data" class="refresh-btn">Оновити</button>
             </div>
         </div>
+
     </main>
 
     <footer>
