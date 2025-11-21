@@ -21,7 +21,7 @@ export const registerDevice = async (req, res) => {
       return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(wifipassword, 10);
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
