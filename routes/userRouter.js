@@ -5,6 +5,6 @@ import { getUserData, isAlert } from '../controllers/userController.js';
 const userRouter = express.Router();
 
 userRouter.get('/data', userAuth, getUserData);
-userRouter.post('/is-alert', userAuth isAlert);
+userRouter.post('/is-alert', userAuth, isAlert);
 
 export default userRouter;
