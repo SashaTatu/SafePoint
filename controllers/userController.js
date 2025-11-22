@@ -31,7 +31,7 @@ export const isAlert = async (req, res) => {
             return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
         }
 
-        const user = await userModel.findOne(userId);
+        const user = await userModel.findOne({ _id: userId }); // ✅ правильно
         if (!user) {
             return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
@@ -41,8 +41,11 @@ export const isAlert = async (req, res) => {
             return res.status(400).json({ success: false, message: "UID області не знайдено" });
         }
 
-        const index = uid - 3; // ✅ ПРАВИЛЬНО
+        const index = uid - 3;
         const letter = alertStatus[index];
+
+        console.log(`alertStatus: ${alertStatus}`);
+        console.log(`uid: ${uid}, index: ${index}, letter: ${letter}`);
 
         const alert = (letter === "A" || letter === "P");
 
@@ -59,6 +62,7 @@ export const isAlert = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
 
 
 
