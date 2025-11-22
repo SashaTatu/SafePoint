@@ -24,39 +24,36 @@ export const getUserData = async (req, res) => {
 
 export const isAlert = async (req, res) => {
     try {
-        const { alertStatus } = req.body;
-        const userId = req.userId;
+        console.log("🔍 isAlert controller START");
+        console.log("User from token:", req.user);
 
-        if (!alertStatus || alertStatus.length !== 28) {
-            return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
-        }
+        const userId = req.user._id;
+        console.log("Extracted userId:", userId);
 
-        const user = await userModel.findById(userId);
+        const user = await User.findById(userId);
+        console.log("Found user:", user);
+
         if (!user) {
-            return res.status(404).json({ success: false, message: "Користувача не знайдено" });
+            return res.status(404).json({
+                success: false,
+                message: "Користувача не знайдено"
+            });
         }
 
-        const uid = regionToUid[user.region];
-        if (!uid) {
-            return res.status(400).json({ success: false, message: "UID області не знайдено" });
-        }
+        // тут твоя логіка
 
-        const index = uid - 3; // ✅ ПРАВИЛЬНО
-        const letter = alertStatus[index];
-
-        const alert = (letter === "A" || letter === "P");
-
-        return res.json({
+        res.json({
             success: true,
-            uid,
-            region: user.region,
-            alert
+            message: "OK"
         });
 
     } catch (error) {
-        console.error("isAlert ERROR:", error.message);
-        console.error(error.stack);
-        return res.status(500).json({ success: false, message: "Server error" });
+        console.error("❌ ERROR in isAlert:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
     }
 };
 
