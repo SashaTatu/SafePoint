@@ -52,7 +52,8 @@ export const register = async (req, res) => {
         res.status(201).json({ success: true, token, message: 'Користувач зареєстровано успішно' });
 
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Помилка зареєстрації користувача', error });
+        console.error('Помилка реєстрації:', error); // <- Додай це
+        res.status(500).json({ success: false, message: 'Помилка зареєстрації користувача', error: error.message });
     }
 };
 
