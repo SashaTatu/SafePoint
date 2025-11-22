@@ -17,3 +17,5 @@ export const userAuth = (req, res, next) => {
         return res.status(401).json({ success: false, message: "Невірний або прострочений токен" });
     }
 };
+
+export default userAuth;
