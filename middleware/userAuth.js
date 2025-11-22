@@ -1,25 +1,19 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const userAuth = (req, res, next) => {
-    const token = req.cookies.token;
-
-    if (!token) {
-        return res.status(401).json({ success: false, message: "Немає токена" });
-    }
-
+export const userAuth = (req, res, next) => {
     try {
-        const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+        const token = req.cookies.token;
 
-        if (tokenDecode?.id) {
-            req.userId = tokenDecode.id; // зберігаємо у req, а не body
-            return next();
-        } else {
-            return res.status(403).json({ success: false, message: "Недійсний токен" });
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Неавторизовано (немає токена)" });
         }
 
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        req.userId = decoded.id; // <-- ВАЖЛИВО
+        next();
+
     } catch (error) {
-        return res.status(403).json({ success: false, message: "Недійсний токен" });
+        return res.status(401).json({ success: false, message: "Невірний або прострочений токен" });
     }
 };
-
-export default userAuth;
