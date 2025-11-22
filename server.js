@@ -12,6 +12,7 @@ import deviceunieqeRouter from './routes/deviceunieqeRouter.js';
 
 
 
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 connectDB();
