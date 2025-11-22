@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     region: {type: String, required: true},
     uid: { type: Number, required: true },
-    alart: { type: Boolean, default: false },
+    alert: { type: Boolean, default: false },
     verifyOtp: {type: String, default: ''},
     verifyOtpExpireAt: {type: Number, default: 0},
     isAccountVerified: {type: Boolean, default: false},
