@@ -80,27 +80,31 @@ const activeBg = document.querySelector(".footer-nav .active-bg");
 
 
 
-function updateUI(data) {
-  const alertStatus = document.getElementById("alert-status");
-  const doorStatus = document.getElementById("door-status");
-  const lockImg = document.getElementById("lock-img");
+async function fetchDoorData(deviceId) {
+    try {
+        const response = await fetch(`/api/device/${deviceId}/doorstatus`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const json = await response.json();
 
-  if (data.alert) {
-    alertStatus.textContent = "Активна";
-    alertStatus.style.color = "red";
-  } else {
-    alertStatus.textContent = "Відсутня";
-    alertStatus.style.color = "green";
-  }
+        if (!json.success) {
+            throw new Error(json.message || "Unknown error");
+        } 
+        const doorData = json.data;
 
-  if (data.doorOpen) {
-    doorStatus.textContent = "Відчинене";
-    lockImg.src = "/assets/img-device/unlock.png";
-  } else {
-    doorStatus.textContent = "Зачинене";
-    lockImg.src = "/assets/img-device/lock.png";
-  }
+        document.getElementById("door-status").textContent = doorData.isOpen ? "Відкрито" : "Закрито";
+    } catch (err) {
+        console.error("Error fetching door data:", err);
+    }
 }
+
+fetchDoorData(deviceId);
+setInterval(() => fetchDoorData(deviceId), 5000);
 
 
 fetchSensorData(deviceId);
