@@ -24,30 +24,45 @@ export const getUserData = async (req, res) => {
 
 export const isAlert = async (req, res) => {
     try {
-        const { alertStatus } = req.body;  // "ANNNNNNNNNNNANNNNNNNNNNNNNN"
-        const user = await userModel.findById(req.user.id);
-        const uid = user.uid;         // uid беремо з JWT або бд
+        const { alertStatus } = req.body; // "ANNNNNNNNNNNANNNNNNNNNNNNNN"
+        const userId = req.user.id; // або req.params.id (поки скажи, як ти хочеш)
 
-        if (!alertStatus || typeof alertStatus !== "string") {
-            return res.status(400).json({ success: false, message: "Некоректний alertStatus" });
+        if (!alertStatus || alertStatus.length !== 27) {
+            return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
         }
 
-        // Перевіряємо щоб індекс існував
-        if (uid < 0 || uid >= alertStatus.length) {
-            return res.status(400).json({ success: false, message: "uid виходить за межі alertStatus" });
+        // 1. Дістати користувача
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
 
-        // Беремо букву для конкретного uid
-        const letter = alertStatus[uid];
+        // 2. Дістати uid області
+        const uid = regionToUid[user.region]; // приклад: 18 → Одеська область
 
-        // Визначення статусу тривоги
-        const alert = (letter === 'A' || letter === 'P');
+        if (!uid) {
+            return res.status(400).json({ success: false, message: "UID області не знайдено" });
+        }
 
-        return res.json({ success: true, alert, letter });
+        // 3. Отримуємо букву по індексу (uid - 3!)
+        const index = uid - 3; // бо масив стартує з 3
+        const letter = alertStatus[index];
+
+        const alert =
+            letter === "A" || letter === "P"
+                ? true
+                : false;
+
+        return res.json({
+            success: true,
+            uid,
+            region: user.region,
+            alert
+        });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ success: false, message: "Помилка перевірки тривоги" });
+        console.error("isAlert ERROR:", error);
+        return res.status(500).json({ success: false, message: "Server error", error });
     }
 };
 
