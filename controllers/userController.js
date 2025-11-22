@@ -31,7 +31,7 @@ export const isAlert = async (req, res) => {
             return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
         }
 
-        const user = await userModel.findOne({ _id: userId }); // ✅ правильно
+        const user = await userModel.findOne({ userId }); // ✅ правильно
         if (!user) {
             return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
