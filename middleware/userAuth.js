@@ -10,7 +10,8 @@ export const userAuth = (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.userId = decoded.id; // <-- ВАЖЛИВО
+        req.userId = decoded.userId; // ✅ правильне поле
+
         next();
 
     } catch (error) {

@@ -36,7 +36,7 @@ export const isAlert = async (req, res) => {
             return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
 
-        const uid = uid[user.region];
+        const uid = user.uid;
         if (!uid) {
             return res.status(400).json({ success: false, message: "UID області не знайдено" });
         }
