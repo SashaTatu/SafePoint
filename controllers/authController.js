@@ -11,28 +11,35 @@ export const register = async (req, res) => {
     }
     
     try {
-
-        const existingUser = await userModel.findOne({email})
-
+        const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Користувач з таким email вже існує' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new userModel({ name, email, password: hashedPassword, region });
-        await user.save();
-        
+        const regionUIDMap = {
+            vinnytska: 4, dnipropetrovska: 9, volynska: 8, donetska: 28,
+            zhytomyrska: 10, zakarpatska: 11, zaporizka: 12, ivanoFrankivska: 13,
+            kyivska: 14, kirovohradska: 15, luhanska: 16, lvivska: 27,
+            mykolaivska: 17, odeska: 18, poltavska: 19, rivnenska: 5,
+            sumska: 20, ternopilska: 21, kharkivska: 22, khersonska: 23,
+            khmelnytska: 3, cherkaska: 24, chernivetska: 26, chernihivska: 25,
+            kyiv: 31, sevastopol: 30, crimea: 29
+        };
 
-        const token  = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const regionUID = regionUIDMap[region];
+
+        const user = new userModel({ name, email, password: hashedPassword, region, regionUID });
+        await user.save();
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
+            maxAge: 7 * 24 * 60 * 60 * 1000
         });
-
-        res.json({ success: true, token });
 
         const mailOptions = {
             from: process.env.SMTP_EMAIL,
@@ -40,15 +47,15 @@ export const register = async (req, res) => {
             subject: 'Вітаємо у SafePoint',
             text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
         };
-
         await transporter.sendMail(mailOptions);
-        
-        res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
 
-        } catch (error) {
-        res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
-        }
- }
+        res.status(201).json({ success: true, token, message: 'Користувач зареєстровано успішно' });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Помилка зареєстрації користувача', error });
+    }
+};
+
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
@@ -314,4 +321,20 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const GetRegionUID = async (req, res) => {
 
+    const userId = req.userId
+    try {
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Користувача не знайдено' });
+        }
+        return res.status(200).json({
+            success: true,
+            regionUID: user.regionUID
+        })
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Помилка отримання regionUID', error });
+    }
+}
