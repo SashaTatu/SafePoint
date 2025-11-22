@@ -70,4 +70,38 @@ export const deviceParameterGet = async (req, res) => {
     }
 };
 
+export const doorStatus = async (req, res) => {
+  const { deviceId } = req.params;
+  
+  try {
+    const device = await Device.findOne({ deviceId });
+    if (!device) {
+      return res.status(404).json({ success: false, message: 'Пристрій не знайдено' });
+    }
+    return res.status(200).json({
+      success: true,
+      status: device.status
+    });
+  } catch (error) {
+    console.error('❌ Помилка отримання статусу дверей:', error);
+    return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
+  }
+};
 
+export const updateDoorStatus = async (req, res) => {
+  const { deviceId } = req.params;
+  try {
+    const device = await Device.findOne({ deviceId });
+    if (!device) {
+      return res.status(404).json({ success: false, message: 'Пристрій не знайдено' });
+    }
+
+
+    device.status = device.status === 'Відчинено' ? 'Зачинено' : 'Відчинено';
+    await device.save();
+    return res.status(200).json({ success: true, status: device.status });
+  } catch (error) {
+    console.error('❌ Помилка оновлення статусу дверей:', error);
+    return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
+  }
+};

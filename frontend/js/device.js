@@ -79,6 +79,38 @@ const buttons = document.querySelectorAll(".footer-nav .nav-btn");
 const activeBg = document.querySelector(".footer-nav .active-bg");
 
 
+
+function updateUI(data) {
+  const alertStatus = document.getElementById("alert-status");
+  const doorStatus = document.getElementById("door-status");
+  const lockImg = document.getElementById("lock-img");
+
+  if (data.alert) {
+    alertStatus.textContent = "Активна";
+    alertStatus.style.color = "red";
+  } else {
+    alertStatus.textContent = "Відсутня";
+    alertStatus.style.color = "green";
+  }
+
+  if (data.doorOpen) {
+    doorStatus.textContent = "Відчинене";
+    lockImg.src = "/assets/img-device/unlock.png";
+  } else {
+    doorStatus.textContent = "Зачинене";
+    lockImg.src = "/assets/img-device/lock.png";
+  }
+}
+
+
+fetchSensorData(deviceId);
+
+setInterval(() => fetchSensorData(deviceId), 5000);
+
+
+
+
+
 checkbox.addEventListener('change', () => {
   document.body.classList.toggle('dark', checkbox.checked);
 });

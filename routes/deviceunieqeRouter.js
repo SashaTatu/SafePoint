@@ -1,5 +1,5 @@
 import express from 'express';
-import { deviceParameterPost, deviceParameterGet, GetDeviceById } from '../controllers/deviceunieqeController.js';
+import { deviceParameterPost, deviceParameterGet, GetDeviceById, doorStatus, updateDoorStatus } from '../controllers/deviceunieqeController.js';
 
 
 
@@ -9,5 +9,7 @@ const deviceunieqeRoutes = express.Router({ mergeParams: true });
 deviceunieqeRoutes.get('/:deviceId/parametersget', deviceParameterGet);
 deviceunieqeRoutes.post('/:deviceId/parameterspost', deviceParameterPost);
 deviceunieqeRoutes.get('/:deviceId/getId', GetDeviceById);
+deviceunieqeRoutes.get('/:deviceId/doorstatus', doorStatus);
+deviceunieqeRoutes.post('/:deviceId/updatedoorstatus', updateDoorStatus);
 
 export default deviceunieqeRoutes;
