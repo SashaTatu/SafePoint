@@ -30,7 +30,7 @@ export const register = async (req, res) => {
 
         const regionUID = regionUIDMap[region];
 
-        const user = new userModel({ name, email, password: hashedPassword, region, regionUID });
+        const user = new userModel({ name, email, password: hashedPassword, region, uid: regionUID });
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
