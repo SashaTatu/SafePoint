@@ -44,10 +44,12 @@ export const isAlert = async (req, res) => {
         const index = uid - 3;
         const letter = alertStatus[index];
 
-        console.log(`alertStatus: ${alertStatus}`);
-        console.log(`uid: ${uid}, index: ${index}, letter: ${letter}`);
+        
 
         const alert = (letter === "A" || letter === "P");
+
+        user.alert = alert;
+        await user.save();
 
         return res.json({
             success: true,
