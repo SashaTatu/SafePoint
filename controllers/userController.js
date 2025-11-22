@@ -25,7 +25,7 @@ export const getUserData = async (req, res) => {
 export const isAlert = async (req, res) => {
     try {
         const { alertStatus } = req.body;
-        const userId = req.params.userId;
+        const userId = req.userId;
 
         if (!alertStatus || alertStatus.length !== 28) {
             return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
