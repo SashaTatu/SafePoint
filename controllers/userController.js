@@ -4,7 +4,7 @@ export const getUserData = async (req, res) => {
 
     try{
 
-        const user = await userModel.findById(req.userId);
+        const user = await userModel.findOne(req.userId);
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'Користувача не знайдено' });
@@ -31,7 +31,7 @@ export const isAlert = async (req, res) => {
             return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
         }
 
-        const user = await userModel.findById(userId);
+        const user = await userModel.findOne(userId);
         if (!user) {
             return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
