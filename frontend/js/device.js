@@ -95,9 +95,9 @@ async function fetchDoorData(deviceId) {
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
         } 
-        const doorData = json.data;
+        const doorData = json.data[0];
 
-        document.getElementById("door-status").textContent = doorData.isOpen ? "Відкрито" : "Закрито";
+        document.getElementById("door-status").textContent = doorData.isOpen ?? "--";
     } catch (err) {
         console.error("Error fetching door data:", err);
     }
