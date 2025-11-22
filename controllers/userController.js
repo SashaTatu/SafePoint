@@ -24,34 +24,27 @@ export const getUserData = async (req, res) => {
 
 export const isAlert = async (req, res) => {
     try {
-        const { alertStatus } = req.body; // "ANNNNNNNNNNNANNNNNNNNNNNNNN"
-        const userId = req.user.id; // або req.params.id (поки скажи, як ти хочеш)
+        const { alertStatus } = req.body;
+        const userId = req.params.id;
 
-        if (!alertStatus || alertStatus.length !== 27) {
+        if (!alertStatus || alertStatus.length !== 28) {
             return res.status(400).json({ success: false, message: "Невірний формат alertStatus" });
         }
 
-        // 1. Дістати користувача
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ success: false, message: "Користувача не знайдено" });
         }
 
-        // 2. Дістати uid області
-        const uid = regionToUid[user.region]; // приклад: 18 → Одеська область
-
+        const uid = regionToUid[user.region];
         if (!uid) {
             return res.status(400).json({ success: false, message: "UID області не знайдено" });
         }
 
-        // 3. Отримуємо букву по індексу (uid - 3!)
-        const index = uid - 3; // бо масив стартує з 3
+        const index = uid - 3; // ✅ ПРАВИЛЬНО
         const letter = alertStatus[index];
 
-        const alert =
-            letter === "A" || letter === "P"
-                ? true
-                : false;
+        const alert = (letter === "A" || letter === "P");
 
         return res.json({
             success: true,
@@ -61,10 +54,12 @@ export const isAlert = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("isAlert ERROR:", error);
-        return res.status(500).json({ success: false, message: "Server error", error });
+        console.error("isAlert ERROR:", error.message);
+        console.error(error.stack);
+        return res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
 
 
     
