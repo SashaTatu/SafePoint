@@ -73,11 +73,11 @@ export const register = async (req, res) => {
             from: process.env.SMTP_EMAIL,
             to: email,
             subject: 'Вітаємо у SafePoint',
-            text: `Привіт ${name}, ваш акаунт створено.`
+            text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
         });
         console.log("Лист відправлено!");
 
-        // ЄДИНА відповідь
+        
         res.status(201).json({ success: true, token });
 
     } catch (error) {
