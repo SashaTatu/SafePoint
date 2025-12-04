@@ -32,8 +32,6 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
         });
 
-        
-
         const mailOptions = {
             from: process.env.SMTP_EMAIL,
             to: email,
@@ -45,7 +43,7 @@ export const register = async (req, res) => {
         await transporter.sendMail(mailOptions);
         console.log(`✅ Лист з підтвердженням реєстрації надіслано на ${email}`);
         
-        res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
+        res.status(201).json({ success: true, token, message: 'Користувач зареєстовано успішно' });
 
         } catch (error) {
         res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
