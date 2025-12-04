@@ -1,4 +1,5 @@
 import userModel from '../models/userModel.js';
+import regionUID from '../config/regionUID.js';
 
 export const getUserData = async (req, res) => {
     try {
@@ -28,14 +29,15 @@ export const changeInfo = async (req, res) => {
     }
 
     try {
-        // 1. Знаходимо існуючого користувача за ID
-        // (req.userId має бути встановлено у middleware аутентифікації)
-        let user = await userModel.findById(req.userId); // Використовуємо 'let' або 'const'
+        let user = await userModel.findById(req.userId); 
+
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'Користувача не знайдено' });
         }
-        
+
+        const uid = regionUID[region];
+
         
         if (name) {
             user.name = name;
@@ -43,6 +45,10 @@ export const changeInfo = async (req, res) => {
         if (region) {
             user.region = region;
         }
+        if (uid) {
+            user.uid = uid;
+        }
+
         
         
         await user.save();
