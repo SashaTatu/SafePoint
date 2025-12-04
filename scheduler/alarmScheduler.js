@@ -1,28 +1,25 @@
+import User from "../models/userModel.js";
 import { checkRegionAlarm } from "../services/alarmChecker.js";
-import userModel from "../models/userModel.js";
 
 export function startAlarmScheduler() {
     setInterval(async () => {
-        console.log("Перевіряю тривоги...");
+        try {
+            const users = await User.find();
 
-        // Отримати всі унікальні регіони зареєстрованих користувачів
-        const regions = await userModel.distinct("region");
+            for (const user of users) {
+                const alarmData = await checkRegionAlarm(user.region);
 
-        for (const region of regions) {
-            const alarmStatus = await checkRegionAlarm(region);
+                if (alarmData?.active !== undefined) {
+                    user.alert = alarmData.active; 
+                    await user.save();
+                }
+            }
 
-            if (!alarmStatus) continue;
-
-            // Зберегти в базу стан (наприклад у user.session або окрему колекцію)
-            await userModel.updateMany(
-                { region },
-                { $set: { alarmStatus } }
-            );
-
-            console.log(`✔ Оновлено стан для ${region}:`, alarmStatus);
+            console.log("Синхронізація тривог завершена");
+        } catch (err) {
+            console.error("Помилка в scheduler:", err);
         }
-
-    }, 30 * 1000); // 30 секунд
+    }, 30000); // 30 секунд
 }
 
 export default startAlarmScheduler;
