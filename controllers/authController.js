@@ -5,86 +5,50 @@ import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     const { name, email, password, region } = req.body;
-
+    
     if (!name || !email || !password || !region) {
         return res.status(400).json({ success: false, message: 'Заповніть будь ласка всі поля' });
     }
-
+    
     try {
-        const existingUser = await userModel.findOne({ email });
+
+        const existingUser = await userModel.findOne({email})
+
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Користувач з таким email вже існує' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const regionUIDMap = {
-            "vinnytska": 4,
-            "dnipropetrovska": 9,
-            "volynska": 8,
-            "donetska": 28,
-            "zhytomyrska": 10,
-            "zakarpatska": 11,
-            "zaporizka": 12,
-            "ivano-frankivska": 13,
-            "kyivska": 14,
-            "kirovohradska": 15,
-            "luhanska": 16,
-            "lvivska": 27,
-            "mykolaivska": 17,
-            "odeska": 18,
-            "poltavska": 19,
-            "rivnenska": 5,
-            "sumska": 20,
-            "ternopilska": 21,
-            "kharkivska": 22,
-            "khersonska": 23,
-            "khmelnytska": 3,
-            "cherkaska": 24,
-            "chernivetska": 26,
-            "chernihivska": 25,
-            "kyiv": 31,
-            "sevastopol": 30,
-            "crimea": 29
-        };
-
-
-        const regionUID = regionUIDMap[region];
-
-        if (!regionUID) {
-            return res.status(400).json({ success: false, message: "Невірний регіон" });
-        }
-
-
-        const user = new userModel({ name, email, password: hashedPassword, region, uid: regionUID });
+        const user = new userModel({ name, email, password: hashedPassword, region });
         await user.save();
+        
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-
+        const token  = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
         });
 
-        console.log("Пробую відправити лист...");
-        await transporter.sendMail({
+        res.json({ success: true, token });
+
+        const mailOptions = {
             from: process.env.SMTP_EMAIL,
             to: email,
             subject: 'Вітаємо у SafePoint',
             text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
-        });
-        console.log("Лист відправлено!");
+        };
 
+        await transporter.sendMail(mailOptions);
         
-        res.status(201).json({ success: true, token });
+        res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
 
-    } catch (error) {
-        console.error("Помилка:", error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-};
+        } catch (error) {
+        res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
+        }
+ }
 
 
 
