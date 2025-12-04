@@ -27,3 +27,6 @@ export const regionUID = {
     'sevastopol': 30,
     'kyiv': 31,
 };
+
+
+export default regionUID;
