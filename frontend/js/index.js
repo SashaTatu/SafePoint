@@ -12,6 +12,7 @@ const avatar = document.getElementById('user-avatar');
 const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
+const saveProfileButton = document.getElementById('save-profile');
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
 
@@ -157,6 +158,31 @@ window.addEventListener("click", (e) => {
   const modal = document.getElementById("editModal");
   if (e.target === modal) {
     modal.style.display = "none";
+  }
+});
+
+saveProfileButton.addEventListener('click', async () => {
+  const name = document.getElementById("name").value.trim();
+  const region = document.getElementById("region").value;
+  try {
+    const res = await fetch(`${API_URL}/api/user/change-info`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, region }),
+      credentials: 'include'
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      alert('✅ Інформацію оновлено успішно');
+      document.getElementById("editModal").style.display = "none";
+      generateAvatar(name);
+    } else {
+      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
+    }
+  } catch (err) {
+    console.error('❌ Помилка запиту:', err);
+    alert('❌ Сервер недоступний або сталася помилка');
   }
 });
 
