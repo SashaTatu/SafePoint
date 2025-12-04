@@ -41,15 +41,6 @@ export const register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    // 6. SMTP транспортер
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMTP_EMAIL,    // твоя Google пошта
-        pass: process.env.SMTP_PASS      // APP PASSWORD!!!
-      }
-    });
-
     console.log("📨 Надсилаємо листа на:", email);
 
     // 7. Лист
