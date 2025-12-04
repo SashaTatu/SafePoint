@@ -42,9 +42,9 @@ export const register = async (req, res) => {
             text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
         };
         console.log('Відправка листа на:', email);
-        await transporter.sendMail(mailOptions);
-        console.log('Лист успішно надіслано на:', email);
-        res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
+        transporter.sendMail(mailOptions)
+                .then(() => console.log('Лист успішно надіслано на:', email))
+                .catch(err => console.error('Помилка відправки листа:', err));
 
         } catch (error) {
         res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
