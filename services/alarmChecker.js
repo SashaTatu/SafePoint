@@ -1,5 +1,5 @@
 import axios from "axios";
-import { regionUID } from "../utils/regionUID.js";
+import { regionUID } from "../config/regionUID.js";
 
 const API_URL = "https://api.ukrainealarm.com/api/v3/alerts/region";
 
