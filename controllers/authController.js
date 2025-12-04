@@ -32,7 +32,7 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
         });
 
-        res.json({ success: true, token });
+        
 
         const mailOptions = {
             from: process.env.SMTP_EMAIL,
