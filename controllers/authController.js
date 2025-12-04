@@ -41,6 +41,8 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
+        res.json({ success: true, token})
+
         const mailOptions = {
             from: process.env.SMTP_EMAIL,
             to: email,
