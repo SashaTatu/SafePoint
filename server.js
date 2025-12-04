@@ -9,8 +9,10 @@ import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import deviceRoutes from './routes/deviceRouter.js';
 import deviceunieqeRouter from './routes/deviceunieqeRouter.js';
+import dotenv from "dotenv";
+import { startAlarmScheduler } from "./scheduler/alarmScheduler.js";
 
-
+dotenv.config();
 
 
 const app = express();
@@ -68,7 +70,7 @@ app.get('/device/:deviceId', (req, res) => {
 app.use('/api/device', deviceunieqeRouter);
 
 
-
+startAlarmScheduler();
 
 
 
