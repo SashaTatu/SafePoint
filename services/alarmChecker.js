@@ -1,23 +1,24 @@
-import axios from "axios";
-import { regionUID } from "../config/regionUID.js";
+const axios = require("axios");
 
-const API_URL = "https://api.ukrainealarm.com/api/v3/alerts/region";
-
-export async function checkRegionAlarm(regionSlug) {
+async function checkRegionAlarm(regionId) {
     try {
-        const uid = regionUID[regionSlug];
-        if (!uid) return null;
+        const token = process.env.ALERT_API_TOKEN;
 
-        const response = await axios.get(`${API_URL}/${uid}`, {
+        const response = await axios.get("https://api.ukrainealarm.com/api/v3/alerts", {
             headers: {
-                Authorization: `Bearer ${process.env.ALARM_TOKEN}`
+                Authorization: `Bearer ${token}`,
             }
         });
 
-        return response.data; // Повертає статус тривоги
-    } catch (error) {
-        console.error("Помилка UkraineAlarm:", error.response?.data || error);
+        const regions = response.data;
+
+        // знайти твою область
+        return regions.find(r => r.regionId === regionId);
+    } catch (err) {
+        console.error("Помилка UkraineAlarm:", err);
         return null;
     }
 }
+
+
 export default checkRegionAlarm;
