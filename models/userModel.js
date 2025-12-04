@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     region: {type: String, required: true},
-    uid: { type: Number},
+    uid: { type: Number, required: true },
     alert: { type: Boolean, default: false },
     verifyOtp: {type: String, default: ''},
     verifyOtpExpireAt: {type: Number, default: 0},

@@ -138,6 +138,7 @@ async function fetchUser() {
 
 
 
+
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });

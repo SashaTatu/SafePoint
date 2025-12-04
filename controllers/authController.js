@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
+import regionUID from "../config/regionUID.js";
 
 export const register = async (req, res) => {
     const { name, email, password, region } = req.body;
@@ -21,7 +22,12 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new userModel({ name, email, password: hashedPassword, region });
+        const uid = regionUID[region];
+        if (!uid) {
+            return res.status(400).json({ success: false, message: "Невірний регіон" });
+        }
+
+        const user = new userModel({ name, email, password: hashedPassword, region, uid });
         await user.save();
         
 
@@ -46,10 +52,11 @@ export const register = async (req, res) => {
                 .then(() => console.log('Лист успішно надіслано на:', email))
                 .catch(err => console.error('Помилка відправки листа:', err));
 
-        } catch (error) {
+    } catch (error) {
         res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
-        }
+    }
  }
+
 
 
 export const login = async (req, res) => {
