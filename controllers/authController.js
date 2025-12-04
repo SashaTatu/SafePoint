@@ -5,11 +5,11 @@ import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     const { name, email, password, region } = req.body;
-    
+
     if (!name || !email || !password || !region) {
         return res.status(400).json({ success: false, message: 'Заповніть будь ласка всі поля' });
     }
-    
+
     try {
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
@@ -18,19 +18,7 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const regionUIDMap = {
-            vinnytska: 4, dnipropetrovska: 9, volynska: 8, donetska: 28,
-            zhytomyrska: 10, zakarpatska: 11, zaporizka: 12, ivanoFrankivska: 13,
-            kyivska: 14, kirovohradska: 15, luhanska: 16, lvivska: 27,
-            mykolaivska: 17, odeska: 18, poltavska: 19, rivnenska: 5,
-            sumska: 20, ternopilska: 21, kharkivska: 22, khersonska: 23,
-            khmelnytska: 3, cherkaska: 24, chernivetska: 26, chernihivska: 25,
-            kyiv: 31, sevastopol: 30, crimea: 29
-        };
-
-        const regionUID = regionUIDMap[region];
-
-        const user = new userModel({ name, email, password: hashedPassword, region, uid: regionUID });
+        const user = new userModel({ name, email, password: hashedPassword, region });
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -42,22 +30,21 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        // ------ ВІДПРАВКА ЛИСТА ТУТ ------
-        const mailOptions = {
+        console.log("Пробую відправити лист...");
+        await transporter.sendMail({
             from: process.env.SMTP_EMAIL,
             to: email,
             subject: 'Вітаємо у SafePoint',
-            text: `Привіт ${name},\n\nВаш акаунт успішно створено.\n\nЗ повагою,\nКоманда SafePoint`
-        };
+            text: `Привіт ${name}, ваш акаунт створено.`
+        });
+        console.log("Лист відправлено!");
 
-        await transporter.sendMail(mailOptions);
-
-        // ------- ЄДИНА ВІДПОВІДЬ -------
-        res.status(201).json({ success: true, token, message: 'Користувача зареєстровано успішно' });
+        // ЄДИНА відповідь
+        res.status(201).json({ success: true, token });
 
     } catch (error) {
-        console.error('Помилка реєстрації:', error);
-        res.status(500).json({ success: false, message: 'Помилка реєстрації користувача', error: error.message });
+        console.error("Помилка:", error);
+        res.status(500).json({ success: false, error: error.message });
     }
 };
 
