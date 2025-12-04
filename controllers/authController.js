@@ -4,52 +4,80 @@ import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
-    const { name, email, password, region } = req.body;
-    
-    if (!name || !email || !password || !region) {
-        return res.status(400).json({ success: false, message: 'Заповніть будь ласка всі поля' });
+  const { name, email, password, region } = req.body;
+
+  // 1. Перевірка полів
+  if (!name || !email || !password || !region) {
+    return res.status(400).json({ success: false, message: "Заповніть всі поля" });
+  }
+
+  try {
+    // 2. Перевіряємо чи email існує
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: "Email вже зареєстрований" });
     }
-    
-    try {
 
-        const existingUser = await userModel.findOne({email})
+    // 3. Хешуємо пароль
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        if (existingUser) {
-            return res.status(400).json({ success: false, message: 'Користувач з таким email вже існує' });
-        }
+    // 4. Створюємо користувача
+    const user = new userModel({
+      name,
+      email,
+      password: hashedPassword,
+      region
+    });
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+    await user.save();
 
-        const user = new userModel({ name, email, password: hashedPassword, region });
-        await user.save();
-        
+    // 5. Створюємо JWT
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-        const token  = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
-        });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
-        const mailOptions = {
-            from: process.env.SMTP_EMAIL,
-            to: email,
-            subject: 'Вітаємо у SafePoint',
-            text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
-        };
+    // 6. SMTP транспортер
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_EMAIL,    // твоя Google пошта
+        pass: process.env.SMTP_PASS      // APP PASSWORD!!!
+      }
+    });
 
-        console.log('Відправка листа на:', email);
-        await transporter.sendMail(mailOptions);
-        console.log(`✅ Лист з підтвердженням реєстрації надіслано на ${email}`);
-        
-        res.status(201).json({ success: true, token, message: 'Користувач зареєстовано успішно' });
+    console.log("📨 Надсилаємо листа на:", email);
 
-        } catch (error) {
-        res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
-        }
- }
+    // 7. Лист
+    await transporter.sendMail({
+      from: `"SafePoint" <${process.env.SMTP_EMAIL}>`,
+      to: email,
+      subject: "Вітаємо у SafePoint!",
+      text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
+    });
 
+    console.log("✅ Лист успішно відправлено!");
+
+    // 8. Відповідь клієнту
+    return res.status(201).json({
+      success: true,
+      message: "Користувача зареєстровано успішно, лист надіслано",
+      token
+    });
+
+  } catch (error) {
+    console.error("❌ Помилка реєстрації:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Помилка на сервері",
+      error: error.message
+    });
+  }
+};
 
 
 export const login = async (req, res) => {
