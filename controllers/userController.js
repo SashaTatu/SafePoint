@@ -1,10 +1,8 @@
 import userModel from '../models/userModel.js';
 
 export const getUserData = async (req, res) => {
-
-    try{
-
-        const user = await userModel.findOne(req.userId);
+    try {
+        const user = await userModel.findById(req.userId); // ✅ правильний пошук
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'Користувача не знайдено' });
@@ -12,15 +10,15 @@ export const getUserData = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            userData : {
+            userData: {
                 name: user.name
-                }
+            }
         });
-    }catch (error) {
+    } catch (error) {
         res.status(500).json({ success: false, message: 'Помилка отримання даних користувача', error });
     }
-
 }
+
 
 export const isAlert = async (req, res) => {
     try {
