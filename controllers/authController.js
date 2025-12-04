@@ -3,72 +3,57 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
 
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import userModel from "../models/userModel.js";
+import transporter from "../config/nodemailer.js";
+
 export const register = async (req, res) => {
-  const { name, email, password, region } = req.body;
-
-  // 1. Перевірка полів
-  if (!name || !email || !password || !region) {
-    return res.status(400).json({ success: false, message: "Заповніть всі поля" });
-  }
-
-  try {
-    // 2. Перевіряємо чи email існує
-    const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: "Email вже зареєстрований" });
+    const { name, email, password, region } = req.body;
+    
+    if (!name || !email || !password || !region) {
+        return res.status(400).json({ success: false, message: 'Заповніть будь ласка всі поля' });
     }
+    
+    try {
 
-    // 3. Хешуємо пароль
-    const hashedPassword = await bcrypt.hash(password, 10);
+        const existingUser = await userModel.findOne({email})
 
-    // 4. Створюємо користувача
-    const user = new userModel({
-      name,
-      email,
-      password: hashedPassword,
-      region
-    });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Користувач з таким email вже існує' });
+        }
 
-    await user.save();
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 5. Створюємо JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        const user = new userModel({ name, email, password: hashedPassword, region });
+        await user.save();
+        
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+        const token  = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 днів
+        });
 
-    console.log("📨 Надсилаємо листа на:", email);
+        res.json({ success: true, token });
 
-    // 7. Лист
-    await transporter.sendMail({
-      from: `"SafePoint" <${process.env.SMTP_EMAIL}>`,
-      to: email,
-      subject: "Вітаємо у SafePoint!",
-      text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
-    });
+        const mailOptions = {
+            from: process.env.SMTP_EMAIL,
+            to: email,
+            subject: 'Вітаємо у SafePoint',
+            text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
+        };
 
-    console.log("✅ Лист успішно відправлено!");
+        await transporter.sendMail(mailOptions);
+        
+        res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
 
-    // 8. Відповідь клієнту
-    return res.status(201).json({
-      success: true,
-      message: "Користувача зареєстровано успішно, лист надіслано",
-      token
-    });
-
-  } catch (error) {
-    console.error("❌ Помилка реєстрації:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Помилка на сервері",
-      error: error.message
-    });
-  }
-};
+        } catch (error) {
+        res.status(500).json({ success: false, message: 'Помилка зареєстування користувача', error });
+        }
+ }
 
 
 export const login = async (req, res) => {
