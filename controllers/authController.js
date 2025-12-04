@@ -41,9 +41,9 @@ export const register = async (req, res) => {
             subject: 'Вітаємо у SafePoint',
             text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
         };
-
+        console.log('Відправка листа на:', email);
         await transporter.sendMail(mailOptions);
-        
+        console.log('Лист успішно надіслано на:', email);
         res.status(201).json({ success: true, message: 'Користувач зареєстовано успішно' });
 
         } catch (error) {
