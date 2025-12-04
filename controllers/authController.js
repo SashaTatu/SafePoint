@@ -34,6 +34,7 @@ export const register = async (req, res) => {
         await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -41,21 +42,25 @@ export const register = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
+        // ------ ВІДПРАВКА ЛИСТА ТУТ ------
         const mailOptions = {
             from: process.env.SMTP_EMAIL,
             to: email,
             subject: 'Вітаємо у SafePoint',
-            text: `Привіт ${name},\n\nВаш акаунт успішно створено. Ви можете увійти, використовуючи ваш email та пароль.\n\nДякуємо за реєстрацію!\n\nЗ повагою,\nКоманда SafePoint`
+            text: `Привіт ${name},\n\nВаш акаунт успішно створено.\n\nЗ повагою,\nКоманда SafePoint`
         };
+
         await transporter.sendMail(mailOptions);
 
-        res.status(201).json({ success: true, token, message: 'Користувач зареєстровано успішно' });
+        // ------- ЄДИНА ВІДПОВІДЬ -------
+        res.status(201).json({ success: true, token, message: 'Користувача зареєстровано успішно' });
 
     } catch (error) {
-        console.error('Помилка реєстрації:', error); // <- Додай це
-        res.status(500).json({ success: false, message: 'Помилка зареєстрації користувача', error: error.message });
+        console.error('Помилка реєстрації:', error);
+        res.status(500).json({ success: false, message: 'Помилка реєстрації користувача', error: error.message });
     }
 };
+
 
 
 export const login = async (req, res) => {
