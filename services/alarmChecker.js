@@ -1,23 +1,27 @@
 import axios from "axios";
 
-const token = process.env.UKRAINE_ALARM_TOKEN;
+const clientId = process.env.UA_CLIENT_ID;
+const clientSecret = process.env.UA_CLIENT_SECRET;
+
+const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
 export async function checkRegionAlarm(regionId) {
   try {
     const url = `https://api.ukrainealarm.com/api/v3/alerts/${regionId}`;
 
-    const response = await axios.get(url, {
+    const resp = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Basic ${auth}`,
       },
     });
 
-    return response.data;
-  } catch (error) {
-    console.error("UkraineAlarm ERROR:", regionId, error.response?.status);
+    return resp.data;
+  } catch (err) {
+    console.log("UkraineAlarm ERROR:", regionId, err.response?.status);
     return null;
   }
 }
+
 
 
 
