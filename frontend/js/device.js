@@ -258,18 +258,14 @@ async function fetchDeviceAlert(deviceId) {
 
         const json = await response.json();
 
-        console.log("ALERT RESPONSE:", json); // подивитися що приходить
+        console.log("ALERT RESPONSE:", json);
 
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
         }
 
-        // ---- БЕЗПЕЧНЕ ЗЧИТУВАННЯ alert ----
-        let AlertData = false; // за замовчуванням "немає тривоги"
-
-        if (Array.isArray(json.data) && json.data.length > 0) {
-            AlertData = Boolean(json.data[0].alert);
-        }
+        // БЕКЕНД ПОВЕРТАЄ НЕ data[], а alert
+        const AlertData = Boolean(json.alert);
 
         document.getElementById("alert-status").textContent =
           AlertData ? "Активна" : "Відсутня";
@@ -278,6 +274,7 @@ async function fetchDeviceAlert(deviceId) {
         console.error("Error fetching sensor data:", err);
     }
 }
+
 
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 5000);
