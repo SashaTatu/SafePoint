@@ -87,17 +87,31 @@ async function fetchDoorData(deviceId) {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'
         });
+
         if (!response.ok) {
             throw new Error("Network response was not ok");
         }
+
         const json = await response.json();
+        console.log("DOOR RESPONSE:", json); // ДОДАЙ ЩОБ ПОБАЧИТИ ТОЧНИЙ ФОРМАТ
 
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
-        } 
-        const doorData = json.data[0];
+        }
 
-        document.getElementById("door-status").textContent = doorData.isOpen ?? "--";
+        let isOpen = "--";
+
+        
+        if (typeof json.isOpen !== "undefined") {
+            isOpen = json.isOpen ? "Відчинено" : "Зачинено";
+        }
+
+        else if (Array.isArray(json.data) && json.data.length > 0) {
+            isOpen = json.data[0].isOpen ? "Відчинено" : "Зачинено";
+        }
+
+        document.getElementById("door-status").textContent = isOpen;
+
     } catch (err) {
         console.error("Error fetching door data:", err);
     }
