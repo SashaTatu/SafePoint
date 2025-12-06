@@ -261,37 +261,41 @@ async function fetchUser() {
 async function fetchDeviceAlert(deviceId) {
     try {
         const response = await fetch(`/api/device/${deviceId}/isalert`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
         });
 
         if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Network response was not ok -> alert");
         }
 
         const json = await response.json();
-
         console.log("ALERT RESPONSE:", json);
 
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
         }
 
-        // БЕКЕНД ПОВЕРТАЄ НЕ data[], а alert
         const AlertData = Boolean(json.alert);
 
+        // Статус тривоги
         document.getElementById("alert-status").textContent =
-          AlertData ? "Активна" : "Відсутня";
+            AlertData ? "Активна" : "Відсутня";
+
+        // Статус дверей — повторює тривогу
+        document.getElementById("door-status").textContent =
+            AlertData ? "Відчинено" : "Зачинено";
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
     }
 }
 
-
+// Запускаємо та оновлюємо кожні 5 секунд
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 5000);
+
 
 
 
