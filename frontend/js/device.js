@@ -284,17 +284,27 @@ async function fetchDeviceAlert(deviceId) {
             AlertData ? "Активна" : "Відсутня";
 
         // Статус дверей — повторює тривогу
+        const doorState = AlertData; // true = Відчинено, false = Зачинено
         document.getElementById("door-status").textContent =
-            AlertData ? "Відчинено" : "Зачинено";
+            doorState ? "Відчинено" : "Зачинено";
+
+        // ---- ВІДПРАВЛЯЄМО НА БЕКЕНД, щоб зберегти в БД ----
+        await fetch(`${API_URL}/api/device/${deviceId}/updatedoorstatus`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ status: doorState })
+        });
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
     }
 }
 
-// Запускаємо та оновлюємо кожні 5 секунд
+// Запускаємо та оновлюємо кожні 2 хвилини
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 120000);
+
 
 
 
