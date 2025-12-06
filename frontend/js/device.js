@@ -257,22 +257,23 @@ async function fetchDeviceAlert(deviceId) {
         }
 
         const json = await response.json();
+        
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
         }
 
         // ---- БЕЗПЕЧНА ПЕРЕВІРКА ----
-        let AlertData = null;
+        let DoorData = null;
 
         if (Array.isArray(json.data) && json.data.length > 0) {
-            AlertData = json.data[0].alert;
+            DoorData = json.data[0].doorStatus; // або інше поле
         }
 
-        document.getElementById("alert-status").textContent =
-          AlertData ? "Активна" : "Відсутня";
+        document.getElementById("door-status").textContent =
+            DoorData ? "Відчинено" : "Зачинено";
 
     } catch (err) {
-        console.error("Error fetching sensor data:", err);
+        console.error("Error fetching door data:", err);
     }
 }
 
