@@ -43,7 +43,7 @@ export function startAlarmScheduler() {
         console.error(`❌ Помилка оновлення device.alert (${regionId}):`, error);
       }
     }
-  }, 120000);
+  }, 60000);
 }
 
 export default startAlarmScheduler;

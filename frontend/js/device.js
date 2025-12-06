@@ -118,12 +118,12 @@ async function fetchDoorData(deviceId) {
 }
 
 fetchDoorData(deviceId);
-setInterval(() => fetchDoorData(deviceId), 120000);
+setInterval(() => fetchDoorData(deviceId), 60000);
 
 
 fetchSensorData(deviceId);
 
-setInterval(() => fetchSensorData(deviceId), 120000);
+setInterval(() => fetchSensorData(deviceId), 60000);
 
 
 
@@ -180,7 +180,7 @@ async function fetchSensorData(deviceId) {
 
 fetchSensorData(deviceId);
 
-setInterval(() => fetchSensorData(deviceId), 120000);
+setInterval(() => fetchSensorData(deviceId), 60000);
 
 
 avatar.addEventListener('click', () => {
@@ -303,7 +303,7 @@ async function fetchDeviceAlert(deviceId) {
 
 // Запускаємо та оновлюємо кожні 2 хвилини
 fetchDeviceAlert(deviceId);
-setInterval(() => fetchDeviceAlert(deviceId), 120000);
+setInterval(() => fetchDeviceAlert(deviceId), 60000);
 
 
 
