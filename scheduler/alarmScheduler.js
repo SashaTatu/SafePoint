@@ -1,3 +1,7 @@
+import User from '../models/userModel.js';
+import Device from '../models/deviceModel.js';
+import  checkRegionAlarm from '../services/alarmChecker.js';
+
 export function startAlarmScheduler() {
   setInterval(async () => {
     console.log("🔄 Перевірка тривог...");
@@ -41,3 +45,5 @@ export function startAlarmScheduler() {
     }
   }, 120000);
 }
+
+export default startAlarmScheduler;
