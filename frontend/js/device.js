@@ -251,24 +251,31 @@ async function fetchDeviceAlert(deviceId) {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'
         });
+
         if (!response.ok) {
             throw new Error("Network response was not ok");
         }
+
         const json = await response.json();
         if (!json.success) {
             throw new Error(json.message || "Unknown error");
         }
 
-        const AlertData = json.data[0]?.alert;
+        // ---- БЕЗПЕЧНА ПЕРЕВІРКА ----
+        let AlertData = null;
+
+        if (Array.isArray(json.data) && json.data.length > 0) {
+            AlertData = json.data[0].alert;
+        }
 
         document.getElementById("alert-status").textContent =
           AlertData ? "Активна" : "Відсутня";
-
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
     }
 }
+
 
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 5000);
