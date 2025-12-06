@@ -6,7 +6,7 @@ export function startAlarmScheduler() {
   setInterval(async () => {
     console.log("🔄 Перевірка тривог...");
 
-    const users = await User.find({}, { uid: 1 }); // беремо тільки uid
+    const users = await User.find({}, { uid: 1 });
 
     for (const user of users) {
       const regionId = user.uid;
@@ -17,10 +17,9 @@ export function startAlarmScheduler() {
 
       console.log(`UID ${regionId}:`, alarmStatus);
 
-      // тут можеш зберегти в базу, якщо потрібно:
-      // await AlarmLog.create({ regionId, status: alarmStatus });
+      
     }
-  }, 30000);
+  }, 120000);
 }
 
 export default startAlarmScheduler;
