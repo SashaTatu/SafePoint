@@ -1,7 +1,3 @@
-import User from "../models/userModel.js";
-import Device from "../models/deviceModel.js";
-import checkRegionAlarm from "../services/alarmChecker.js";
-
 export function startAlarmScheduler() {
   setInterval(async () => {
     console.log("🔄 Перевірка тривог...");
@@ -14,16 +10,18 @@ export function startAlarmScheduler() {
 
       const alarmStatus = await checkRegionAlarm(regionId);
 
-      // 🔍 Визначаємо чи є тривога
+      // Якщо функція повертає масив — беремо перший елемент
+      const regionData = Array.isArray(alarmStatus)
+        ? alarmStatus[0]
+        : alarmStatus;
+
       const isAlert =
-        alarmStatus &&
-        Array.isArray(alarmStatus.activeAlerts) &&
-        alarmStatus.activeAlerts.length > 0;
+        regionData?.activeAlerts &&
+        regionData.activeAlerts.length > 0;
 
       console.log(`UID ${regionId}: ALERT = ${isAlert}`);
 
       try {
-        // 🔄 Оновлюємо alert у користувача
         await User.updateOne(
           { _id: user._id },
           { alert: isAlert }
@@ -33,17 +31,13 @@ export function startAlarmScheduler() {
       }
 
       try {
-        // 🔄 Оновлюємо alert у всіх пристроїв користувача
-        const devices = await Device.find({ owner: user._id });
-        for (const device of devices) {
-          device.alert = isAlert;
-          await device.save();
-        }
+        await Device.updateMany(
+          { owner: user._id },
+          { alert: isAlert }
+        );
       } catch (error) {
         console.error(`❌ Помилка оновлення device.alert (${regionId}):`, error);
       }
     }
   }, 120000);
 }
-
-export default startAlarmScheduler;
