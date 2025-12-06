@@ -259,7 +259,7 @@ async function fetchDeviceAlert(deviceId) {
             throw new Error(json.message || "Unknown error");
         }
 
-        const AlertData = json.data[0]; 
+        const AlertData = json.data[0]?.alert;
 
         document.getElementById("alert-status").textContent =
           AlertData ? "Активна" : "Відсутня";
