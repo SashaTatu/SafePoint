@@ -105,3 +105,17 @@ export const updateDoorStatus = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
 };
+
+export const isAlert = async (req, res) => {
+  const { deviceId } = req.params;
+  try {
+    const device = await Device.findOne({ deviceId });
+    if (!device) {
+      return res.status(404).json({ success: false, message: 'Пристрій не знайдено' });
+    }
+    return res.status(200).json({ success: true, alert: device.alert });
+  } catch (error) {
+    console.error('❌ Помилка отримання тривоги пристрою:', error);
+    return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
+  }
+};

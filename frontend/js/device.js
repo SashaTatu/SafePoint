@@ -244,5 +244,34 @@ async function fetchUser() {
   }
 }
 
+async function fetchDeviceAlert(deviceId) {
+    try {
+        const response = await fetch(`/api/device/${deviceId}/isalert`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const json = await response.json();
+        if (!json.success) {
+            throw new Error(json.message || "Unknown error");
+        }
+
+        const AlertData = json.data[0]; 
+
+        document.getElementById("alert-status").textContent =
+          AlertData ? "Активна" : "Відсутня";
+
+
+    } catch (err) {
+        console.error("Error fetching sensor data:", err);
+    }
+}
+
+fetchDeviceAlert(deviceId);
+setInterval(() => fetchDeviceAlert(deviceId), 5000);
+
 
 
