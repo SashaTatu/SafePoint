@@ -172,6 +172,7 @@ async function fetchSensorData(deviceId) {
 
         document.getElementById("temperature").textContent = sensorData.temperature ?? "--";
         document.getElementById("humidity").textContent = sensorData.humidity ?? "--";
+        document.getElementById("co2").textContent = sensorData.co2 ?? "--";
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);

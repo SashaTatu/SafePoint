@@ -60,7 +60,8 @@ export const deviceParameterGet = async (req, res) => {
           success: true,
           data: [{
             temperature: device.temperature,
-            humidity: device.humidity
+            humidity: device.humidity,
+            co2: device.co2
           }]
         });
 
