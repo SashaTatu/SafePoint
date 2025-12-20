@@ -248,8 +248,8 @@ async function fetchDeviceAlert(deviceId) {
         alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
 
 
-        doorElem.textContent = StatusData ? "Зачинено" : "Відчинено";
-        doorElem.style.color = StatusData ? "#FF6B6B" : "#6BCB77";
+        doorElem.textContent = StatusData ? "Відчинено" : "Зачинено";
+        doorElem.style.color = StatusData ? "#6BCB77" : "#000000ff";
 
         
         lockImg.src = StatusData
