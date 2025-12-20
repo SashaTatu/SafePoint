@@ -1,49 +1,59 @@
 import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
-import  checkRegionAlarm from '../services/alarmChecker.js';
+import checkRegionAlarm from '../services/alarmChecker.js';
+import { regionMap } from '../config/DistrictUID.js';
 
 export function startAlarmScheduler() {
   setInterval(async () => {
     console.log("🔄 Перевірка тривог...");
 
-    const users = await User.find({}, { uid: 1 });
+    try {
+      // 1️⃣ ОДИН запит до API
+      const alarms = await checkRegionAlarm();
 
-    for (const user of users) {
-      const regionId = user.uid;
-      if (!regionId) continue;
+      if (!Array.isArray(alarms)) {
+        console.warn("⚠️ Невалідна відповідь від API");
+        return;
+      }
 
-      const alarmStatus = await checkRegionAlarm(regionId);
+      // 2️⃣ Збираємо ВНУТРІШНІ uid з активною тривогою
+      const activeInternalUids = new Set();
 
-      // Якщо функція повертає масив — беремо перший елемент
-      const regionData = Array.isArray(alarmStatus)
-        ? alarmStatus[0]
-        : alarmStatus;
+      for (const alarm of alarms) {
+        if (!alarm.regionId || alarm.active !== true) continue;
 
-      const isAlert =
-        regionData?.activeAlerts &&
-        regionData.activeAlerts.length > 0;
+        const internalUid = regionMap[alarm.regionId];
 
-      console.log(`UID ${regionId}: ALERT = ${isAlert}`);
+        if (internalUid) {
+          activeInternalUids.add(internalUid);
+        }
+      }
 
-      try {
+      // 3️⃣ Отримуємо всіх користувачів
+      const users = await User.find({}, { uid: 1 });
+
+      for (const user of users) {
+        const isAlert = activeInternalUids.has(user.uid);
+
+        console.log(`UID ${user.uid}: ALERT = ${isAlert}`);
+
+        // 4️⃣ User
         await User.updateOne(
           { _id: user._id },
           { alert: isAlert }
         );
-      } catch (error) {
-        console.error(`❌ Помилка оновлення user.alert (${regionId}):`, error);
-      }
 
-      try {
+        // 5️⃣ Devices
         await Device.updateMany(
           { owner: user._id },
           { alert: isAlert }
         );
-      } catch (error) {
-        console.error(`❌ Помилка оновлення device.alert (${regionId}):`, error);
       }
+
+    } catch (error) {
+      console.error("❌ Scheduler error:", error);
     }
-  }, 60000);
+  }, 120_000);
 }
 
 export default startAlarmScheduler;

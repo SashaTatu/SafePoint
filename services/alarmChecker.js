@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export async function checkRegionAlarm(uid) {
+export async function checkRegionAlarm() {
     try {
-        const response = await axios.get(`https://api.ukrainealarm.com/api/v3/alerts/${uid}`, {
+        const response = await axios.get('https://api.ukrainealarm.com/api/v3/alerts', {
             headers: {
                 accept: "application/json",
                 Authorization: process.env.ALARM_TOKEN  
@@ -11,7 +11,7 @@ export async function checkRegionAlarm(uid) {
 
         return response.data;
     } catch (error) {
-        console.log("UkraineAlarm ERROR:", uid, error.response?.status);
+        console.error("❌ Помилка отримання тривог:", error);
         return null;
     }
 }

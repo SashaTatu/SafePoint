@@ -23,8 +23,7 @@ export const regionUID = {
     "chernivetska": 26,
     'lvivska': 27,
     'donetska': 28,
-    'crimea': 29,
-    'sevastopol': 30,
+    'crimea': 9999,
     'kyiv': 31,
 };
 
