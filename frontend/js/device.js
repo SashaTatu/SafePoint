@@ -280,8 +280,8 @@ async function fetchDeviceAlert(deviceId) {
         alertElem.textContent = AlertData ? "Активна" : "Відсутня";
         alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
 
-        
-        doorElem.textContent = StatusData ? "Відчинено" : "Зачинено";
+
+        doorElem.textContent = StatusData ? "Зачинено" : "Відчинено";
         doorElem.style.color = StatusData ? "#FF6B6B" : "#6BCB77";
 
         

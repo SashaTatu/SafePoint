@@ -94,7 +94,6 @@ function renderDeviceCards(devices) {
     card.className = "shelter-card card-enter";
     const doorElem = document.createElement("span");
     doorElem.textContent = device.status === "Відчинено" ? "Відчинено" : "Зачинено";
-    doorElem.style.color = device.status === "Відчинено" ? "#FF6B6B" : "#6BCB77";
     card.innerHTML = `
       <div class="shelter-header">
         <div class="shelter-header-left">
