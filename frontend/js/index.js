@@ -90,12 +90,10 @@ function renderDeviceCards(devices) {
   container.innerHTML = "";
 
   devices.forEach(device => {
-    const statusText = 
-      device.status === true 
-        ? "Відчинено"
-        : "Зачинено";
+    const isLocked = Boolean(device.status);
+    const statusText = isLocked ? "Зачинено" : "Відчинено";
+    const statusClass = isLocked ? "closed" : "open";
 
-    const statusClass = statusText === "Відчинено" ? "open" : "closed";
 
     const card = document.createElement("div");
     card.className = "shelter-card card-enter";

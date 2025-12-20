@@ -237,7 +237,6 @@ async function fetchDeviceAlert(deviceId) {
         }
 
         const AlertData = Boolean(json.alert);
-        const StatusData = Boolean(json.status);
 
         const alertElem = document.getElementById("alert-status");
         const doorElem  = document.getElementById("door-status");
@@ -248,13 +247,15 @@ async function fetchDeviceAlert(deviceId) {
         alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
 
 
-        doorElem.textContent = StatusData ? "Відчинено" : "Зачинено";
-        doorElem.style.color = StatusData ? "#6BCB77" : "#000000ff";
+        const isLocked = Boolean(json.status);
 
-        
-        lockImg.src = StatusData
-            ? "/assets/img-device/unlock.png"
-            : "/assets/img-device/lock.png";
+        doorElem.textContent = isLocked ? "Зачинено" : "Відчинено";
+        doorElem.style.color = isLocked ? "#000000ff" : "#6BCB77";
+
+        lockImg.src = isLocked
+          ? "/assets/img-device/lock.png"
+          : "/assets/img-device/unlock.png";
+
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
