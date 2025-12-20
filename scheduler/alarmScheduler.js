@@ -8,7 +8,6 @@ export function startAlarmScheduler() {
     console.log("🔄 Перевірка тривог...");
 
     try {
-      // 1️⃣ Один запит до API
       const alarms = await checkRegionAlarm();
 
       if (!Array.isArray(alarms)) {
@@ -16,24 +15,25 @@ export function startAlarmScheduler() {
         return;
       }
 
-      // 2️⃣ Активні ОБЛАСНІ uid
+      // ✅ Активні обласні UID
       const activeRegionUids = new Set();
 
       for (const alarm of alarms) {
-        if (alarm.active !== true || !alarm.regionId) continue;
+        if (!alarm.regionId) continue;
+
+        const hasAlert =
+          Array.isArray(alarm.activeAlerts) &&
+          alarm.activeAlerts.length > 0;
+
+        if (!hasAlert) continue;
 
         const regionUid = districtUID[String(alarm.regionId)];
 
         if (regionUid !== undefined) {
           activeRegionUids.add(regionUid);
-        } else {
-          console.warn(
-            `⚠️ districtId ${alarm.regionId} не знайдено в districtUID`
-          );
         }
       }
 
-      // 3️⃣ Беремо тільки валідних користувачів
       const users = await User.find(
         { uid: { $exists: true, $ne: null } },
         { uid: 1 }
