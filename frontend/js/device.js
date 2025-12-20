@@ -79,39 +79,6 @@ const buttons = document.querySelectorAll(".footer-nav .nav-btn");
 const activeBg = document.querySelector(".footer-nav .active-bg");
 
 
-
-async function fetchDoorData(deviceId) {
-  try {
-    const response = await fetch(`/api/device/${deviceId}/doorstatus`, {
-      method: 'GET',
-      credentials: 'include'
-    });
-
-    if (!response.ok) throw new Error("Network response was not ok");
-
-    const json = await response.json();
-    console.log("DOOR RESPONSE:", json);
-
-    if (!json.success) throw new Error(json.message || "Unknown error");
-
-    const statusText = json.status;
-
-    const el = document.getElementById("door-status");
-    if (el) el.textContent = statusText;
-
-  } catch (err) {
-    console.error("Error fetching door data:", err);
-
-    const el = document.getElementById("door-status");
-    if (el) el.textContent = "Помилка";
-  }
-}
-
-
-fetchDoorData(deviceId);
-setInterval(() => fetchDoorData(deviceId), 35000);
-
-
 fetchSensorData(deviceId);
 
 setInterval(() => fetchSensorData(deviceId), 60000);
