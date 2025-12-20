@@ -114,7 +114,7 @@ export const isAlert = async (req, res) => {
     if (!device) {
       return res.status(404).json({ success: false, message: 'Пристрій не знайдено' });
     }
-    return res.status(200).json({ success: true, alert: device.alert });
+    return res.status(200).json({ success: true, alert: device.alert, status: device.status });
   } catch (error) {
     console.error('❌ Помилка отримання тривоги пристрою:', error);
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
