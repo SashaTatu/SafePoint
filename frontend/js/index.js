@@ -91,8 +91,15 @@ function renderDeviceCards(devices) {
 
   devices.forEach(device => {
     const isLocked = Boolean(device.status);
-    const statusText = isLocked ? "Зачинено" : "Відчинено";
-    const statusClass = isLocked ? "closed" : "open";
+    let statusText = "";
+    let statusClass = "";
+    if (isLocked === true) {
+          statusText = "Відчинено";
+          statusClass = "open";
+    } else {
+          statusText = "Зачинено";
+          statusClass = "closed";
+    }
 
 
     const card = document.createElement("div");

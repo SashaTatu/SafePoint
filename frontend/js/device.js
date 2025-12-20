@@ -249,8 +249,13 @@ async function fetchDeviceAlert(deviceId) {
 
         const isLocked = Boolean(json.status);
 
-        doorElem.textContent = isLocked ? "Зачинено" : "Відчинено";
-        doorElem.style.color = isLocked ? "#000000ff" : "#6BCB77";
+        if (isLocked === true) {
+          doorElem.textContent = "Відчинено";
+          doorElem.style.color = "#6BCB77";
+        } else {
+          doorElem.textContent = "Зачинено";
+          doorElem.style.color = "#030303ff";
+        }
 
         lockImg.src = isLocked
           ? "/assets/img-device/lock.png"
