@@ -90,10 +90,16 @@ function renderDeviceCards(devices) {
   container.innerHTML = "";
 
   devices.forEach(device => {
+    const statusText = 
+      device.status === true || device.status === "Відчинено" || device.status === "open"
+        ? "Відчинено"
+        : "Зачинено";
+
+    const statusClass = statusText === "Відчинено" ? "open" : "closed";
+
     const card = document.createElement("div");
     card.className = "shelter-card card-enter";
-    const doorElem = document.createElement("span");
-    doorElem.textContent = device.status === "Відчинено" ? "Відчинено" : "Зачинено";
+
     card.innerHTML = `
       <div class="shelter-header">
         <div class="shelter-header-left">
@@ -102,12 +108,17 @@ function renderDeviceCards(devices) {
         </div>
         <i class="fas fa-bars" id="delete_btn" data-toggle="tooltip" title="Видалити пристрій"></i>
       </div>
+
       <div class="shelter-body">
         <p><strong>Адреса:</strong> ${device.address}</p>
-        <p><strong>Статус:</strong> <span class="status-${device.status}">${device.status}</span></p>
+        <p><strong>Статус:</strong> <span class="${statusClass}">${statusText}</span></p>
       </div>
-      <a href="/device/${device.deviceId}" class="shelter-footer-link">Перейти до пристрою</a>
+
+      <a href="/device/${device.deviceId}" class="shelter-footer-link">
+        Перейти до пристрою
+      </a>
     `;
+
     container.appendChild(card);
   });
 }
