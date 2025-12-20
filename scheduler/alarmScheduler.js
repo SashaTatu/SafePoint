@@ -49,9 +49,12 @@ export function startAlarmScheduler() {
           { alert: isAlert }
         );
 
+
+
         await Device.updateMany(
           { owner: user._id },
-          { alert: isAlert }
+          { alert: isAlert },
+          { status: isAlert }
         );
       }
 

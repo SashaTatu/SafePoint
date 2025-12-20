@@ -94,7 +94,7 @@ async function fetchDoorData(deviceId) {
 
     if (!json.success) throw new Error(json.message || "Unknown error");
 
-    const statusText = json.status || "--";
+    const statusText = json.status;
 
     const el = document.getElementById("door-status");
     if (el) el.textContent = statusText;
@@ -274,19 +274,6 @@ async function fetchDeviceAlert(deviceId) {
         // Статус тривоги
         document.getElementById("alert-status").textContent =
             AlertData ? "Активна" : "Відсутня";
-
-        // Статус дверей — повторює тривогу
-        const doorState = AlertData; // true = Відчинено, false = Зачинено
-        document.getElementById("door-status").textContent =
-            doorState ? "Відчинено" : "Зачинено";
-
-        // ---- ВІДПРАВЛЯЄМО НА БЕКЕНД, щоб зберегти в БД ----
-        await fetch(`${API_URL}/api/device/${deviceId}/updatedoorstatus`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ status: doorState })
-        });
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
