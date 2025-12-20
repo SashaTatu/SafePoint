@@ -1,7 +1,7 @@
 import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
 import checkRegionAlarm from '../services/alarmChecker.js';
-import { regionMap } from '../config/DistrictUID.js';
+import districtUID from '../config/DistrictUID.js';
 
 export function startAlarmScheduler() {
   setInterval(async () => {

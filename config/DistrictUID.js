@@ -152,3 +152,5 @@ export const districtUID = {
   31:31,
   9999:9999,
 };
+
+export default districtUID;
