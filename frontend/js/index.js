@@ -91,9 +91,9 @@ function renderDeviceCards(devices) {
 
   devices.forEach(device => {
     const statusText = 
-      device.status === true || device.status === "Відчинено" || device.status === "open"
-        ? "Відчинено"
-        : "Зачинено";
+      device.status === true 
+        ? "Зачинено"
+        : "Відчинено";
 
     const statusClass = statusText === "Відчинено" ? "open" : "closed";
 
