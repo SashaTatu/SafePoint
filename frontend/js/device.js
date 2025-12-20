@@ -272,11 +272,22 @@ async function fetchDeviceAlert(deviceId) {
         const AlertData = Boolean(json.alert);
         const StatusData = Boolean(json.status);
 
-        // Статус тривоги
-        document.getElementById("alert-status").textContent =
-            AlertData ? "Активна" : "Відсутня";
-          document.getElementById("door-status").textContent =
-            StatusData ? "Відчинено" : "Зачинено";
+        const alertElem = document.getElementById("alert-status");
+        const doorElem  = document.getElementById("door-status");
+        const lockImg   = document.getElementById("lock-img");
+
+        
+        alertElem.textContent = AlertData ? "Активна" : "Відсутня";
+        alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
+
+        
+        doorElem.textContent = StatusData ? "Відчинено" : "Зачинено";
+        doorElem.style.color = StatusData ? "#FF6B6B" : "#6BCB77";
+
+        
+        lockImg.src = StatusData
+            ? "/assets/img-device/unlock.png"
+            : "/assets/img-device/lock.png";
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
@@ -286,9 +297,4 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
-if (document.getElementById("door-status") === "Відчинено") {
-  document.getElementById("lock-img").src = "/assets/img-device/unlock.png";
-} else {
-  document.getElementById("lock-img").src = "/assets/img-device/lock.png";
-}
 
