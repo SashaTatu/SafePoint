@@ -8,42 +8,47 @@ export function startAlarmScheduler() {
     console.log("🔄 Перевірка тривог...");
 
     try {
-      // 1️⃣ ОДИН запит до API
+      // 1️⃣ Один запит до API
       const alarms = await checkRegionAlarm();
 
       if (!Array.isArray(alarms)) {
-        console.warn("⚠️ Невалідна відповідь від API");
+        console.warn("⚠️ Невалідна відповідь API");
         return;
       }
 
-      // 2️⃣ Збираємо ВНУТРІШНІ uid з активною тривогою
-      const activeInternalUids = new Set();
+      // 2️⃣ Активні ОБЛАСНІ uid
+      const activeRegionUids = new Set();
 
       for (const alarm of alarms) {
-        if (!alarm.regionId || alarm.active !== true) continue;
+        if (alarm.active !== true || !alarm.regionId) continue;
 
-        const internalUid = regionMap[alarm.regionId];
+        const regionUid = districtUID[String(alarm.regionId)];
 
-        if (internalUid) {
-          activeInternalUids.add(internalUid);
+        if (regionUid !== undefined) {
+          activeRegionUids.add(regionUid);
+        } else {
+          console.warn(
+            `⚠️ districtId ${alarm.regionId} не знайдено в districtUID`
+          );
         }
       }
 
-      // 3️⃣ Отримуємо всіх користувачів
-      const users = await User.find({}, { uid: 1 });
+      // 3️⃣ Беремо тільки валідних користувачів
+      const users = await User.find(
+        { uid: { $exists: true, $ne: null } },
+        { uid: 1 }
+      );
 
       for (const user of users) {
-        const isAlert = activeInternalUids.has(user.uid);
+        const isAlert = activeRegionUids.has(user.uid);
 
         console.log(`UID ${user.uid}: ALERT = ${isAlert}`);
 
-        // 4️⃣ User
         await User.updateOne(
           { _id: user._id },
           { alert: isAlert }
         );
 
-        // 5️⃣ Devices
         await Device.updateMany(
           { owner: user._id },
           { alert: isAlert }
