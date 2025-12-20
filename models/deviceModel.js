@@ -10,6 +10,7 @@ const deviceSchema = new mongoose.Schema({
   mac: { type: String, default: '' },
   temperature: { type: Number, default: 0 },
   humidity: { type: Number, default: 0 },
+  co2: { type: Number, default: 0 },
   address: { type: String, default: '' },
   location: { type: String, default: '' }
 });

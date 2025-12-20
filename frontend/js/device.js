@@ -81,44 +81,35 @@ const activeBg = document.querySelector(".footer-nav .active-bg");
 
 
 async function fetchDoorData(deviceId) {
-    try {
-        const response = await fetch(`/api/device/${deviceId}/doorstatus`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
-        });
+  try {
+    const response = await fetch(`/api/device/${deviceId}/doorstatus`, {
+      method: 'GET',
+      credentials: 'include'
+    });
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
+    if (!response.ok) throw new Error("Network response was not ok");
 
-        const json = await response.json();
-        console.log("DOOR RESPONSE:", json); // ДОДАЙ ЩОБ ПОБАЧИТИ ТОЧНИЙ ФОРМАТ
+    const json = await response.json();
+    console.log("DOOR RESPONSE:", json);
 
-        if (!json.success) {
-            throw new Error(json.message || "Unknown error");
-        }
+    if (!json.success) throw new Error(json.message || "Unknown error");
 
-        let isOpen = "--";
+    const statusText = json.status || "--";
 
-        
-        if (typeof json.isOpen !== "undefined") {
-            isOpen = json.isOpen ? "Відчинено" : "Зачинено";
-        }
+    const el = document.getElementById("door-status");
+    if (el) el.textContent = statusText;
 
-        else if (Array.isArray(json.data) && json.data.length > 0) {
-            isOpen = json.data[0].isOpen ? "Відчинено" : "Зачинено";
-        }
+  } catch (err) {
+    console.error("Error fetching door data:", err);
 
-        document.getElementById("door-status").textContent = isOpen;
-
-    } catch (err) {
-        console.error("Error fetching door data:", err);
-    }
+    const el = document.getElementById("door-status");
+    if (el) el.textContent = "Помилка";
+  }
 }
 
+
 fetchDoorData(deviceId);
-setInterval(() => fetchDoorData(deviceId), 60000);
+setInterval(() => fetchDoorData(deviceId), 35000);
 
 
 fetchSensorData(deviceId);
@@ -302,9 +293,8 @@ async function fetchDeviceAlert(deviceId) {
     }
 }
 
-// Запускаємо та оновлюємо кожні 2 хвилини
 fetchDeviceAlert(deviceId);
-setInterval(() => fetchDeviceAlert(deviceId), 60000);
+setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
 
 
