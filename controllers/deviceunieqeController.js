@@ -97,10 +97,14 @@ export const updateDoorStatus = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Пристрій не знайдено' });
     }
 
-
-    device.status = device.status === 'Відчинено' ? 'Зачинено' : 'Відчинено';
+    device.status = !device.status;
     await device.save();
-    return res.status(200).json({ success: true, status: device.status });
+
+    return res.status(200).json({
+      success: true,
+      status: device.status ? "Відчинено" : "Зачинено"
+    });
+
   } catch (error) {
     console.error('❌ Помилка оновлення статусу дверей:', error);
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });

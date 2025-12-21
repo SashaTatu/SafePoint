@@ -276,4 +276,39 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
+doorBtn.addEventListener('click', async () => {
+  if (doorBtn.disabled) return;
+
+  doorBtn.disabled = true;
+
+  try {
+    const response = await fetch(`/api/device/${deviceId}/updatedoorstatus`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok -> door update");
+    }
+
+    const json = await response.json();
+
+    if (!json.success) {
+      throw new Error(json.message || "Unknown error");
+    }
+
+    // 👇 ТУТ ВЖЕ Є РЕАЛЬНИЙ СТАТУС З БЕКЕНДУ
+    if (json.status === "Відчинено") {
+      doorBtn.textContent = "Зачинити двері";
+    } else {
+      doorBtn.textContent = "Відчинити двері";
+    }
+
+  } catch (err) {
+    console.error(err);
+  } finally {
+    doorBtn.disabled = false;
+  }
+});
 
