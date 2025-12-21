@@ -284,7 +284,7 @@ async function updateDoorStatus(deviceId, doorBtn) {
 
   try {
     const response = await fetch(`/api/device/${deviceId}/updatedoorstatus`, {
-      method: 'PUT',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
     });
