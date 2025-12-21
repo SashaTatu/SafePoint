@@ -303,6 +303,7 @@ async function updateDoorStatus(deviceId, doorBtn) {
       json.status === "Відчинено"
         ? "Зачинити двері"
         : "Відчинити двері";
+    await fetchDeviceAlert(deviceId);
 
   } catch (err) {
     console.error(err);
