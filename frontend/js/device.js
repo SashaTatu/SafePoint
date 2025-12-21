@@ -278,7 +278,7 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
-async function updateDoorStatus(deviceId, doorBtn) {
+async function updateDoorStatus(deviceId) {
 
   try {
     const response = await fetch(`/api/device/${deviceId}/updatedoorstatus`, {
