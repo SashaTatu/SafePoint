@@ -128,7 +128,11 @@ function renderDeviceCards(devices) {
   });
 }
 
-fetchDevices()
+fetchDevices();
+
+setInterval(() => fetchDevices(), 550000);
+
+
 
 
 async function fetchUser() {
