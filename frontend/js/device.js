@@ -279,9 +279,6 @@ fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
 async function updateDoorStatus(deviceId, doorBtn) {
-  if (doorBtn.disabled) return;
-
-  doorBtn.disabled = true;
 
   try {
     const response = await fetch(`/api/device/${deviceId}/updatedoorstatus`, {
