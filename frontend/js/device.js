@@ -221,62 +221,70 @@ async function fetchUser() {
 }
 
 async function fetchDeviceAlert(deviceId) {
-    try {
-        const response = await fetch(`/api/device/${deviceId}/isalert`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        });
+  try {
+    const response = await fetch(`/api/device/${deviceId}/isalert`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok -> alert");
-        }
+    if (!response.ok) throw new Error("Network response was not ok -> alert");
 
-        const json = await response.json();
-        console.log("ALERT RESPONSE:", json);
+    const json = await response.json();
+    console.log("ALERT RESPONSE:", json);
 
-        if (!json.success) {
-            throw new Error(json.message || "Unknown error");
-        }
+    if (!json.success) throw new Error(json.message || "Unknown error");
 
-        const AlertData = Boolean(json.alert);
+    const alertElem = document.getElementById("alert-status");
+    const doorElem  = document.getElementById("door-status");
+    const lockImg   = document.getElementById("lock-img");
 
-        const alertElem = document.getElementById("alert-status");
-        const doorElem  = document.getElementById("door-status");
-        const lockImg   = document.getElementById("lock-img");
-        
-        
-        alertElem.textContent = AlertData ? "Активна" : "Відсутня";
-        alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
+    const isAlert = Boolean(json.alert);
+    const isLocked = json.status === "Зачинено";
 
+    // 🔥 Статус тривоги
+    alertElem.textContent = isAlert ? "Активна" : "Відсутня";
+    alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
 
-        const isLocked = Boolean(json.status);
-
-        if (alertElem === true) {
-          doorElem.textContent = "Відчинено";
-          doorElem.style.color = "#6BCB77";
-          lockImg.src = "/assets/img-device/unlock.png";
-          doorBtn.textContent = "Зачинити двері";
-          doorBtn.style.cursor = "not-allowed";
-          doorBtn.disabled = true;
-
-        } else {
-          doorElem.textContent = "Зачинено";
-          doorElem.style.color = "#030303ff";
-          lockImg.src = "/assets/img-device/lock.png";
-          doorBtn.textContent = "Відчинити двері";
-          doorBtn.style.cursor = "pointer";
-          doorBtn.disabled = false;
-        }
-
-
-    } catch (err) {
-        console.error("Error fetching sensor data:", err);
+    // 🔥 Якщо є тривога — блокуємо кнопку
+    if (isAlert) {
+      doorBtn.textContent = "Недоступно під час тривоги";
+      doorBtn.disabled = true;
+      doorBtn.style.cursor = "not-allowed";
     }
+
+    // 🔥 Оновлюємо стан дверей
+    if (isLocked) {
+      doorElem.textContent = "Зачинено";
+      doorElem.style.color = "#030303ff";
+      lockImg.src = "/assets/img-device/lock.png";
+
+      if (!isAlert) {
+        doorBtn.textContent = "Відчинити двері";
+        doorBtn.disabled = false;
+        doorBtn.style.cursor = "pointer";
+      }
+
+    } else {
+      doorElem.textContent = "Відчинено";
+      doorElem.style.color = "#6BCB77";
+      lockImg.src = "/assets/img-device/unlock.png";
+
+      if (!isAlert) {
+        doorBtn.textContent = "Зачинити двері";
+        doorBtn.disabled = false;
+        doorBtn.style.cursor = "pointer";
+      }
+    }
+
+  } catch (err) {
+    console.error("Error fetching sensor data:", err);
+  }
 }
 
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
+
 
 async function updateDoorStatus(deviceId, doorBtn) {
   if (doorBtn.disabled) return;
@@ -289,20 +297,11 @@ async function updateDoorStatus(deviceId, doorBtn) {
       credentials: 'include'
     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok -> door update");
-    }
+    if (!response.ok) throw new Error("Network response was not ok -> door update");
 
     const json = await response.json();
+    if (!json.success) throw new Error(json.message || "Unknown error");
 
-    if (!json.success) {
-      throw new Error(json.message || "Unknown error");
-    }
-
-    doorBtn.textContent =
-      json.status === "Відчинено"
-        ? "Зачинити двері"
-        : "Відчинити двері";
     await fetchDeviceAlert(deviceId);
 
   } catch (err) {
@@ -312,11 +311,9 @@ async function updateDoorStatus(deviceId, doorBtn) {
   }
 }
 
-
 doorBtn.addEventListener("click", () => {
   updateDoorStatus(deviceId, doorBtn);
 });
-
 
 
 
