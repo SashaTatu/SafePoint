@@ -301,7 +301,7 @@ async function updateDoorStatus(deviceId) {
     const json = await response.json();
     if (!json.success) throw new Error(json.message || "Unknown error");
 
-    await fetchDeviceAlert(deviceId);
+    fetchDeviceAlert(deviceId);
 
   } catch (err) {
     console.error(err);
