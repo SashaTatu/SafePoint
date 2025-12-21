@@ -9,6 +9,8 @@ const acesscontainer = document.querySelector('.alert-container');
 const sensorWrapper = document.querySelector('.sensor-wrapper');
 const Listcontainer = document.querySelector('.list-container');
 const listBtn = document.getElementById('list-btn');
+const doorBtn   = document.getElementById("door-btn");
+
 
 
 sensorBtn.addEventListener('click', () => {
@@ -241,8 +243,7 @@ async function fetchDeviceAlert(deviceId) {
         const alertElem = document.getElementById("alert-status");
         const doorElem  = document.getElementById("door-status");
         const lockImg   = document.getElementById("lock-img");
-        const doorBtn   = document.getElementById("door-btn");
-
+        
         
         alertElem.textContent = AlertData ? "Активна" : "Відсутня";
         alertElem.style.color = AlertData ? "#FF6B6B" : "#6BCB77";
