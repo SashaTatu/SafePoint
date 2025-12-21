@@ -239,7 +239,7 @@ async function fetchDeviceAlert(deviceId) {
     const doorElem  = document.getElementById("door-status");
     const lockImg   = document.getElementById("lock-img");
 
-    const isAlert = Boolean(json.alert);
+    const isAlert  = Boolean(json.alert);
     const isLocked = json.status === "Зачинено";
 
     // 🔥 Статус тривоги
@@ -283,11 +283,13 @@ async function fetchDeviceAlert(deviceId) {
 }
 
 fetchDeviceAlert(deviceId);
-setInterval(() => fetchDeviceAlert(deviceId), 30000);
+setInterval(() => fetchDeviceAlert(deviceId), 120000);
 
 
-async function updateDoorStatus(deviceId, doorBtn) {
+// ================== UPDATE DOOR ==================
+async function updateDoorStatus(deviceId) {
   if (doorBtn.disabled) return;
+
   doorBtn.disabled = true;
 
   try {
@@ -302,18 +304,15 @@ async function updateDoorStatus(deviceId, doorBtn) {
     const json = await response.json();
     if (!json.success) throw new Error(json.message || "Unknown error");
 
+    // після зміни стану — просто перевіряємо актуальний з сервера
     await fetchDeviceAlert(deviceId);
 
   } catch (err) {
     console.error(err);
-  } finally {
-    doorBtn.disabled = false;
   }
 }
 
-doorBtn.addEventListener("click", () => {
-  updateDoorStatus(deviceId, doorBtn);
-});
+doorBtn.addEventListener("click", () => updateDoorStatus(deviceId));
 
 
 
