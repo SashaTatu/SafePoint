@@ -54,7 +54,7 @@ export function startAlarmScheduler() {
         await Device.updateMany(
           { owner: user._id },
           { alert: isAlert },
-          { status: isAlert }
+          { $set: { alert: isAlert, status: isAlert } }
         );
       }
 
