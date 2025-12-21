@@ -278,7 +278,9 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
-async function updateDoorStatus(deviceId) {
+async function updateDoorStatus(deviceId, doorBtn) {
+  if (doorBtn.disabled) return;
+  doorBtn.disabled = true;
 
   try {
     const response = await fetch(`/api/device/${deviceId}/updatedoorstatus`, {
@@ -297,7 +299,6 @@ async function updateDoorStatus(deviceId) {
       throw new Error(json.message || "Unknown error");
     }
 
-    // реальний статус з бекенду
     doorBtn.textContent =
       json.status === "Відчинено"
         ? "Зачинити двері"
@@ -309,6 +310,12 @@ async function updateDoorStatus(deviceId) {
     doorBtn.disabled = false;
   }
 }
+
+
+doorBtn.addEventListener("click", () => {
+  updateDoorStatus(deviceId, doorBtn);
+});
+
 
 
 
