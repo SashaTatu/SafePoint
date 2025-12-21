@@ -241,6 +241,7 @@ async function fetchDeviceAlert(deviceId) {
         const alertElem = document.getElementById("alert-status");
         const doorElem  = document.getElementById("door-status");
         const lockImg   = document.getElementById("lock-img");
+        const doorBtn   = document.getElementById("door-btn");
 
         
         alertElem.textContent = AlertData ? "Активна" : "Відсутня";
@@ -253,10 +254,17 @@ async function fetchDeviceAlert(deviceId) {
           doorElem.textContent = "Відчинено";
           doorElem.style.color = "#6BCB77";
           lockImg.src = "/assets/img-device/unlock.png";
+          doorBtn.textContent = "Зачинити двері";
+          doorBtn.style.cursor = "not-allowed";
+          doorBtn.disabled = true;
+
         } else {
           doorElem.textContent = "Зачинено";
           doorElem.style.color = "#030303ff";
           lockImg.src = "/assets/img-device/lock.png";
+          doorBtn.textContent = "Відчинити двері";
+          doorBtn.style.cursor = "pointer";
+          doorBtn.disabled = false;
         }
 
 
