@@ -231,8 +231,6 @@ async function fetchDeviceAlert(deviceId) {
     if (!response.ok) throw new Error("Network response was not ok -> alert");
 
     const json = await response.json();
-    console.log("ALERT RESPONSE:", json);
-
     if (!json.success) throw new Error(json.message || "Unknown error");
 
     const alertElem = document.getElementById("alert-status");
@@ -242,18 +240,18 @@ async function fetchDeviceAlert(deviceId) {
     const isAlert  = Boolean(json.alert);
     const isLocked = json.status === "Зачинено";
 
-    // 🔥 Статус тривоги
+    // 🔴 Статус тривоги
     alertElem.textContent = isAlert ? "Активна" : "Відсутня";
     alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
 
-    // 🔥 Якщо є тривога — блокуємо кнопку
+    // 🚨 Якщо тривога активна — кнопка НЕДОСТУПНА
     if (isAlert) {
       doorBtn.textContent = "Недоступно під час тривоги";
       doorBtn.disabled = true;
       doorBtn.style.cursor = "not-allowed";
     }
 
-    // 🔥 Оновлюємо стан дверей
+    // 🚪 Стан дверей
     if (isLocked) {
       doorElem.textContent = "Зачинено";
       doorElem.style.color = "#030303ff";
@@ -283,12 +281,11 @@ async function fetchDeviceAlert(deviceId) {
 }
 
 fetchDeviceAlert(deviceId);
-setInterval(() => fetchDeviceAlert(deviceId), 120000);
+setInterval(() => fetchDeviceAlert(deviceId), 120001);
 
 
-// ================== UPDATE DOOR ==================
 async function updateDoorStatus(deviceId) {
-  if (doorBtn.disabled) return;
+  if (doorBtn.disabled) return; // 🛑 додатковий захист
 
   doorBtn.disabled = true;
 
@@ -304,13 +301,13 @@ async function updateDoorStatus(deviceId) {
     const json = await response.json();
     if (!json.success) throw new Error(json.message || "Unknown error");
 
-    // після зміни стану — просто перевіряємо актуальний з сервера
     await fetchDeviceAlert(deviceId);
 
   } catch (err) {
     console.error(err);
   }
 }
+
 
 doorBtn.addEventListener("click", () => updateDoorStatus(deviceId));
 
