@@ -278,7 +278,7 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
-async function updateDoorStatus(deviceId) {
+async function updateDoorStatus(deviceId, doorBtn) {
   if (doorBtn.disabled) return;
 
   doorBtn.disabled = true;
@@ -300,19 +300,19 @@ async function updateDoorStatus(deviceId) {
       throw new Error(json.message || "Unknown error");
     }
 
-    // 👇 ТУТ ВЖЕ Є РЕАЛЬНИЙ СТАТУС З БЕКЕНДУ
-    if (json.status === "Відчинено") {
-      doorBtn.textContent = "Зачинити двері";
-    } else {
-      doorBtn.textContent = "Відчинити двері";
-    }
+    // реальний статус з бекенду
+    doorBtn.textContent =
+      json.status === "Відчинено"
+        ? "Зачинити двері"
+        : "Відчинити двері";
 
   } catch (err) {
     console.error(err);
   } finally {
     doorBtn.disabled = false;
   }
-};
+}
+
 
 
 saveProfileButton.addEventListener('click', async () => {
