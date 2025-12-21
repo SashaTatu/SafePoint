@@ -10,6 +10,7 @@ const sensorWrapper = document.querySelector('.sensor-wrapper');
 const Listcontainer = document.querySelector('.list-container');
 const listBtn = document.getElementById('list-btn');
 const doorBtn   = document.getElementById("door-btn");
+const saveProfileButton = document.getElementById('save-profile');
 
 
 
@@ -277,7 +278,7 @@ async function fetchDeviceAlert(deviceId) {
 fetchDeviceAlert(deviceId);
 setInterval(() => fetchDeviceAlert(deviceId), 30000);
 
-doorBtn.addEventListener('click', async () => {
+async function updateDoorStatus(deviceId) {
   if (doorBtn.disabled) return;
 
   doorBtn.disabled = true;
@@ -311,7 +312,7 @@ doorBtn.addEventListener('click', async () => {
   } finally {
     doorBtn.disabled = false;
   }
-});
+};
 
 
 saveProfileButton.addEventListener('click', async () => {
