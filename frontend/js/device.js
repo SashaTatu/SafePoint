@@ -307,7 +307,7 @@ async function updateDoorStatus(deviceId) {
     console.error(err);
   }
 }
-
+///
 
 doorBtn.addEventListener("click", () => updateDoorStatus(deviceId));
 
