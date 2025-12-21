@@ -312,3 +312,29 @@ doorBtn.addEventListener('click', async () => {
   }
 });
 
+
+saveProfileButton.addEventListener('click', async () => {
+  const name = document.getElementById("name").value.trim();
+  const region = document.getElementById("region").value;
+  try {
+    const res = await fetch(`${API_URL}/api/user/change-info`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, region }),
+      credentials: 'include'
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      alert('✅ Інформацію оновлено успішно');
+      document.getElementById("editModal").style.display = "none";
+      generateAvatar(name);
+    } else {
+      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
+    }
+  } catch (err) {
+    console.error('❌ Помилка запиту:', err);
+    alert('❌ Сервер недоступний або сталася помилка');
+  }
+});
+
