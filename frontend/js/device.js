@@ -252,14 +252,12 @@ async function fetchDeviceAlert(deviceId) {
         if (isLocked === true) {
           doorElem.textContent = "Відчинено";
           doorElem.style.color = "#6BCB77";
+          lockImg.src = "/assets/img-device/unlock.png";
         } else {
           doorElem.textContent = "Зачинено";
           doorElem.style.color = "#030303ff";
+          lockImg.src = "/assets/img-device/lock.png";
         }
-
-        lockImg.src = isLocked
-          ? "/assets/img-device/lock.png"
-          : "/assets/img-device/unlock.png";
 
 
     } catch (err) {
