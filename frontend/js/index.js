@@ -130,7 +130,7 @@ function renderDeviceCards(devices) {
 
 fetchDevices();
 
-setInterval(() => fetchDevices(), 650000);
+setInterval(() => fetchDevices(), 65000);
 
 
 
