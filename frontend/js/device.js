@@ -225,6 +225,38 @@ async function fetchUser() {
   }
 }
 
+let intervalId = null;
+let currentAlertState = null;
+
+async function startSensorPolling(deviceId) {
+  
+  const isAlert = await fetchIsAlert(deviceId);
+
+  
+  if (intervalId && isAlert === currentAlertState) return;
+  currentAlertState = isAlert;
+
+  if (intervalId) clearInterval(intervalId);
+
+  const delay = isAlert ? 30000 : 300000;
+
+  intervalId = setInterval(() => {
+    fetchSensorData(deviceId);
+    checkAlertState(deviceId); 
+  }, delay);
+}
+
+async function checkAlertState(deviceId) {
+  const isAlert = await fetchIsAlert(deviceId);
+
+  if (isAlert !== currentAlertState) {
+    console.log("Alert state changed → rebuilding interval...");
+    startSensorPolling(deviceId); 
+  }
+}
+
+
+
 async function fetchDeviceAlert(deviceId) {
   try {
     const response = await fetch(`/api/device/${deviceId}/isalert`, {

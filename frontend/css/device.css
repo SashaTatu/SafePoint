@@ -162,6 +162,17 @@ header {
   cursor: pointer;
 }
 
+
+.fa-arrow-left {
+  font-size: 24px;
+  color: var(--color-text-light);
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+}
+
 .user-menu {
   position: absolute;
   top: 65px; 
