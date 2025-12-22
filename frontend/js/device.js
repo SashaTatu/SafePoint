@@ -11,6 +11,7 @@ const Listcontainer = document.querySelector('.list-container');
 const listBtn = document.getElementById('list-btn');
 const doorBtn   = document.getElementById("door-btn");
 const saveProfileButton = document.getElementById('save-profile');
+const returnBtn = document.getElementById('return_btn');
 
 
 
@@ -142,7 +143,11 @@ async function fetchSensorData(deviceId) {
 
 fetchSensorData(deviceId);
 
-setInterval(() => fetchSensorData(deviceId), 60000);
+if(isAlert === true){
+  setInterval(() => fetchSensorData(deviceId), 30000);
+} else{
+  setInterval(() => fetchSensorData(deviceId), 300000);
+}
 
 
 avatar.addEventListener('click', () => {
@@ -324,3 +329,6 @@ saveProfileButton.addEventListener('click', async () => {
   }
 });
 
+returnBtn.addEventListener('click', () => {
+  window.location.href = './index.html';
+});

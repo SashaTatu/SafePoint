@@ -77,7 +77,6 @@ async function fetchDevices() {
 
       renderDeviceCards(devices); 
     } else {
-      alert('❌ Помилка: ' + (data.error || data.message || 'Невідома помилка'));
     }
   } catch (err) {
       console.error('❌ Помилка запиту:', err);
@@ -176,7 +175,7 @@ document.getElementById("edit-profile-btn").addEventListener("click", () => {
   document.getElementById("editModal").style.display = "flex";
 });
 
-// Закрити модальне вікно при кліку поза ним
+
 window.addEventListener("click", (e) => {
   const modal = document.getElementById("editModal");
   if (e.target === modal) {
