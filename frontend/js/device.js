@@ -243,8 +243,11 @@ async function fetchDeviceAlert(deviceId) {
     // 🔴 Статус тривоги
     alertElem.textContent = isAlert ? "Активна" : "Відсутня";
     alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
+    // 🚪 Статус дверей
+    doorElem.textContent = isLocked ? "Відчинено" : "Зачинено";
+    doorElem.style.color = isLocked ? "#6BCB77" : "#030303ff";
+    lockImg.src = isLocked ? "/assets/img-device/unlock.png" : "/assets/img-device/lock.png";
 
-    
     if (isAlert) {
       doorBtn.textContent = "Недоступно під час тривоги";
       doorBtn.disabled = true;
