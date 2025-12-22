@@ -246,8 +246,8 @@ async function fetchDeviceAlert(deviceId) {
     doorElem.textContent = isLocked ?  "Відчинено" : "Зачинено";
     doorElem.style.color = isLocked ? "#6BCB77" : "#000000ff";
     lockImg.src = isLocked 
-      ? "/assets/img-device/lock.png" 
-      : "/assets/img-device/unlock.png";
+      ? "/assets/img-device/unlock.png" 
+      : "/assets/img-device/lock.png";
 
     if (isAlert) {
       doorBtn.textContent = "Недоступно під час тривоги";
@@ -256,7 +256,7 @@ async function fetchDeviceAlert(deviceId) {
     } else {
       doorBtn.disabled = false;
       doorBtn.style.cursor = "pointer";
-      doorBtn.textContent = isLocked ? "Відчинити двері" : "Зачинити двері";
+      doorBtn.textContent = isLocked ? "Зачинити двері" : "Відчинити двері";
     }
 
   } catch (err) {
