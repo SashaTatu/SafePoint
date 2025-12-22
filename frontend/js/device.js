@@ -15,6 +15,11 @@ const returnBtn = document.getElementById('return_btn');
 
 
 
+let sensorIntervalId = null;
+let currentAlertState = null;
+
+
+
 sensorBtn.addEventListener('click', () => {
   sensorBtn.classList.toggle('active');
   sensorWrapper.style.display = sensorBtn.classList.contains('active') ? 'flex' : 'none';
@@ -116,19 +121,14 @@ buttons.forEach(btn => {
 async function fetchSensorData(deviceId) {
     try {
         const response = await fetch(`/api/device/${deviceId}/parametersget`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
         });
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
 
         const json = await response.json();
-
-        if (!json.success) {
-            throw new Error(json.message || "Unknown error");
-        }
+        if (!json.success) throw new Error(json.message || "Unknown error");
 
         const sensorData = json.data[0]; 
 
@@ -141,12 +141,15 @@ async function fetchSensorData(deviceId) {
     }
 }
 
-fetchSensorData(deviceId);
+function startSensorPolling(deviceId, isAlert) {
+    if (sensorIntervalId) clearInterval(sensorIntervalId);
 
-if(isAlert === true){
-  setInterval(() => fetchSensorData(deviceId), 30000);
-} else{
-  setInterval(() => fetchSensorData(deviceId), 300000);
+    const delay = isAlert ? 30000 : 300000; // 30с або 5хв
+    console.log(`Polling sensors every ${delay/1000}s`);
+    
+    // Запускаємо відразу один раз і ставимо інтервал
+    fetchSensorData(deviceId);
+    sensorIntervalId = setInterval(() => fetchSensorData(deviceId), delay);
 }
 
 
@@ -225,16 +228,6 @@ async function fetchUser() {
   }
 }
 
-
-
-async function checkAlertState(deviceId) {
-  const isAlert = await fetchIsAlert(deviceId);
-
-  if (isAlert !== currentAlertState) {
-    console.log("Alert state changed → rebuilding interval...");
-    startSensorPolling(deviceId); 
-  }
-}
 
 
 
@@ -342,6 +335,7 @@ saveProfileButton.addEventListener('click', async () => {
   }
 });
 
-returnBtn.addEventListener('click', () => {
-  window.location.href = './index.html';
+returnBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = './index.html';
 });
