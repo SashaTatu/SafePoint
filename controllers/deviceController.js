@@ -19,10 +19,7 @@ export const registerDevice = async (req, res) => {
       return res.status(409).json({ success: false, message: 'Такий ID вже існує' });
     }
 
-    const macexisting = await Device.findOne({ mac: mac.trim() });
-    if (macexisting) {
-      return res.status(409).json({ success: false, message: 'Такий MAC вже існує' });
-    }
+    
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
