@@ -243,8 +243,8 @@ async function fetchDeviceAlert(deviceId) {
     alertElem.textContent = isAlert ? "Активна" : "Відсутня";
     alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
 
-    doorElem.textContent = isLocked ? "Зачинено" : "Відчинено";
-    doorElem.style.color = isLocked ? "#030303ff" : "#6BCB77";
+    doorElem.textContent = isLocked ?  "Відчинено" : "Зачинено";
+    doorElem.style.color = isLocked ? "#6BCB77" : "#000000ff";
     lockImg.src = isLocked 
       ? "/assets/img-device/lock.png" 
       : "/assets/img-device/unlock.png";
