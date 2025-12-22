@@ -240,41 +240,23 @@ async function fetchDeviceAlert(deviceId) {
     const isAlert  = Boolean(json.alert);
     const isLocked = Boolean(json.status);
 
-    // 🔴 Статус тривоги
     alertElem.textContent = isAlert ? "Активна" : "Відсутня";
     alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
-    // 🚪 Статус дверей
-    doorElem.textContent = isLocked ? "Відчинено" : "Зачинено";
-    doorElem.style.color = isLocked ? "#6BCB77" : "#030303ff";
-    lockImg.src = isLocked ? "/assets/img-device/unlock.png" : "/assets/img-device/lock.png";
+
+    doorElem.textContent = isLocked ? "Зачинено" : "Відчинено";
+    doorElem.style.color = isLocked ? "#030303ff" : "#6BCB77";
+    lockImg.src = isLocked 
+      ? "/assets/img-device/lock.png" 
+      : "/assets/img-device/unlock.png";
 
     if (isAlert) {
       doorBtn.textContent = "Недоступно під час тривоги";
       doorBtn.disabled = true;
       doorBtn.style.cursor = "not-allowed";
-    }
-
-    if (isLocked) {
-      doorElem.textContent = "Зачинено";
-      doorElem.style.color = "#030303ff";
-      lockImg.src = "/assets/img-device/lock.png";
-
-      if (!isAlert) {
-        doorBtn.textContent = "Відчинити двері";
-        doorBtn.disabled = false;
-        doorBtn.style.cursor = "pointer";
-      }
-
     } else {
-      doorElem.textContent = "Відчинено";
-      doorElem.style.color = "#6BCB77";
-      lockImg.src = "/assets/img-device/unlock.png";
-
-      if (!isAlert) {
-        doorBtn.textContent = "Зачинити двері";
-        doorBtn.disabled = false;
-        doorBtn.style.cursor = "pointer";
-      }
+      doorBtn.disabled = false;
+      doorBtn.style.cursor = "pointer";
+      doorBtn.textContent = isLocked ? "Відчинити двері" : "Зачинити двері";
     }
 
   } catch (err) {
