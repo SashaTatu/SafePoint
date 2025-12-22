@@ -11,9 +11,6 @@ export const registerDevice = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Некоректний deviceId' });
   }
 
-  if (!mac || typeof mac !== 'string' || !mac.trim()) {
-    return res.status(400).json({ success: false, message: 'Некоректний MAC' });
-  }
 
 
   try {
@@ -29,8 +26,7 @@ export const registerDevice = async (req, res) => {
 
     const newDevice = new Device({
       deviceId: deviceId.trim(),
-      mac: mac.trim(),
-      status: 'pending'
+      status: false
     });
 
     await newDevice.save();
@@ -40,9 +36,6 @@ export const registerDevice = async (req, res) => {
       message: 'Пристрій ESP32 зареєстровано',
       data: {
         deviceId: newDevice.deviceId,
-        mac: newDevice.mac,
-        ssid: newDevice.ssid,
-        wifipassword: newDevice.wifipassword,
         status: newDevice.status
       }
     });

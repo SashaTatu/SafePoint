@@ -309,7 +309,7 @@ async function updateDoorStatus(deviceId) {
 }
 ///
 
-doorBtn.addEventListener("click", () => updateDoorStatus(deviceId));
+doorBtn.addEventListener("click", () => updateDoorStatus(deviceId, doorBtn));
 
 
 

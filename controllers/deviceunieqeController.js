@@ -20,10 +20,10 @@ export const GetDeviceById = async (req, res) => {
 
 export const deviceParameterPost = async (req, res) => {
   const { deviceId } = req.params;
-  const { temperature, humidity } = req.body;
+  const { temperature, humidity, co2 } = req.body;
 
-  if (temperature === undefined || humidity === undefined) {
-    return res.status(400).json({ success: false, message: "Missing temperature or humidity" });
+  if (temperature === undefined || humidity === undefined || co2 === undefined) {
+    return res.status(400).json({ success: false, message: "Missing temperature or humidity or co2" });
   }
 
   try {
@@ -35,6 +35,7 @@ export const deviceParameterPost = async (req, res) => {
     // Змінено на правильні поля
     device.temperature = temperature;
     device.humidity = humidity;
+    device.co2 = co2;
     device.updatedAt = new Date();
 
     await device.save();
