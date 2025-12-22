@@ -259,6 +259,8 @@ async function fetchDeviceAlert(deviceId) {
       doorBtn.textContent = isLocked ? "Зачинити двері" : "Відчинити двері";
     }
 
+    fetchDeviceAlert(deviceId);
+
   } catch (err) {
     console.error("Error fetching sensor data:", err);
   }
