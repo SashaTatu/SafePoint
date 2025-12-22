@@ -106,7 +106,7 @@ export const deleteDevice = async (req, res) => {
     }
 
     device.owner = null;
-    device.status = 'pending';
+    device.status = false;
     device.address = ''; 
 
     await device.save();
