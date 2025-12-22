@@ -335,7 +335,7 @@ saveProfileButton.addEventListener('click', async () => {
   }
 });
 
-returnBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = './index.html';
+returnBtn.addEventListener('click', () => {
+    // Використовуємо origin, щоб автоматично підставити домен
+    window.location.href = window.location.origin + '/index.html';
 });
