@@ -238,20 +238,19 @@ async function fetchDeviceAlert(deviceId) {
     const lockImg   = document.getElementById("lock-img");
 
     const isAlert  = Boolean(json.alert);
-    const isLocked = json.status === "Зачинено";
+    const isLocked = Boolean(json.status);
 
     // 🔴 Статус тривоги
     alertElem.textContent = isAlert ? "Активна" : "Відсутня";
     alertElem.style.color = isAlert ? "#FF6B6B" : "#6BCB77";
 
-    // 🚨 Якщо тривога активна — кнопка НЕДОСТУПНА
+    
     if (isAlert) {
       doorBtn.textContent = "Недоступно під час тривоги";
       doorBtn.disabled = true;
       doorBtn.style.cursor = "not-allowed";
     }
 
-    // 🚪 Стан дверей
     if (isLocked) {
       doorElem.textContent = "Зачинено";
       doorElem.style.color = "#030303ff";
@@ -285,7 +284,7 @@ setInterval(() => fetchDeviceAlert(deviceId), 120001);
 
 
 async function updateDoorStatus(deviceId) {
-  if (doorBtn.disabled) return; // 🛑 додатковий захист
+  if (doorBtn.disabled) return; 
 
   doorBtn.disabled = true;
 
