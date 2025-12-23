@@ -143,11 +143,12 @@ function startSensorPolling(deviceId, isAlert) {
     const delay = isAlert ? 30000 : 60000;
     console.log(`Polling sensors every ${delay/1000}s`);
     
-    // Запускаємо відразу один раз і ставимо інтервал
+
     fetchSensorData(deviceId);
     sensorIntervalId = setInterval(() => fetchSensorData(deviceId), delay);
 }
 
+startSensorPolling(deviceId, false); // Початковий виклик з isAlert = false
 
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
