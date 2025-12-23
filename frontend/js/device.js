@@ -88,10 +88,6 @@ const buttons = document.querySelectorAll(".footer-nav .nav-btn");
 const activeBg = document.querySelector(".footer-nav .active-bg");
 
 
-fetchSensorData(deviceId);
-
-setInterval(() => fetchSensorData(deviceId), 60000);
-
 
 
 
@@ -144,7 +140,7 @@ async function fetchSensorData(deviceId) {
 function startSensorPolling(deviceId, isAlert) {
     if (sensorIntervalId) clearInterval(sensorIntervalId);
 
-    const delay = isAlert ? 30000 : 300000; // 30с або 5хв
+    const delay = isAlert ? 30000 : 60000;
     console.log(`Polling sensors every ${delay/1000}s`);
     
     // Запускаємо відразу один раз і ставимо інтервал
