@@ -49,6 +49,39 @@ closeForgot.addEventListener('click', () => {
 
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+
+  const overlay = document.getElementById('pushOverlay');
+  const allowBtn = document.getElementById('allow');
+  const denyBtn = document.getElementById('deny');
+
+  if (
+    'Notification' in window &&
+    Notification.permission === 'default' &&
+    !localStorage.getItem('pushAsked')
+  ) {
+    overlay.hidden = false;
+  }
+
+  allowBtn.addEventListener('click', async () => {
+    overlay.hidden = true;
+    localStorage.setItem('pushAsked', 'true');
+
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      // функція з app.js
+      window.subscribeUser();
+    }
+  });
+
+  denyBtn.addEventListener('click', () => {
+    overlay.hidden = true;
+    localStorage.setItem('pushAsked', 'true');
+  });
+});
 
 const inputs = document.querySelectorAll('.code-box');
 
