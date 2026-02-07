@@ -18,12 +18,18 @@
             <i class="ri-moon-line moon"></i>
         </label>
         <div class="overlay"></div>
-        <div id="pushModal" hidden>
-            <p>🔔 Увімкнути сповіщення?</p>
-            <button id="allow">Дозволити</button>
-            <button id="deny">Пізніше</button>
-        </div>
+        <div id="pushOverlay" class="Overlay" hidden>
+            <div id="pushModal" class="modal">
+                <div class="icon">🔔</div>
+                <h3>Увімкнути сповіщення?</h3>
+                <p>Ми будемо надсилати лише важливі повідомлення</p>
 
+                <div class="actions">
+                    <button id="allow" class="btn primary">Дозволити</button>
+                    <button id="deny" class="btn secondary">Пізніше</button>
+                </div>
+            </div>
+        </div>
     </header>
     <main>
         <div class="login-container" id="login-form">
