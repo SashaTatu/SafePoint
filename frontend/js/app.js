@@ -1,4 +1,4 @@
-const publicKey = process.env.publicKey;
+const publicKey = 'BErJ7Fht80zeUpxYZu54CoOTol6ujZoPlEPwmY_yv5bEo6Ut5O1th6R3q1rMkO6PLaF2yOrNqSYvKucvzpyW-Po';
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
