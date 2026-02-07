@@ -19,9 +19,9 @@ const loginForm = document.getElementById('login-form');
   const resetPasswordForm = document.getElementById('reset-password-form');
   const newPassword = document.getElementById('newpassword');
   const confirmPassword = document.getElementById('confirm');
-  const modal = document.getElementById('pushModal');
-  const allowBtn = document.getElementById('allowBtn');
-
+  const overlay = document.getElementById('pushOverlay');
+  const allowBtn = document.getElementById('allow');
+  const denyBtn = document.getElementById('deny');
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
 
@@ -49,31 +49,42 @@ closeForgot.addEventListener('click', () => {
 
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.register('/sw.js');
   }
 
-  const overlay = document.getElementById('pushOverlay');
-  const allowBtn = document.getElementById('allow');
-  const denyBtn = document.getElementById('deny');
+  // Перевіряємо, чи вже є підписка
+  let alreadySubscribed = false;
+  if ('serviceWorker' in navigator) {
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) {
+      alreadySubscribed = true;
+    }
+  }
 
   if (
     'Notification' in window &&
     Notification.permission === 'default' &&
+    !alreadySubscribed &&
     !localStorage.getItem('pushAsked')
   ) {
     overlay.hidden = false;
   }
 
   allowBtn.addEventListener('click', async () => {
+    // Ховаємо одразу
     overlay.hidden = true;
     localStorage.setItem('pushAsked', 'true');
 
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      // функція з app.js
-      window.subscribeUser();
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        await window.subscribeUser();
+      }
+    } catch (e) {
+      console.error('Push subscribe error:', e);
     }
   });
 
@@ -82,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('pushAsked', 'true');
   });
 });
+
 
 const inputs = document.querySelectorAll('.code-box');
 
