@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await navigator.serviceWorker.register('/sw.js');
   }
 
-  // Перевіряємо, чи вже є підписка
   let alreadySubscribed = false;
+
   if ('serviceWorker' in navigator) {
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription();
@@ -67,16 +67,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (
     'Notification' in window &&
     Notification.permission === 'default' &&
-    !alreadySubscribed &&
-    !localStorage.getItem('pushAsked')
+    !alreadySubscribed
   ) {
     overlay.hidden = false;
+  } else {
+    overlay.hidden = true; // <- важливо
   }
 
   allowBtn.addEventListener('click', async () => {
-    // Ховаємо одразу
     overlay.hidden = true;
-    localStorage.setItem('pushAsked', 'true');
 
     try {
       const permission = await Notification.requestPermission();
@@ -84,15 +83,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         await window.subscribeUser();
       }
     } catch (e) {
-      console.error('Push subscribe error:', e);
+      console.error('Subscribe error:', e);
     }
   });
 
   denyBtn.addEventListener('click', () => {
     overlay.hidden = true;
-    localStorage.setItem('pushAsked', 'true');
   });
 });
+
 
 
 const inputs = document.querySelectorAll('.code-box');
