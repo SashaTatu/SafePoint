@@ -19,7 +19,8 @@ const loginForm = document.getElementById('login-form');
   const resetPasswordForm = document.getElementById('reset-password-form');
   const newPassword = document.getElementById('newpassword');
   const confirmPassword = document.getElementById('confirm');
-  
+  const modal = document.getElementById('pushModal');
+  const allowBtn = document.getElementById('allowBtn');
 
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
