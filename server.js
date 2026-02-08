@@ -11,7 +11,7 @@ import deviceRoutes from './routes/deviceRouter.js';
 import deviceunieqeRouter from './routes/deviceunieqeRouter.js';
 import dotenv from "dotenv";
 import { startAlarmScheduler } from "./scheduler/alarmScheduler.js";
-import webpush from 'web-push';
+import subRouter from './routes/subRouter.js';
 
 dotenv.config();
 
@@ -40,30 +40,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/assets', express.static('assets'));
 
-const subscriptions = [];
-
-const publicKey = process.env.publicKey;
-const privateKey = process.env.privateKey;
 
 
-app.post('/subscribe', (req, res) => {
-  subscriptions.push(req.body);
-  res.sendStatus(201);
-});
 
-// тестовий push
-app.get('/send', () => {
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(
-      sub,
-      JSON.stringify({
-        title: '🚨 Увага',
-        body: 'Тестове повідомлення',
-        url: '/'
-      })
-    );
-  });
-});
+
+app.use('/api/subscribe', subRouter);
+
+
+
 
 
 const __filename = fileURLToPath(import.meta.url);

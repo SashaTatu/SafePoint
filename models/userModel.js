@@ -14,7 +14,15 @@ const userSchema = new mongoose.Schema({
     verifyOtpExpireAt: {type: Number, default: 0},
     isAccountVerified: {type: Boolean, default: false},
     resetOtp: { type: String, default: ''},
-    resetOtpExpireAt: { type: Number, default: 0 }
+    resetOtpExpireAt: { type: Number, default: 0 },
+    subscribeUser: {
+        endpoint: { type: String },
+        keys: {
+            p256dh: { type: String },
+            auth: { type: String }
+        }
+    }
+
 })
 
 const User = mongoose.models.user || mongoose.model('User', userSchema);

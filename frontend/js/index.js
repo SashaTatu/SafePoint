@@ -13,6 +13,9 @@ const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
 const saveProfileButton = document.getElementById('save-profile');
+const overlay = document.getElementById('pushOverlay');
+const allowBtn = document.getElementById('allow');
+const denyBtn = document.getElementById('deny');
 
   const API_URL =  "https://safepoint-bei0.onrender.com";
 
@@ -156,6 +159,49 @@ async function fetchUser() {
   }
 }
 
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if ('serviceWorker' in navigator) {
+    await navigator.serviceWorker.register('/sw.js');
+  }
+
+  let alreadySubscribed = false;
+
+  if ('serviceWorker' in navigator) {
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) {
+      alreadySubscribed = true;
+    }
+  }
+
+  if (
+    'Notification' in window &&
+    Notification.permission === 'default' &&
+    !alreadySubscribed
+  ) {
+    overlay.hidden = false;
+  } else {
+    overlay.hidden = true; // <- важливо
+  }
+
+  allowBtn.addEventListener('click', async () => {
+    overlay.hidden = true;
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        await window.subscribeUser();
+      }
+    } catch (e) {
+      console.error('Subscribe error:', e);
+    }
+  });
+
+  denyBtn.addEventListener('click', () => {
+    overlay.hidden = true;
+  });
+});
 
 
 
