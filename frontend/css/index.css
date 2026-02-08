@@ -220,6 +220,7 @@ header {
 .Overlay {
   position: fixed;
   inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* ← ОЦЕ ГОЛОВНЕ */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -227,9 +228,15 @@ header {
 }
 
 .modal {
-  position: relative;
-  z-index: 1000000;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 22px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: scaleIn 0.25s ease;
 }
+
 
 .modal .icon {
     font-size: 40px;
