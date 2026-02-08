@@ -1,4 +1,3 @@
-const API_URL = "https://safepoint-bei0.onrender.com/api/subscribe/";
 
 const publicKey = 'BErJ7Fht80zeUpxYZu54CoOTol6ujZoPlEPwmY_yv5bEo6Ut5O1th6R3q1rMkO6PLaF2yOrNqSYvKucvzpyW-Po';
 

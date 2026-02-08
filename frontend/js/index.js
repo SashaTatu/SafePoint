@@ -17,7 +17,7 @@ const overlay = document.getElementById('pushOverlay');
 const allowBtn = document.getElementById('allow');
 const denyBtn = document.getElementById('deny');
 
-  const API_URL =  "https://safepoint-bei0.onrender.com";
+window.API_URL =  "https://safepoint-bei0.onrender.com";
 
 let devices =[]
 
