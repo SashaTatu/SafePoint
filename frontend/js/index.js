@@ -161,6 +161,10 @@ async function fetchUser() {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const overlay = document.getElementById('pushOverlay');
+  const allowBtn = document.getElementById('allow');
+  const denyBtn = document.getElementById('deny');
+
   if ('serviceWorker' in navigator) {
     await navigator.serviceWorker.register('/sw.js');
   }
@@ -182,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ) {
     overlay.hidden = false;
   } else {
-    overlay.hidden = true; // <- важливо
+    overlay.hidden = true;
   }
 
   allowBtn.addEventListener('click', async () => {
@@ -202,6 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     overlay.hidden = true;
   });
 });
+
 
 
 
