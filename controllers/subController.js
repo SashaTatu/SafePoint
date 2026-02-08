@@ -1,3 +1,4 @@
+import e from 'express';
 import userModel from '../models/userModel.js';
 
 export const createSubscription = (async (req, res) => {
@@ -10,3 +11,5 @@ export const createSubscription = (async (req, res) => {
 
   res.sendStatus(201);
 });
+
+export default createSubscription;
