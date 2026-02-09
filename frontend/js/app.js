@@ -1,4 +1,5 @@
 
+
 const publicKey = 'BErJ7Fht80zeUpxYZu54CoOTol6ujZoPlEPwmY_yv5bEo6Ut5O1th6R3q1rMkO6PLaF2yOrNqSYvKucvzpyW-Po';
 
 async function subscribeUser() {
@@ -32,10 +33,12 @@ async function subscribeUser() {
       ? subscription.toJSON()
       : subscription;
 
-    await fetch(`${API_URL}/api/subscribe`, {
+    // Оновлений блок fetch
+    await fetch(`${API_URL}/api/subscribe/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': localStorage.getItem('token') // Або той ключ, який ви використовуєте для збереження токена
       },
       credentials: 'include',
       body: JSON.stringify(payload)
