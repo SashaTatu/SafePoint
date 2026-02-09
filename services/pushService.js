@@ -1,7 +1,7 @@
 import webpush from 'web-push';
 
-const publicKey = process.env.VAPID_PUBLIC_KEY;
-const privateKey = process.env.VAPID_PRIVATE_KEY;
+const publicKey = process.env.publicKey;
+const privateKey = process.env.privateKey;
 
 if (!publicKey || !privateKey) {
   console.error('❌ Помилка: VAPID ключі не знайдені в process.env!');
