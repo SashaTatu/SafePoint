@@ -43,7 +43,7 @@ export function startAlarmScheduler() {
         await Device.updateMany({ owner: user._id }, { $set: { alert: isAlertNow, status: isAlertNow } });
 
         // 2. Відправка Push-повідомлення
-        if (user.subscription && user.subscription.endpoint) {
+        if (user.subscribeUser && user.subscribeUser.endpoint) {
           const payload = {
             title: isAlertNow ? "🔴 ПОВІТРЯНА ТРИВОГА!" : "🟢 ВІДБІЙ ТРИВОГИ",
             body: isAlertNow 
@@ -55,7 +55,7 @@ export function startAlarmScheduler() {
           };
 
           // Викликаємо функцію відправки (не чекаємо на await, щоб не гальмувати цикл)
-          sendNotification(user.subscription, payload).catch(err => 
+          sendNotification(user.subscribeUser, payload).catch(err => 
             console.error(`Помилка Push для ${user._id}:`, err)
           );
         }
