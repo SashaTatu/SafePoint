@@ -1,9 +1,8 @@
-import Device from '../models/deviceModel.js';
 import mongoose from 'mongoose';
 import jwt from "jsonwebtoken";
 import User from '../models/userModel.js';
-import { sendNotification } from '../services/pushService.js';
-
+import Device from '../models/deviceModel.js';
+import { sendAndSaveNotification } from '../services/pushService.js';
 
 export const GetDeviceById = async (req, res) => {
   const { deviceId } = req.params;
@@ -50,10 +49,6 @@ export const deviceParameterPost = async (req, res) => {
   }
 };
 
-
-import User from '../models/userModel.js';
-import Device from '../models/deviceModel.js';
-import { sendAndSaveNotification } from '../services/pushService.js';
 
 export const deviceParameterGet = async (req, res) => {
     const { deviceId } = req.params;
