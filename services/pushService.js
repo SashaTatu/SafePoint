@@ -1,11 +1,18 @@
 import webpush from 'web-push';
 
-// Ключі треба згенерувати один раз (web-push generate-vapid-keys)
-webpush.setVapidDetails(
-  'mailto:your-email@example.com',
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+const publicKey = process.env.VAPID_PUBLIC_KEY;
+const privateKey = process.env.VAPID_PRIVATE_KEY;
+
+if (!publicKey || !privateKey) {
+  console.error('❌ Помилка: VAPID ключі не знайдені в process.env!');
+} else {
+  webpush.setVapidDetails(
+    'mailto:your-email@example.com',
+    publicKey,
+    privateKey
+  );
+  console.log('✅ Web-Push успішно налаштовано');
+}
 
 export async function sendNotification(subscription, payload) {
   try {

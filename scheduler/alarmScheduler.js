@@ -2,7 +2,8 @@ import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
 import checkRegionAlarm from '../services/alarmChecker.js';
 import districtUID from '../config/DistrictUID.js';
-import { sendNotification } from '../services/pushService.js'; 
+import { sendNotification } from '../services/pushService.js';
+import 'dotenv/config'; 
 
 export function startAlarmScheduler() {
   setInterval(async () => {
