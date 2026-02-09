@@ -55,7 +55,8 @@ export function startAlarmScheduler() {
               console.error(`Помилка пуша для ${user.name}:`, err.statusCode);
             });
           }
-
+          
+  
           // Оновлюємо базу тільки після того, як визначили зміну
           await User.updateOne({ _id: user._id }, { alert: isAlertCurrently });
           
@@ -68,5 +69,5 @@ export function startAlarmScheduler() {
     } catch (error) {
       console.error("❌ Scheduler error:", error);
     }
-  }, 120_000); // 2 хвилини
+  }, 60_000); // 2 хвилини
 }
