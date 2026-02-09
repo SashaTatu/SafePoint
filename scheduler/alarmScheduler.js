@@ -2,7 +2,8 @@ import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
 import checkRegionAlarm from '../services/alarmChecker.js';
 import districtUID from '../config/DistrictUID.js';
-import { sendNotification } from '../services/pushService.js';
+// ✅ Змінено імпорт на правильну функцію
+import { sendAndSaveNotification } from '../services/pushService.js'; 
 import 'dotenv/config';
 
 export function startAlarmScheduler() {
@@ -32,7 +33,6 @@ export function startAlarmScheduler() {
 
       console.log(`📊 Активні регіони (UID): ${activeRegionUids.size > 0 ? Array.from(activeRegionUids).join(', ') : 'Немає'}`);
 
-      // Знаходимо всіх користувачів, які мають UID (територіальну прив'язку)
       const users = await User.find(
         { uid: { $exists: true, $ne: null } },
         { uid: 1, alert: 1, subscribeUser: 1 }
@@ -46,18 +46,17 @@ export function startAlarmScheduler() {
       for (const user of users) {
         const isAlertNow = activeRegionUids.has(user.uid);
 
-        // Якщо статус не змінився — нічого не робимо
         if (user.alert === isAlertNow) continue;
 
         updatedCount++;
         const statusText = isAlertNow ? "🔴 ТРИВОГА" : "🟢 ВІДБІЙ";
         console.log(`🔔 [UID: ${user.uid}] Зміна статусу: ${user.alert} -> ${isAlertNow} (${statusText})`);
 
-        // 1. Оновлюємо статус в БД синхронно для цього юзера
+        // 1. Оновлюємо статус в БД
         await User.updateOne({ _id: user._id }, { alert: isAlertNow });
         await Device.updateMany({ owner: user._id }, { $set: { alert: isAlertNow, status: isAlertNow } });
 
-        // 2. Відправка Push-повідомлення
+        // 2. Відправка Push та збереження в історію
         if (user.subscribeUser && user.subscribeUser.endpoint) {
           const payload = {
             title: isAlertNow ? "🔴 ПОВІТРЯНА ТРИВОГА!" : "🟢 ВІДБІЙ ТРИВОГИ",
@@ -70,10 +69,8 @@ export function startAlarmScheduler() {
             data: { url: "/" } 
           };
 
-          sendNotification(user.subscribeUser, payload)
-            .then(() => {
-              // console.log(`✅ Push доставлено для ${user._id}`);
-            })
+          // Викликаємо без await, щоб не блокувати цикл для інших юзерів
+          sendAndSaveNotification(user, payload, 'alert')
             .catch(err => {
               console.error(`❌ Помилка Push для юзера ${user._id}:`, err.message);
             });
@@ -85,7 +82,7 @@ export function startAlarmScheduler() {
       }
 
       const duration = Date.now() - startTime;
-      console.log(`✅ Цикл завершено за ${duration}ms. Оновлено статусів: ${updatedCount}, Відправлено Push: ${pushSentCount}`);
+      console.log(`✅ Цикл завершено за ${duration}ms. Оновлено: ${updatedCount}, Push: ${pushSentCount}`);
       
     } catch (error) {
       console.error("❌ КРИТИЧНА ПОМИЛКА ШЕДУЛЕРА:", error);

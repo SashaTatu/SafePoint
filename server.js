@@ -12,6 +12,7 @@ import deviceunieqeRouter from './routes/deviceunieqeRouter.js';
 import dotenv from "dotenv";
 import { startAlarmScheduler } from "./scheduler/alarmScheduler.js";
 import subRouter from './routes/subRouter.js';
+import NotificationRouter from './routes/notificationRouter.js';
 
 dotenv.config();
 
@@ -46,6 +47,8 @@ app.use('/assets', express.static('assets'));
 
 app.use('/api/subscribe', subRouter);
 
+
+app.use('/api/notifications', NotificationRouter);
 
 
 
