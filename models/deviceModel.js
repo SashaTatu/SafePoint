@@ -10,7 +10,12 @@ const deviceSchema = new mongoose.Schema({
   temperature: { type: Number, default: 0 },
   humidity: { type: Number, default: 0 },
   co2: { type: Number, default: 0 },
-  address: { type: String, default: '' }
+  address: { type: String, default: '' },
+  lastAlerts: {
+    temperature: { type: Date, default: 0 },
+    co2: { type: Date, default: 0 },
+    humidity: { type: Date, default: 0 }
+  }
 });
 
 const Device = mongoose.models.device || mongoose.model('Device', deviceSchema);

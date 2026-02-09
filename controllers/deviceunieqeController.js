@@ -51,30 +51,36 @@ export const deviceParameterPost = async (req, res) => {
 };
 
 
-
 export const deviceParameterGet = async (req, res) => {
     const { deviceId } = req.params;
+    const ALERT_INTERVAL = 10 * 60 * 1000; // 10 хвилин у мілісекундах
 
     try {
         const device = await Device.findOne({ deviceId });
-        if (!device) {
-            return res.status(404).json({ success: false, message: "Device not found" });
-        }
+        if (!device) return res.status(404).json({ success: false });
 
         const owner = await User.findById(device.owner);
+        const now = Date.now();
 
-        // Якщо у власника є активна підписка
-        if (owner && owner.subscribeUser && owner.subscribeUser.endpoint) {
+        if (owner && owner.subscribeUser?.endpoint) {
             
-            // Функція-помічник для відправки конкретного алерта
-            const triggerAlert = (title, body, icon, tag) => {
-                sendNotification(owner.subscribeUser, {
-                    title,
-                    body,
-                    icon,
-                    tag, // Унікальний тег для кожного типу (temp/humi/co2)
-                    data: { url: `/device/${deviceId}` }
-                }).catch(err => console.error(`❌ Push error [${tag}]:`, err.message));
+            // Функція обгортка з перевіркою часу
+            const sendCategorizedAlert = async (type, title, body, icon) => {
+                const lastSent = device.lastAlerts?.[type] || 0;
+                
+                if (now - new Date(lastSent).getTime() > ALERT_INTERVAL) {
+                    await sendNotification(owner.subscribeUser, {
+                        title, body, icon, tag: `alert-${type}`,
+                        data: { url: `/device/${deviceId}` }
+                    });
+
+                    // Оновлюємо час останньої відправки тільки для цього типу
+                    await Device.updateOne(
+                        { _id: device._id },
+                        { [`lastAlerts.${type}`]: new Date() }
+                    );
+                    console.log(`✅ Відправлено сповіщення про ${type}`);
+                }
             };
 
             // 1. Перевірка Температури
@@ -124,16 +130,12 @@ export const deviceParameterGet = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            data: [{
-                temperature: device.temperature,
-                humidity: device.humidity,
-                co2: device.co2
-            }]
+            data: [{ temperature: device.temperature, humidity: device.humidity, co2: device.co2 }]
         });
 
     } catch (error) {
         console.error('❌ Помилка:', error);
-        return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
+        return res.status(500).json({ success: false });
     }
 };
 
