@@ -14,13 +14,12 @@ const userSchema = new mongoose.Schema({
     resetOtp: { type: String, default: ''},
     resetOtpExpireAt: { type: Number, default: 0 },
     subscribeUser: {
-        endpoint: { type: String },
+        endpoint: { type: String, default: "" },
         keys: {
-            p256dh: { type: String },
-            auth: { type: String }
+            p256dh: { type: String, default: "" },
+            auth: { type: String, default: "" }
         }
     }
-
 })
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

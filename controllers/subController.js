@@ -3,19 +3,32 @@ import userModel from '../models/userModel.js';
 export const createSubscription = async (req, res) => {
   try {
     const sub = req.body;
-    const userId = req?.user?.id;
+    const userId = req.userId; // Або req.user.id, залежно від вашого middleware
 
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+    if (!sub || !sub.endpoint) {
+        return res.status(400).json({ message: 'Invalid subscription data' });
+    }
 
     const updated = await userModel.findByIdAndUpdate(
       userId,
-      { $set: { subscribeUser: sub } },
+      { 
+        $set: { 
+          subscribeUser: {
+            endpoint: sub.endpoint,
+            keys: {
+              p256dh: sub.keys?.p256dh,
+              auth: sub.keys?.auth
+            }
+          },
+          alert: true // Автоматично вмикаємо сповіщення
+        } 
+      },
       { new: true, runValidators: true }
     );
 
     if (!updated) return res.status(404).json({ message: 'User not found' });
 
-    return res.sendStatus(201);
+    return res.status(201).json({ success: true, data: updated.subscribeUser });
   } catch (err) {
     console.error('createSubscription error:', err);
     return res.status(500).json({ message: 'Internal server error' });
