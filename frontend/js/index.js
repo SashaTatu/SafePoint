@@ -13,13 +13,9 @@ const menu = document.getElementById('user-menu');
 const logoutBtn = document.getElementById('logout-btn');
 const nextButton = document.getElementById('nextButton');
 const saveProfileButton = document.getElementById('save-profile');
-const overlay = document.getElementById('pushOverlay');
-const allowBtn = document.getElementById('allow');
-const denyBtn = document.getElementById('deny');
+window.API_URL = "https://safepoint-bei0.onrender.com";
 
-window.API_URL =  "https://safepoint-bei0.onrender.com";
-
-let devices =[]
+let devices = [];
 
 
 async function UserNameGet() {
@@ -113,7 +109,7 @@ function renderDeviceCards(devices) {
           <h3>Укриття</h3>
           <p>${device.deviceId}</p>
         </div>
-        <i class="fas fa-bars" id="delete_btn" data-toggle="tooltip" title="Видалити пристрій"></i>
+          <i class="fas fa-bars delete-btn" data-deviceid="${device.deviceId}" data-toggle="tooltip" title="Видалити пристрій"></i>
       </div>
 
       <div class="shelter-body">
@@ -195,7 +191,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
-        await window.subscribeUser();
+        if (typeof window.subscribeUser === 'function') {
+          await window.subscribeUser();
+        } else {
+          console.warn('subscribeUser not defined on window');
+        }
       }
     } catch (e) {
       console.error('Subscribe error:', e);
@@ -337,7 +337,10 @@ deviceForm.addEventListener('submit', async (e) => {
 
 
 document.addEventListener('click', (e) => {
-  if (e.target.matches('#delete_btn')) {
+  if (e.target.matches('.delete-btn')) {
+    const deviceId = e.target.dataset.deviceid;
+    const deleteInput = document.getElementById('delete-device-id');
+    if (deleteInput) deleteInput.value = deviceId || '';
     deleteContainer.style.display = 'flex';
   }
 });

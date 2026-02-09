@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import pkg from 'jsonwebtoken';
-
-const { verify, sign } = pkg;
+// jsonwebtoken not used here — removed unused import
 
 const userSchema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -25,6 +23,6 @@ const userSchema = new mongoose.Schema({
 
 })
 
-const User = mongoose.models.user || mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;
