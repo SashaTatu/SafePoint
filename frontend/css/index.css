@@ -213,7 +213,6 @@ header {
   display: none !important;
   opacity: 0;
   pointer-events: none;
-  display: none;
 }
 
 
@@ -227,7 +226,7 @@ header {
   z-index: 999999;
 }
 
-.modal {
+.modal-subscribe {
   background: #fff;
   border-radius: 16px;
   padding: 24px 22px;
@@ -238,17 +237,17 @@ header {
 }
 
 
-.modal .icon {
+.modal-subscribe .icon {
     font-size: 40px;
     margin-bottom: 10px;
 }
 
-.modal h3 {
+.modal-subscribe h3 {
     margin: 0 0 8px;
     font-size: 20px;
 }
 
-.modal p {
+.modal-subscribe p {
     margin: 0 0 20px;
     font-size: 14px;
     color: #666;
@@ -286,12 +285,12 @@ header {
 }
 
 /* animations */
-@keyframes fadeIn {
+@keyframes fadeIn-subscribe {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-@keyframes scaleIn {
+@keyframes scaleIn-subscribe {
     from { transform: scale(0.9); }
     to { transform: scale(1); }
 }
