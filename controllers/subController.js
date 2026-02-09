@@ -19,8 +19,7 @@ export const createSubscription = async (req, res) => {
               p256dh: sub.keys?.p256dh,
               auth: sub.keys?.auth
             }
-          },
-          alert: true // Автоматично вмикаємо сповіщення
+          }
         } 
       },
       { new: true, runValidators: true }

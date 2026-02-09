@@ -3,15 +3,22 @@ import Device from '../models/deviceModel.js';
 import checkRegionAlarm from '../services/alarmChecker.js';
 import districtUID from '../config/DistrictUID.js';
 import { sendNotification } from '../services/pushService.js';
-import 'dotenv/config'; 
+import 'dotenv/config';
 
 export function startAlarmScheduler() {
+  console.log("🚀 Scheduler ініціалізовано. Перевірка кожні 120с.");
+
   setInterval(async () => {
-    console.log("🔄 Перевірка тривог...");
+    const startTime = Date.now();
+    console.log(`\n--- 🔄 Цикл перевірки розпочато: ${new Date().toLocaleTimeString()} ---`);
 
     try {
       const alarms = await checkRegionAlarm();
-      if (!Array.isArray(alarms)) return;
+      
+      if (!Array.isArray(alarms)) {
+        console.error("❌ Помилка: API тривог повернуло не масив.");
+        return;
+      }
 
       const activeRegionUids = new Set();
       for (const alarm of alarms) {
@@ -23,23 +30,31 @@ export function startAlarmScheduler() {
         }
       }
 
-      // Отримуємо юзерів з підпискою
+      console.log(`📊 Активні регіони (UID): ${activeRegionUids.size > 0 ? Array.from(activeRegionUids).join(', ') : 'Немає'}`);
+
+      // Знаходимо всіх користувачів, які мають UID (територіальну прив'язку)
       const users = await User.find(
         { uid: { $exists: true, $ne: null } },
-        { uid: 1, alert: 1, subscription: 1 } 
+        { uid: 1, alert: 1, subscribeUser: 1 }
       );
+
+      console.log(`👥 Оброблено користувачів з бази: ${users.length}`);
+
+      let updatedCount = 0;
+      let pushSentCount = 0;
 
       for (const user of users) {
         const isAlertNow = activeRegionUids.has(user.uid);
 
+        // Якщо статус не змінився — нічого не робимо
         if (user.alert === isAlertNow) continue;
 
-        console.log(`🔔 UID ${user.uid}: Статус змінено на ${isAlertNow}`);
+        updatedCount++;
+        const statusText = isAlertNow ? "🔴 ТРИВОГА" : "🟢 ВІДБІЙ";
+        console.log(`🔔 [UID: ${user.uid}] Зміна статусу: ${user.alert} -> ${isAlertNow} (${statusText})`);
 
-        // 1. Оновлюємо статус в БД
+        // 1. Оновлюємо статус в БД синхронно для цього юзера
         await User.updateOne({ _id: user._id }, { alert: isAlertNow });
-        
-        // Оновлюємо девайси (якщо це поле вам ще потрібне для фронтенда)
         await Device.updateMany({ owner: user._id }, { $set: { alert: isAlertNow, status: isAlertNow } });
 
         // 2. Відправка Push-повідомлення
@@ -49,20 +64,33 @@ export function startAlarmScheduler() {
             body: isAlertNow 
               ? "Терміново пройдіть в укриття!" 
               : "Загроза минула. Гарного дня!",
-            icon: "/frontend/assets/icons/192x192.png", // вкажіть ваш шлях
-            badge: "/frontend/assets/icons/128x128.png",  // маленька іконка для Android статус-бару
-            tag: "alert-status",  // щоб нові повідомлення замінювали старі, а не спамили
+            icon: "/frontend/assets/icons/192x192.png",
+            badge: "/frontend/assets/icons/128x128.png",
+            tag: "alert-status",
+            data: { url: "/" } 
           };
 
-          // Викликаємо функцію відправки (не чекаємо на await, щоб не гальмувати цикл)
-          sendNotification(user.subscribeUser, payload).catch(err => 
-            console.error(`Помилка Push для ${user._id}:`, err)
-          );
+          sendNotification(user.subscribeUser, payload)
+            .then(() => {
+              // console.log(`✅ Push доставлено для ${user._id}`);
+            })
+            .catch(err => {
+              console.error(`❌ Помилка Push для юзера ${user._id}:`, err.message);
+            });
+          
+          pushSentCount++;
+        } else {
+          console.warn(`⚠️ Юзер ${user._id} змінив статус, але не має підписки на Push`);
         }
       }
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ Цикл завершено за ${duration}ms. Оновлено статусів: ${updatedCount}, Відправлено Push: ${pushSentCount}`);
+      
     } catch (error) {
-      console.error("❌ Scheduler error:", error);
+      console.error("❌ КРИТИЧНА ПОМИЛКА ШЕДУЛЕРА:", error);
     }
-  }, 120_000); // Рекомендую зменшити інтервал до 30с для критичних сповіщень
+  }, 120_000);
 }
+
 export default startAlarmScheduler;
