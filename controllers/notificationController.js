@@ -3,7 +3,7 @@ import Notification from '../models/notificationModel.js';
 
 export const getMyNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find({ userId: req.user._id })
+    const notifications = await Notification.find({ userId: req.userId })
       .sort({ createdAt: -1 }) // Спочатку найновіші
       .limit(20);              // Останні 20
 
