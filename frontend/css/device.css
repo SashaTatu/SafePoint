@@ -760,19 +760,32 @@ body.dark .list-container {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
+    /* Використовуємо суцільний колір замість прозорого */
+    background: #3f5f3f; 
+    /* Світліша межа для об'єму */
+    border: 1px solid #4e754e; 
+    padding: 10px 24px;
     border-radius: 50px;
-    color: white;
+    color: #ffffff;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    /* Додаємо тінь для ефекту підняття */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .refresh-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    /* Колір при наведенні стає трохи світлішим */
+    background: #4a6e4a;
+    border-color: #5a855a;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Стан натискання */
+.refresh-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .refresh-btn i {
