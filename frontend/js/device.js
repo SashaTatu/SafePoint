@@ -115,32 +115,7 @@ buttons.forEach(btn => {
 });
 
 
-async function fetchSensorData(deviceId) {
-    try {
-        const response = await fetch(`/api/device/${deviceId}/parametersget`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        });
-        if (!response.ok) throw new Error("Network response was not ok");
 
-        const json = await response.json();
-        if (!json.success) throw new Error(json.message || "Unknown error");
-
-        const sensorData = json.data[0]; 
-
-        // 1. Оновлюємо текст
-        document.getElementById("temperature").textContent = sensorData.temperature ?? "--";
-        document.getElementById("humidity").textContent = sensorData.humidity ?? "--";
-        document.getElementById("co2").textContent = sensorData.co2 ?? "--";
-
-        // 2. Викликаємо функцію оновлення кольорів
-        updateSensorColors();
-
-    } catch (err) {
-        console.error("Error fetching sensor data:", err);
-    }
-}
 
 // Допоміжна функція для зміни кольорів
 function updateSensorColors() {
@@ -176,6 +151,36 @@ function updateSensorColors() {
         line.classList.add(status);
     });
 }
+
+
+
+async function fetchSensorData(deviceId) {
+    try {
+        const response = await fetch(`/api/device/${deviceId}/parametersget`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const json = await response.json();
+        if (!json.success) throw new Error(json.message || "Unknown error");
+
+        const sensorData = json.data[0]; 
+
+        // Оновлюємо текст
+        document.getElementById("temperature").textContent = sensorData.temperature ?? "--";
+        document.getElementById("humidity").textContent = sensorData.humidity ?? "--";
+        document.getElementById("co2").textContent = sensorData.co2 ?? "--";
+
+        // 🔥 ВАЖЛИВО: Оновлюємо кольори відразу після вставки тексту
+        updateSensorColors();
+
+    } catch (err) {
+        console.error("Error fetching sensor data:", err);
+    }
+}
+
 
 function startSensorPolling(deviceId, isAlert) {
     if (sensorIntervalId) clearInterval(sensorIntervalId);
