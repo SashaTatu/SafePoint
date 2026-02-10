@@ -140,7 +140,7 @@ async function fetchSensorData(deviceId) {
 function startSensorPolling(deviceId, isAlert) {
     if (sensorIntervalId) clearInterval(sensorIntervalId);
 
-    const delay = isAlert ? 30000 : 60000;
+    const delay = isAlert ? 30000 : 600000;
     console.log(`Polling sensors every ${delay/1000}s`);
     
 

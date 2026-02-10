@@ -732,67 +732,6 @@ body.dark .list-container {
 }
 
 
-:root {
-    --ok: #2ecc71;
-    --ok-bg: rgba(46, 204, 113, 0.15);
-
-    --warn: #f1c40f;
-    --warn-bg: rgba(241, 196, 15, 0.18);
-
-    --danger: #e74c3c;
-    --danger-bg: rgba(231, 76, 60, 0.18);
-}
-
-
-/* Базовий стиль лишається */
-.sensor-line {
-    border-left: 5px solid transparent;
-}
-
-/* 🟢 Норма */
-.sensor-line.status-ok {
-    border-left-color: var(--ok);
-    background: linear-gradient(
-        90deg,
-        var(--ok-bg),
-        rgba(255, 255, 255, 0.05)
-    );
-}
-
-.sensor-line.status-ok .sensor-value {
-    color: var(--ok);
-    text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
-}
-
-/* 🟡 Попередження */
-.sensor-line.status-warn {
-    border-left-color: var(--warn);
-    background: linear-gradient(
-        90deg,
-        var(--warn-bg),
-        rgba(255, 255, 255, 0.05)
-    );
-}
-
-.sensor-line.status-warn .sensor-value {
-    color: var(--warn);
-    text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
-}
-
-/* 🔴 Небезпека */
-.sensor-line.status-danger {
-    border-left-color: var(--danger);
-    background: linear-gradient(
-        90deg,
-        var(--danger-bg),
-        rgba(255, 255, 255, 0.05)
-    );
-}
-
-.sensor-line.status-danger .sensor-value {
-    color: var(--danger);
-    text-shadow: 0 0 12px rgba(231, 76, 60, 0.5);
-}
 
 @keyframes danger-pulse {
     0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.5); }
