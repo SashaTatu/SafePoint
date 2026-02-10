@@ -282,6 +282,76 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const notifBtn = document.getElementById('notification-btn');
+    const notifDropdown = document.getElementById('notification-dropdown');
+    const notifList = document.getElementById('notification-list');
+    const notifBadge = document.getElementById('notification-badge');
+
+    // Перемикання списку
+    notifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notifDropdown.classList.toggle('hidden');
+        if (!notifDropdown.classList.contains('hidden')) {
+            fetchNotifications();
+        }
+    });
+
+    // Закриття при кліку поза меню
+    document.addEventListener('click', (e) => {
+        if (!notifDropdown.contains(e.target) && e.target !== notifBtn) {
+            notifDropdown.classList.add('hidden');
+        }
+    });
+
+    async function fetchNotifications() {
+        try {
+            const res = await fetch('/api/notifications');
+            const result = await res.json();
+            if (result.success) renderNotifications(result.data);
+        } catch (err) {
+            console.error("Помилка завантаження сповіщень", err);
+        }
+    }
+
+    function renderNotifications(data) {
+        if (!data || data.length === 0) {
+            notifList.innerHTML = '<li class="empty-msg" style="padding:20px; text-align:center; color:#666;">Немає нових сповіщень</li>';
+            notifBadge.classList.add('hidden');
+            return;
+        }
+
+        const unread = data.filter(n => !n.isRead).length;
+        if (unread > 0) {
+            notifBadge.textContent = unread;
+            notifBadge.classList.remove('hidden');
+        } else {
+            notifBadge.classList.add('hidden');
+        }
+
+        notifList.innerHTML = data.map(n => `
+            <li class="notif-item ${n.isRead ? '' : 'unread'}">
+                <div class="notif-icon">${getIcon(n.type)}</div>
+                <div class="notif-text">
+                    <div class="notif-title">${n.title}</div>
+                    <div class="notif-body">${n.body}</div>
+                    <div class="notif-time">${new Date(n.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>
+            </li>
+        `).join('');
+    }
+
+    function getIcon(type) {
+        const icons = { alert: '🔴', temp: '🌡️', co2: '🌬️', humi: '💧' };
+        return icons[type] || '🔔';
+    }
+
+    // Періодична перевірка лічильника (наприклад, кожні 2 хв)
+    setInterval(fetchNotifications, 120000);
+    fetchNotifications();
+});
+
+
 
 checkbox.addEventListener('change', () => {
   document.body.classList.toggle('dark', checkbox.checked);
