@@ -351,6 +351,43 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchNotifications();
 });
 
+const markAllReadBtn = document.getElementById('mark-all-read');
+
+markAllReadBtn.addEventListener('click', async (e) => {
+    e.stopPropagation(); // Зупиняємо закриття меню
+
+    if (!confirm("Ви впевнені, що хочете видалити всі сповіщення?")) return;
+
+    try {
+        const response = await fetch('/api/notifications/delete-all', {
+            method: 'DELETE', // Обов'язково DELETE
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include' // Для передачі кук з токеном
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // 1. Очищуємо список у DOM
+            const notifList = document.getElementById('notification-list');
+            notifList.innerHTML = '<li class="empty-msg" style="padding:20px; text-align:center; color:#666;">Сповіщень немає</li>';
+
+            // 2. Скидаємо та ховаємо лічильник (badge)
+            const notifBadge = document.getElementById('notification-badge');
+            notifBadge.textContent = '0';
+            notifBadge.classList.add('hidden');
+            
+            console.log("✅ Історію сповіщень повністю очищено");
+        } else {
+            alert("Помилка при очищенні: " + result.error);
+        }
+    } catch (err) {
+        console.error("❌ Помилка запиту:", err);
+    }
+});
+
 
 
 checkbox.addEventListener('change', () => {

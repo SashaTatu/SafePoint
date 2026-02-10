@@ -13,4 +13,20 @@ export const getMyNotifications = async (req, res) => {
   }
 };
 
-export default getMyNotifications;
+export const deleteNotification = async (req, res) => {
+  try {
+        // Використовуємо req.userId, як у твоєму middleware
+        const result = await Notification.deleteMany({ userId: req.userId });
+        
+        res.json({ 
+            success: true, 
+            message: `Видалено сповіщень: ${result.deletedCount}` 
+        });
+    } catch (err) {
+        console.error("❌ Помилка при видаленні з БД:", err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+};
+
+
+export default { getMyNotifications, deleteNotification };
