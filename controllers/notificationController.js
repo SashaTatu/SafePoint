@@ -1,7 +1,6 @@
 import Notification from '../models/notificationModel.js';
 
 
-
 export const getMyNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find({ userId: req.user._id })
@@ -14,4 +13,4 @@ export const getMyNotifications = async (req, res) => {
   }
 };
 
-export default { getMyNotifications };
+export default getMyNotifications;
