@@ -61,35 +61,29 @@ export const deviceParameterGet = async (req, res) => {
         const owner = await User.findById(device.owner);
         const now = Date.now();
 
-        // Перевіряємо наявність власника та підписки
         if (owner && owner.subscribeUser?.endpoint) {
             
-            /**
-             * Внутрішня функція для перевірки інтервалу, відправки Push та запису в історію
-             */
             const processAlert = async (category, title, body, icon) => {
                 const lastSent = device.lastAlerts?.[category] || 0;
                 
-                // Перевірка, чи минуло достатньо часу (ALERT_INTERVAL)
                 if (now - new Date(lastSent).getTime() > ALERT_INTERVAL) {
                     const payload = {
                         title,
-                        body,
+                        // Додаємо ID пристрою на початку повідомлення
+                        body: `Пристрій ${deviceId}: ${body}`, 
                         icon,
-                        tag: `alert-${category}`, // унікальний тег для заміни сповіщень одного типу
+                        tag: `alert-${category}-${deviceId}`, // додаємо ID в тег, щоб алерти різних пристроїв не заміняли один одного
                         data: { url: `/device/${deviceId}` }
                     };
 
-                    // 1. Відправляємо Push та зберігаємо в базу (Notification)
                     await sendAndSaveNotification(owner, payload, category);
 
-                    // 2. Оновлюємо мітку часу в моделі Device
                     await Device.updateOne(
                         { _id: device._id },
                         { [`lastAlerts.${category}`]: new Date() }
                     );
                     
-                    console.log(`✅ Відправлено та збережено алерт: ${category}`);
+                    console.log(`✅ Відправлено алерт для ${deviceId}: ${category}`);
                 }
             };
 
@@ -104,14 +98,14 @@ export const deviceParameterGet = async (req, res) => {
 
             // 2. CO2
             if (device.co2 > 1000) {
-                await processAlert("co2", "🌬️ Рівень CO2 перевищено!", `Поточний рівень: ${device.co2} ppm. Провітріть!`, "/assets/icons/co2-warning.png");
+                await processAlert("co2", "🌬️ Рівень CO2 перевищено!", `Рівень: ${device.co2} ppm. Провітріть!`, "/assets/icons/co2-warning.png");
             }
 
             // 3. Вологість
             if (device.humidity < 30) {
-                await processAlert("humi", "💧 Низька вологість!", `Вологість: ${device.humidity}%. Повітря занадто сухе.`, "/assets/icons/humidity.png");
+                await processAlert("humi", "💧 Низька вологість!", `Вологість: ${device.humidity}%. Занадто сухо.`, "/assets/icons/humidity.png");
             } else if (device.humidity > 70) {
-                await processAlert("humi", "💦 Висока вологість!", `Вологість: ${device.humidity}%. Повітря занадто вологе.`, "/assets/icons/humidity.png");
+                await processAlert("humi", "💦 Висока вологість!", `Вологість: ${device.humidity}%. Занадто волого.`, "/assets/icons/humidity.png");
             }
         }
 
