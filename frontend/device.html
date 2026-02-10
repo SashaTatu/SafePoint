@@ -97,29 +97,28 @@
         </div>
         <div class="sensor-wrapper">
             <div class="sensor-card">
-                <p class="sensor-line" 
-                    data-warn-min="12" data-warn-max="28" 
-                    data-danger-min="10" data-danger-max="30">
-                    Температура: <span id="temperature" class="sensor-value"></span> °C
+                <h2>Показники датчика</h2>
+                
+                <p class="sensor-line" data-warn-min="12" data-warn-max="28" data-danger-min="10" data-danger-max="30">
+                    <span>Температура:</span>
+                    <span><span id="temperature" class="sensor-value">--</span> °C</span>
                 </p>
 
-                <p class="sensor-line" 
-                    data-warn-min="35" data-warn-max="70" 
-                    data-danger-min="20" data-danger-max="80">
-                    Вологість: <span id="humidity" class="sensor-value"></span> %
+                <p class="sensor-line" data-warn-min="35" data-warn-max="70" data-danger-min="20" data-danger-max="80">
+                    <span>Вологість:</span>
+                    <span><span id="humidity" class="sensor-value">--</span> %</span>
                 </p>
 
-                <p class="sensor-line" 
-                    data-warn-max="1000" 
-                    data-danger-max="1200">
-                    CO₂: <span id="co2" class="sensor-value"></span> ppm
+                <p class="sensor-line" data-warn-max="1000" data-danger-max="1200">
+                    <span>CO₂:</span>
+                    <span><span id="co2" class="sensor-value">--</span> ppm</span>
                 </p>
             </div>
 
-            <div class="card-header">
-                <p>Оновити дані</p>
-                <button id="refresh-data" class="refresh-btn" title="Оновити дані">
+            <div class="refresh-container">
+                <button id="refresh-data" class="refresh-btn">
                     <i class="fas fa-sync-alt"></i>
+                    <span>Оновити дані</span>
                 </button>
             </div>
         </div>

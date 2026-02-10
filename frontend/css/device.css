@@ -733,34 +733,52 @@ body.dark .list-container {
 }
 
 
-.card-header {
-  margin-top: 50px;
+/* Стани показників */
+.sensor-line.status-ok .sensor-value {
+    color: #6fdc8c;
+    text-shadow: 0 0 10px rgba(111, 220, 140, 0.4);
+}
+
+.sensor-line.status-warn .sensor-value {
+    color: #f1d36b; /* Жовтий */
+    text-shadow: 0 0 10px rgba(241, 211, 107, 0.4);
+}
+
+.sensor-line.status-danger .sensor-value {
+    color: #ff7a6e; /* Червоний */
+    text-shadow: 0 0 15px rgba(255, 122, 110, 0.6);
+}
+
+/* Стилізація кнопки оновлення */
+.refresh-container {
+    margin-top: 25px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    justify-content: center;
 }
 
 .refresh-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .refresh-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: rotate(180deg);
+    transform: translateY(-2px);
 }
 
-/* Анімація при активному завантаженні */
+.refresh-btn i {
+    transition: transform 0.5s ease;
+}
+
 .refresh-btn.loading i {
     animation: spin 1s linear infinite;
 }

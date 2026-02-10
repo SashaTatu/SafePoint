@@ -117,7 +117,6 @@ buttons.forEach(btn => {
 
 
 
-// Допоміжна функція для зміни кольорів
 function updateSensorColors() {
     const lines = document.querySelectorAll('.sensor-line');
 
@@ -126,27 +125,21 @@ function updateSensorColors() {
         if (!valueSpan || valueSpan.textContent === "--") return;
 
         const value = parseFloat(valueSpan.textContent);
-
-        // Отримуємо межі з data-атрибутів (які ми прописали в HTML)
-        const warnMin = parseFloat(line.dataset.warnMin);
-        const warnMax = parseFloat(line.dataset.warnMax);
-        const dangerMin = parseFloat(line.dataset.dangerMin);
-        const dangerMax = parseFloat(line.dataset.dangerMax);
+        const { warnMin, warnMax, dangerMin, dangerMax } = line.dataset;
 
         let status = 'status-ok';
 
-        // Перевірка на небезпеку (Danger) - пріоритет №1
-        if ((!isNaN(dangerMax) && value >= dangerMax) || 
-            (!isNaN(dangerMin) && value <= dangerMin)) {
+        // Логіка Danger
+        if ((dangerMax && value >= parseFloat(dangerMax)) || 
+            (dangerMin && value <= parseFloat(dangerMin))) {
             status = 'status-danger';
         } 
-        // Перевірка на попередження (Warn) - пріоритет №2
-        else if ((!isNaN(warnMax) && value >= warnMax) || 
-                 (!isNaN(warnMin) && value <= warnMin)) {
+        // Логіка Warning
+        else if ((warnMax && value >= parseFloat(warnMax)) || 
+                 (warnMin && value <= parseFloat(warnMin))) {
             status = 'status-warn';
         }
 
-        // Оновлюємо класи для всього рядка
         line.classList.remove('status-ok', 'status-warn', 'status-danger');
         line.classList.add(status);
     });
@@ -174,7 +167,7 @@ async function fetchSensorData(deviceId) {
         document.getElementById("co2").textContent = sensorData.co2 ?? "--";
 
         // 🔥 ВАЖЛИВО: Оновлюємо кольори відразу після вставки тексту
-        updateSensorColors();
+        updateSensorColors(sensorData.co2, sensorData.temperature, sensorData.humidity);
 
     } catch (err) {
         console.error("Error fetching sensor data:", err);
