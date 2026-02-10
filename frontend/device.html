@@ -97,16 +97,22 @@
         </div>
         <div class="sensor-wrapper">
             <div class="sensor-card">
-                <h2>Показники датчика</h2>
+                <p class="sensor-line" 
+                    data-warn-min="12" data-warn-max="28" 
+                    data-danger-min="10" data-danger-max="30">
+                    Температура: <span id="temperature" class="sensor-value"></span> °C
+                </p>
 
-                <p class="sensor-line">
-                    Температура: <span id="temperature">--</span> °C
+                <p class="sensor-line" 
+                    data-warn-min="35" data-warn-max="70" 
+                    data-danger-min="20" data-danger-max="80">
+                    Вологість: <span id="humidity" class="sensor-value"></span> %
                 </p>
-                <p class="sensor-line">
-                    Вологість: <span id="humidity">--</span> %
-                </p>
-                <p class="sensor-line">
-                    CO2: <span id="co2">--</span> ppm
+
+                <p class="sensor-line" 
+                    data-warn-max="1000" 
+                    data-danger-max="1200">
+                    CO₂: <span id="co2" class="sensor-value"></span> ppm
                 </p>
             </div>
 

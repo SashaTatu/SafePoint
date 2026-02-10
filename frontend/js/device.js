@@ -129,13 +129,52 @@ async function fetchSensorData(deviceId) {
 
         const sensorData = json.data[0]; 
 
+        // 1. Оновлюємо текст
         document.getElementById("temperature").textContent = sensorData.temperature ?? "--";
         document.getElementById("humidity").textContent = sensorData.humidity ?? "--";
         document.getElementById("co2").textContent = sensorData.co2 ?? "--";
 
+        // 2. Викликаємо функцію оновлення кольорів
+        updateSensorColors();
+
     } catch (err) {
         console.error("Error fetching sensor data:", err);
     }
+}
+
+// Допоміжна функція для зміни кольорів
+function updateSensorColors() {
+    const lines = document.querySelectorAll('.sensor-line');
+
+    lines.forEach(line => {
+        const valueSpan = line.querySelector('.sensor-value');
+        if (!valueSpan || valueSpan.textContent === "--") return;
+
+        const value = parseFloat(valueSpan.textContent);
+
+        // Отримуємо межі з data-атрибутів (які ми прописали в HTML)
+        const warnMin = parseFloat(line.dataset.warnMin);
+        const warnMax = parseFloat(line.dataset.warnMax);
+        const dangerMin = parseFloat(line.dataset.dangerMin);
+        const dangerMax = parseFloat(line.dataset.dangerMax);
+
+        let status = 'status-ok';
+
+        // Перевірка на небезпеку (Danger) - пріоритет №1
+        if ((!isNaN(dangerMax) && value >= dangerMax) || 
+            (!isNaN(dangerMin) && value <= dangerMin)) {
+            status = 'status-danger';
+        } 
+        // Перевірка на попередження (Warn) - пріоритет №2
+        else if ((!isNaN(warnMax) && value >= warnMax) || 
+                 (!isNaN(warnMin) && value <= warnMin)) {
+            status = 'status-warn';
+        }
+
+        // Оновлюємо класи для всього рядка
+        line.classList.remove('status-ok', 'status-warn', 'status-danger');
+        line.classList.add(status);
+    });
 }
 
 function startSensorPolling(deviceId, isAlert) {
