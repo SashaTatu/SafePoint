@@ -12,6 +12,7 @@ const listBtn = document.getElementById('list-btn');
 const doorBtn   = document.getElementById("door-btn");
 const saveProfileButton = document.getElementById('save-profile');
 const returnBtn = document.getElementById('return_btn');
+const refreshDataBtn = document.getElementById('refresh-data');
 
 
 
@@ -149,6 +150,9 @@ function startSensorPolling(deviceId, isAlert) {
 }
 
 startSensorPolling(deviceId, false); // Початковий виклик з isAlert = false
+
+refreshDataBtn.addEventListener("click", () => fetchSensorData(deviceId));
+
 
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
