@@ -573,6 +573,7 @@ header {
     align-items: center;
     padding: clamp(24px, 6vh, 72px) 16px;
     width: 100%;
+    flex-direction: column;
 }
 
 /* ===============================
