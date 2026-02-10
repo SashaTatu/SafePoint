@@ -564,74 +564,110 @@ header {
 }
 
 
+/* Контейнер-обгортка */
 .sensor-wrapper {
-    display: none;
+    display: none; /* Змінюється на flex через JS */
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
-}
-
-.sensor-card {
-    background: #3f5f3f;
-    color: #fff;
+    padding: clamp(20px, 5vh, 60px) 20px;
     width: 100%;
-    max-width: 340px;
-    padding: 25px 30px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.25s ease;
 }
 
+/* Картка датчика */
+.sensor-card {
+    background: linear-gradient(145deg, #3f5f3f, #2d452d);
+    color: #ffffff;
+    width: 100%;
+    max-width: 360px;
+    padding: 30px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ефект світіння при наведенні */
 .sensor-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .sensor-card h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
 }
 
+/* Рядки з показниками */
 .sensor-line {
     font-size: 18px;
-    margin: 10px 0;
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: background 0.2s;
 }
 
+.sensor-line:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Стилізація значень (чисел) */
+.sensor-value {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--color-success); /* Використовуємо твою змінну зеленого */
+}
+
+/* Контейнер заголовка списку (якщо це окремий блок) */
 .list-container {
-  display: none;
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto; /* центрування по горизонталі */
-  padding: 15px 20px;
-  background-color: #f0f0f0; /* світло-сірий фон */
-  border-radius: 10px;       /* закруглені кути */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* легка тінь */
-  text-align: center;
+    display: none;
+    width: min(90%, 600px);
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid var(--color-primary);
+}
+
+body.dark .list-container {
+    background: #252525;
+    color: white;
 }
 
 .list-container .list {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  margin: 0; /* прибираємо відступи заголовка */
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: inherit;
+    margin: 0;
 }
 
-
-
-/* 📱 Адаптація для телефону */
+/* 📱 Адаптація для мобільних пристроїв */
 @media (max-width: 480px) {
     .sensor-card {
-        padding: 20px;
-        border-radius: 16px;
-    }
-
-    .sensor-card h2 {
-        font-size: 18px;
+        padding: 24px 20px;
+        max-width: 100%;
     }
 
     .sensor-line {
         font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .sensor-value {
+        font-size: 18px;
     }
 }
 
