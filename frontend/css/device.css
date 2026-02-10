@@ -564,111 +564,244 @@ header {
 }
 
 
-/* Контейнер-обгортка */
+/* ===============================
+   Контейнер-обгортка
+================================ */
 .sensor-wrapper {
-    display: none; /* Змінюється на flex через JS */
+    display: none; /* вмикається через JS */
     justify-content: center;
     align-items: center;
-    padding: clamp(20px, 5vh, 60px) 20px;
+    padding: clamp(24px, 6vh, 72px) 16px;
     width: 100%;
 }
 
-/* Картка датчика */
+/* ===============================
+   Картка датчика
+================================ */
 .sensor-card {
-    background: linear-gradient(145deg, #3f5f3f, #2d452d);
-    color: #ffffff;
-    width: 100%;
-    max-width: 360px;
-    padding: 30px;
-    border-radius: 24px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    width: 100%;
+    max-width: 380px;
+    padding: 32px 28px;
+    border-radius: 26px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(76, 120, 76, 0.9),
+        rgba(40, 70, 40, 0.95)
+    );
+
+    color: #ffffff;
+    text-align: center;
+
+    box-shadow:
+        0 25px 45px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
     overflow: hidden;
 }
 
-/* Ефект світіння при наведенні */
-.sensor-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.2);
+/* Glow-ефект */
+.sensor-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at top,
+        rgba(255, 255, 255, 0.15),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
 }
 
+.sensor-card:hover {
+    transform: translateY(-10px) scale(1.015);
+    box-shadow:
+        0 35px 65px rgba(0, 0, 0, 0.45),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.sensor-card:hover::before {
+    opacity: 1;
+}
+
+/* ===============================
+   Заголовок
+================================ */
 .sensor-card h2 {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+
     font-size: 22px;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #fff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
+    letter-spacing: 0.6px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Рядки з показниками */
+/* ===============================
+   Рядки з показниками
+================================ */
 .sensor-line {
-    font-size: 18px;
-    margin: 15px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    transition: background 0.2s;
+
+    margin: 14px 0;
+    padding: 12px 16px;
+
+    font-size: 17px;
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(6px);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
 }
 
 .sensor-line:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.14);
+    transform: scale(1.02);
 }
 
-/* Стилізація значень (чисел) */
+/* ===============================
+   Значення датчиків
+================================ */
 .sensor-value {
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--color-success); /* Використовуємо твою змінну зеленого */
+    font-weight: 800;
+    font-size: 21px;
+    color: var(--color-success);
+
+    text-shadow: 0 0 10px rgba(0, 255, 120, 0.35);
 }
 
-/* Контейнер заголовка списку (якщо це окремий блок) */
+/* ===============================
+   Список / заголовок блоку
+================================ */
 .list-container {
     display: none;
-    width: min(90%, 600px);
-    margin: 30px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border-left: 5px solid var(--color-primary);
+    width: min(92%, 620px);
+    margin: 32px auto;
+    padding: 22px;
+
+    background: #ffffff;
+    border-radius: 18px;
+    border-left: 6px solid var(--color-primary);
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 body.dark .list-container {
-    background: #252525;
-    color: white;
+    background: #1f1f1f;
+    color: #ffffff;
 }
 
 .list-container .list {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: inherit;
-    margin: 0;
 }
 
-/* 📱 Адаптація для мобільних пристроїв */
+/* ===============================
+   📱 Мобільна адаптація
+================================ */
 @media (max-width: 480px) {
     .sensor-card {
-        padding: 24px 20px;
-        max-width: 100%;
+        padding: 26px 20px;
+        border-radius: 22px;
+    }
+
+    .sensor-card h2 {
+        font-size: 20px;
     }
 
     .sensor-line {
-        font-size: 16px;
-        padding: 8px 12px;
+        font-size: 15px;
+        padding: 10px 14px;
     }
 
     .sensor-value {
         font-size: 18px;
     }
+}
+
+
+:root {
+    --ok: #2ecc71;
+    --ok-bg: rgba(46, 204, 113, 0.15);
+
+    --warn: #f1c40f;
+    --warn-bg: rgba(241, 196, 15, 0.18);
+
+    --danger: #e74c3c;
+    --danger-bg: rgba(231, 76, 60, 0.18);
+}
+
+
+/* Базовий стиль лишається */
+.sensor-line {
+    border-left: 5px solid transparent;
+}
+
+/* 🟢 Норма */
+.sensor-line.status-ok {
+    border-left-color: var(--ok);
+    background: linear-gradient(
+        90deg,
+        var(--ok-bg),
+        rgba(255, 255, 255, 0.05)
+    );
+}
+
+.sensor-line.status-ok .sensor-value {
+    color: var(--ok);
+    text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+}
+
+/* 🟡 Попередження */
+.sensor-line.status-warn {
+    border-left-color: var(--warn);
+    background: linear-gradient(
+        90deg,
+        var(--warn-bg),
+        rgba(255, 255, 255, 0.05)
+    );
+}
+
+.sensor-line.status-warn .sensor-value {
+    color: var(--warn);
+    text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+}
+
+/* 🔴 Небезпека */
+.sensor-line.status-danger {
+    border-left-color: var(--danger);
+    background: linear-gradient(
+        90deg,
+        var(--danger-bg),
+        rgba(255, 255, 255, 0.05)
+    );
+}
+
+.sensor-line.status-danger .sensor-value {
+    color: var(--danger);
+    text-shadow: 0 0 12px rgba(231, 76, 60, 0.5);
+}
+
+@keyframes danger-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+.sensor-line.status-danger {
+    animation: danger-pulse 1.6s infinite;
 }
 
 
