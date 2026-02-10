@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchNotifications() {
         try {
-            const res = await fetch('/api/notifications');
+            const res = await fetch('/api/notifications/');
             const result = await res.json();
             if (result.success) renderNotifications(result.data);
         } catch (err) {
