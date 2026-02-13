@@ -99,17 +99,17 @@
             <div class="sensor-card">
                 <h2>Показники датчика</h2>
                 
-                <p class="sensor-line" data-warn-min="12" data-warn-max="28" data-danger-min="10" data-danger-max="30">
+                <p id="temperature" class="sensor-line" data-warn-min="12" data-warn-max="28" data-danger-min="10" data-danger-max="30">
                     <span>Температура:</span>
                     <span><span id="temperature" class="sensor-value">--</span> °C</span>
                 </p>
 
-                <p class="sensor-line" data-warn-min="35" data-warn-max="70" data-danger-min="20" data-danger-max="80">
+                <p  id="humidity" class="sensor-line" data-warn-min="35" data-warn-max="70" data-danger-min="20" data-danger-max="80">
                     <span>Вологість:</span>
                     <span><span id="humidity" class="sensor-value">--</span> %</span>
                 </p>
 
-                <p class="sensor-line" data-warn-max="1000" data-danger-max="1200">
+                <p id="co2" class="sensor-line" data-warn-max="1000" data-danger-max="1200">
                     <span>CO₂:</span>
                     <span><span id="co2" class="sensor-value">--</span> ppm</span>
                 </p>
@@ -140,15 +140,21 @@
                 <i class="ri-numbers-line"></i>
                 <span>Показники</span>
             </button>
-
-            <button class="nav-btn" id="list-btn">
-                <i class="ri-file-list-3-line"></i>
-                <span>Список</span>
-            </button>
         </div>
 
-
+            <div id="chart-modal" class="modal">
+                <div class="modal-content" style="max-width: 600px; width: 90%;">
+                    <h2 id="chart-title" style="margin-bottom: 20px;">Динаміка</h2>
+                    
+                    <div style="height: 300px; width: 100%;">
+                        <canvas id="sensorChart"></canvas>
+                    </div>
+                    
+                    <button onclick="closeChart()" style="margin-top: 20px;">Закрити</button>
+                </div>
+            </div>
     </footer>
     <script src="/js/device.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

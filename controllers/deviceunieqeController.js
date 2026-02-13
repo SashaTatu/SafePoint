@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
 import { sendAndSaveNotification } from '../services/pushService.js';
+import { DeviceLog } from '../models/DeviceLog.js';
 
 export const GetDeviceById = async (req, res) => {
   const { deviceId } = req.params;
@@ -20,29 +21,35 @@ export const GetDeviceById = async (req, res) => {
   });
 };
 
+
 export const deviceParameterPost = async (req, res) => {
   const { deviceId } = req.params;
   const { temperature, humidity, co2 } = req.body;
 
   if (temperature === undefined || humidity === undefined || co2 === undefined) {
-    return res.status(400).json({ success: false, message: "Missing temperature or humidity or co2" });
+    return res.status(400).json({ success: false, message: "Missing data" });
   }
 
   try {
     const device = await Device.findOne({ deviceId });
-    if (!device) {
-      return res.status(404).json({ success: false, message: "Device not found" });
-    }
+    if (!device) return res.status(404).json({ success: false, message: "Device not found" });
 
-    // Змінено на правильні поля
+    // 1. Оновлюємо ПОТОЧНІ значення (для картки)
     device.temperature = temperature;
     device.humidity = humidity;
     device.co2 = co2;
     device.updatedAt = new Date();
-
     await device.save();
 
-    return res.status(200).json({ success: true, message: "Data saved successfully" });
+    // 2. Записуємо в ІСТОРІЮ (для графіка)
+    await DeviceLog.create({
+      deviceId,
+      temperature,
+      humidity,
+      co2
+    });
+
+    return res.status(200).json({ success: true, message: "Data saved in state and history" });
   } catch (error) {
     console.error("❌ SERVER ERROR:", error);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -176,4 +183,18 @@ export const isAlert = async (req, res) => {
     console.error('❌ Помилка отримання тривоги пристрою:', error);
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
+};
+
+
+export const getDeviceHistory = async (req, res) => {
+    const { deviceId } = req.params;
+    try {
+        const history = await DeviceLog.find({ deviceId })
+            .sort({ timestamp: -1 }) // Спочатку найновіші
+            .limit(50); // Беремо останні 50 точок
+            
+        res.json({ success: true, data: history.reverse() }); // Повертаємо у хронологічному порядку
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 };

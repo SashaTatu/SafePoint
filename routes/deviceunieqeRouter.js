@@ -1,5 +1,5 @@
 import express from 'express';
-import { deviceParameterPost, deviceParameterGet, GetDeviceById, doorStatus, updateDoorStatus, isAlert } from '../controllers/deviceunieqeController.js';
+import { deviceParameterPost, deviceParameterGet, GetDeviceById, doorStatus, updateDoorStatus, isAlert, getDeviceHistory } from '../controllers/deviceunieqeController.js';
 
 
 
@@ -12,5 +12,6 @@ deviceunieqeRoutes.get('/:deviceId/getId', GetDeviceById);
 deviceunieqeRoutes.get('/:deviceId/doorstatus', doorStatus);
 deviceunieqeRoutes.post('/:deviceId/updatedoorstatus', updateDoorStatus);
 deviceunieqeRoutes.get('/:deviceId/isalert', isAlert);
+deviceunieqeRoutes.get('/:deviceId/history', getDeviceHistory);
 
 export default deviceunieqeRoutes;

@@ -191,6 +191,110 @@ startSensorPolling(deviceId, false); // Початковий виклик з isA
 refreshDataBtn.addEventListener("click", () => fetchSensorData(deviceId));
 
 
+
+// Функція, яка спрацьовує при натисканні на рядок показника
+async function openChartFor(category, label) {
+    const deviceId = window.location.pathname.split('/').pop(); // Отримуємо ID з URL
+    const btn = document.querySelector('.refresh-btn');
+    
+    try {
+        // 1. Запитуємо історію з сервера
+        const response = await fetch(`/api/device/${deviceId}/history`);
+        const json = await response.json();
+
+        if (!json.success) throw new Error("Не вдалося завантажити історію");
+
+        // 2. Форматуємо дані для Chart.js
+        const historyData = json.data.map(log => ({
+            time: new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            value: log[category] // беремо 'temperature', 'humidity' або 'co2'
+        }));
+
+        // 3. Відкриваємо модалку та малюємо
+        showChartModal(historyData, label);
+
+    } catch (err) {
+        console.error("Помилка графіка:", err);
+        alert("Не вдалося отримати дані для графіка");
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Температура
+    document.getElementById('temperature').closest('.sensor-line').addEventListener('click', () => {
+        openChartFor('temperature', 'Температура (°C)');
+    });
+
+    // Вологість
+    document.getElementById('humidity').closest('.sensor-line').addEventListener('click', () => {
+        openChartFor('humidity', 'Вологість (%)');
+    });
+
+    // CO2
+    document.getElementById('co2').closest('.sensor-line').addEventListener('click', () => {
+        openChartFor('co2', 'Рівень CO₂ (ppm)');
+    });
+});
+
+
+let myChart = null; // Змінна для зберігання екземпляра графіка
+
+function showChartModal(historyData, label) {
+    const modal = document.getElementById('chart-modal'); // Використовуємо твою існуючу структуру модалки
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+    
+    modal.style.display = 'flex';
+
+    // Якщо графік уже існував — видаляємо його, щоб створити новий
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Налаштування кольору лінії (неоновий зелений як твій статус-ок)
+    const accentColor = '#6fdc8c';
+
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: historyData.map(d => d.time),
+            datasets: [{
+                label: label,
+                data: historyData.map(d => d.value),
+                borderColor: accentColor,
+                backgroundColor: 'rgba(111, 220, 140, 0.1)', // Легка заливка під лінією
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBackgroundColor: accentColor,
+                tension: 0.4, // Згладжування лінії
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false } // Ховаємо легенду, бо назва є в заголовку h2
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                }
+            }
+        }
+    });
+}
+
+// Функція закриття (додай до кнопки "Закрити")
+function closeChart() {
+    document.getElementById('chart-modal').style.display = 'none';
+}
+
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
