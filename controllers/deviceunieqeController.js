@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from '../models/userModel.js';
 import Device from '../models/deviceModel.js';
 import { sendAndSaveNotification } from '../services/pushService.js';
-import { DeviceLog } from '../models/DeviceLogModel.js';
+import DeviceLog from '../models/DeviceLogModel.js';
 
 export const GetDeviceById = async (req, res) => {
   const { deviceId } = req.params;
