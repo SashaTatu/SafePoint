@@ -454,52 +454,43 @@ async function openChartFor(category, label) {
     }
 }
 
-function showChartModal(historyData, label) {
-    const ctx = document.getElementById('sensorChart').getContext('2d');
-    
-    // Тепер помилки не буде, бо змінна оголошена вище
-    if (myChart) {
-        myChart.destroy();
-    }
-
-    // Колір лінії (той самий неоновий зелений з твого інтерфейсу)
-    const neonGreen = '#6fdc8c';
-
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: historyData.map(d => d.time),
-            datasets: [{
-                label: label,
-                data: historyData.map(d => d.value),
-                borderColor: neonGreen,
-                backgroundColor: 'rgba(111, 220, 140, 0.1)',
-                borderWidth: 3,
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: neonGreen,
-                pointRadius: 4
-            }]
+const chartConfig = {
+    type: 'line',
+    data: {
+        labels: labels, // твої мітки часу
+        datasets: [{
+            label: label,
+            data: values, // твої дані (temp, humi або co2)
+            borderColor: '#6fdc8c', // Неоновий зелений
+            backgroundColor: 'rgba(111, 220, 140, 0.1)', // Напівпрозора заливка під лінією
+            borderWidth: 4,
+            pointBackgroundColor: '#ffffff', // Білі точки на зламах
+            pointBorderColor: '#6fdc8c',
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            tension: 0.4, // Робить лінію плавною (curved)
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false } // Ховаємо легенду для чистоти дизайну
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                    ticks: { color: '#ffffff' } // Білі цифри на темному фоні
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#ffffff' }
-                }
+        scales: {
+            y: {
+                beginAtZero: false,
+                grid: { color: 'rgba(255, 255, 255, 0.05)' }, // Ледь помітна сітка
+                ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
             },
-            plugins: {
-                legend: { display: false }
+            x: {
+                grid: { display: false }, // Ховаємо вертикальні лінії
+                ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 11 } }
             }
         }
-    });
-}
+    }
+};
 
 function closeChart() {
     document.getElementById('chart-modal').style.display = 'none';
