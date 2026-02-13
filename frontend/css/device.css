@@ -803,21 +803,6 @@ body.dark .list-container {
 
 
 
-
-#chart-modal .modal-content {
-    background: linear-gradient(145deg, #445f3b, #2d452d) !important;
-    border-radius: 24px;
-    padding: 25px;
-    color: white !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#chart-modal h2 {
-    color: white !important;
-    text-align: center;
-    margin-bottom: 15px;
-}
 /* ============================
       FULL DARK THEME
 ============================ */
