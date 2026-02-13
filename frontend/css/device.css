@@ -846,27 +846,6 @@ body.dark .list-container {
 
 /* Адаптація для мобільних пристроїв */
 @media (max-width: 480px) {
-    /* Робимо відступи сторінки меншими, щоб було більше місця для контенту */
-    body {
-        padding: 10px;
-    }
-
-    /* Картка показників на весь екран */
-    .sensor-card {
-        padding: 20px 15px;
-        margin: 10px;
-        border-radius: 20px;
-    }
-
-    /* Зменшуємо шрифти, щоб усе влізло в один рядок */
-    .sensor-card h2 {
-        font-size: 1.4rem;
-    }
-
-    .sensor-line {
-        font-size: 0.95rem;
-        padding: 12px 5px;
-    }
 
     /* Стиль модального вікна (Динаміка) на телефоні */
     #chart-modal .modal-content {
