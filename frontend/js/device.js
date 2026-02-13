@@ -426,11 +426,11 @@ returnBtn.addEventListener('click', () => {
 });
 
 
-// 1. Обов'язково додаємо цю змінну на самому початку файлу!
+// 1. Обов'язково оголошуємо глобальну змінну для графіка на самому початку
 let myChart = null;
 
+// Функція, яка спрацьовує при кліку на показник
 async function openChartFor(category, label) {
-    // Отримуємо deviceId з URL (наприклад, /device/123)
     const deviceId = window.location.pathname.split('/').pop();
     const modal = document.getElementById('chart-modal');
     
@@ -442,56 +442,74 @@ async function openChartFor(category, label) {
         const json = await response.json();
 
         if (json.success && json.data.length > 0) {
-            const historyData = json.data.map(log => ({
-                time: new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                value: log[category]
-            }));
-            
-            showChartModal(historyData, label);
+            // Формуємо масиви для графіка ТУТ, щоб не було помилки "labels is not defined"
+            const labelsData = json.data.map(log => 
+                new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            );
+            const valuesData = json.data.map(log => log[category]);
+
+            // Викликаємо функцію малювання і передаємо їй готові дані
+            renderTheChart(labelsData, valuesData, label);
+        } else {
+            console.warn("Історія порожня або пристрій не знайдено");
         }
     } catch (err) {
-        console.error("Помилка завантаження даних для графіка:", err);
+        console.error("Помилка завантаження даних:", err);
     }
 }
 
-const chartConfig = {
-    type: 'line',
-    data: {
-        labels: labels, // твої мітки часу
-        datasets: [{
-            label: label,
-            data: values, // твої дані (temp, humi або co2)
-            borderColor: '#6fdc8c', // Неоновий зелений
-            backgroundColor: 'rgba(111, 220, 140, 0.1)', // Напівпрозора заливка під лінією
-            borderWidth: 4,
-            pointBackgroundColor: '#ffffff', // Білі точки на зламах
-            pointBorderColor: '#6fdc8c',
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            tension: 0.4, // Робить лінію плавною (curved)
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false } // Ховаємо легенду для чистоти дизайну
+// Функція малювання графіка
+function renderTheChart(labels, values, label) {
+    const canvas = document.getElementById('sensorChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    // Видаляємо старий графік, якщо він є
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Колір лінії (неоновий зелений під твій інтерфейс)
+    const neonGreen = '#6fdc8c';
+
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels, // Тепер вони визначені!
+            datasets: [{
+                label: label,
+                data: values, // Тепер вони визначені!
+                borderColor: neonGreen,
+                backgroundColor: 'rgba(111, 220, 140, 0.1)',
+                borderWidth: 3,
+                tension: 0.4, // Плавна лінія
+                fill: true,
+                pointBackgroundColor: neonGreen,
+                pointRadius: 4
+            }]
         },
-        scales: {
-            y: {
-                beginAtZero: false,
-                grid: { color: 'rgba(255, 255, 255, 0.05)' }, // Ледь помітна сітка
-                ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#ffffff', font: { size: 12 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#ffffff', font: { size: 10 } }
+                }
             },
-            x: {
-                grid: { display: false }, // Ховаємо вертикальні лінії
-                ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 11 } }
+            plugins: {
+                legend: { display: false } // Ховаємо легенду для чистоти
             }
         }
-    }
-};
+    });
+}
 
+// Функція закриття модалки
 function closeChart() {
-    document.getElementById('chart-modal').style.display = 'none';
+    const modal = document.getElementById('chart-modal');
+    if (modal) modal.style.display = 'none';
 }
