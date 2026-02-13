@@ -426,17 +426,44 @@ returnBtn.addEventListener('click', () => {
 });
 
 
-function showChartModal(historyData, label) {
+// 1. Обов'язково додаємо цю змінну на самому початку файлу!
+let myChart = null;
+
+async function openChartFor(category, label) {
+    // Отримуємо deviceId з URL (наприклад, /device/123)
+    const deviceId = window.location.pathname.split('/').pop();
     const modal = document.getElementById('chart-modal');
-    const ctx = document.getElementById('sensorChart').getContext('2d');
     
-    // Показуємо модалку (вона має стати за твоїм CSS стилем)
+    if (!modal) return;
     modal.style.display = 'flex';
 
-    if (myChart) myChart.destroy();
+    try {
+        const response = await fetch(`/api/device/${deviceId}/history`);
+        const json = await response.json();
 
-    // Використовуємо кольори, які вже є на твоїх скріншотах
-    const neonGreen = '#6fdc8c'; 
+        if (json.success && json.data.length > 0) {
+            const historyData = json.data.map(log => ({
+                time: new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                value: log[category]
+            }));
+            
+            showChartModal(historyData, label);
+        }
+    } catch (err) {
+        console.error("Помилка завантаження даних для графіка:", err);
+    }
+}
+
+function showChartModal(historyData, label) {
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+    
+    // Тепер помилки не буде, бо змінна оголошена вище
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Колір лінії (той самий неоновий зелений з твого інтерфейсу)
+    const neonGreen = '#6fdc8c';
 
     myChart = new Chart(ctx, {
         type: 'line',
@@ -445,12 +472,13 @@ function showChartModal(historyData, label) {
             datasets: [{
                 label: label,
                 data: historyData.map(d => d.value),
-                borderColor: neonGreen, // Неоновий як у статус-ок
-                backgroundColor: 'rgba(111, 220, 140, 0.1)', 
+                borderColor: neonGreen,
+                backgroundColor: 'rgba(111, 220, 140, 0.1)',
                 borderWidth: 3,
                 tension: 0.4,
                 fill: true,
-                pointBackgroundColor: neonGreen
+                pointBackgroundColor: neonGreen,
+                pointRadius: 4
             }]
         },
         options: {
@@ -459,7 +487,7 @@ function showChartModal(historyData, label) {
             scales: {
                 y: {
                     grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                    ticks: { color: '#ffffff' } // Білий текст на темному фоні
+                    ticks: { color: '#ffffff' } // Білі цифри на темному фоні
                 },
                 x: {
                     grid: { display: false },
