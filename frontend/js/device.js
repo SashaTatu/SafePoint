@@ -489,8 +489,9 @@ function renderTheChart(labels, values, label) {
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
+          responsive: true,            // Авто-розмір
+          maintainAspectRatio: false,  // Дозволяє керувати висотою через CSS
+          resizeDelay: 200,
             scales: {
                 y: {
                     grid: { color: 'rgba(255, 255, 255, 0.1)' },

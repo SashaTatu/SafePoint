@@ -843,6 +843,51 @@ body.dark .list-container {
     background-color: #445f3b;
     border-color: #6fdc8c;
 }
+
+/* Адаптація для мобільних пристроїв */
+@media (max-width: 480px) {
+    /* Робимо відступи сторінки меншими, щоб було більше місця для контенту */
+    body {
+        padding: 10px;
+    }
+
+    /* Картка показників на весь екран */
+    .sensor-card {
+        padding: 20px 15px;
+        margin: 10px;
+        border-radius: 20px;
+    }
+
+    /* Зменшуємо шрифти, щоб усе влізло в один рядок */
+    .sensor-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .sensor-line {
+        font-size: 0.95rem;
+        padding: 12px 5px;
+    }
+
+    /* Стиль модального вікна (Динаміка) на телефоні */
+    #chart-modal .modal-content {
+        width: 95%; /* Майже на всю ширину */
+        padding: 20px 15px;
+        margin: 0 10px;
+        border-radius: 22px;
+    }
+
+    /* Фіксована висота для графіка на мобілці */
+    .chart-container {
+        height: 250px !important; 
+    }
+
+    /* Кнопка закрити — велика, щоб зручно було натискати пальцем */
+    #chart-modal button {
+        padding: 15px;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+}
 /* ============================
       FULL DARK THEME
 ============================ */
