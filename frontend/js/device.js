@@ -236,64 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-let myChart = null; // Змінна для зберігання екземпляра графіка
-
-function showChartModal(historyData, label) {
-    const modal = document.getElementById('chart-modal'); // Використовуємо твою існуючу структуру модалки
-    const ctx = document.getElementById('sensorChart').getContext('2d');
-    
-    modal.style.display = 'flex';
-
-    // Якщо графік уже існував — видаляємо його, щоб створити новий
-    if (myChart) {
-        myChart.destroy();
-    }
-
-    // Налаштування кольору лінії (неоновий зелений як твій статус-ок)
-    const accentColor = '#6fdc8c';
-
-    myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: historyData.map(d => d.time),
-            datasets: [{
-                label: label,
-                data: historyData.map(d => d.value),
-                borderColor: accentColor,
-                backgroundColor: 'rgba(111, 220, 140, 0.1)', // Легка заливка під лінією
-                borderWidth: 3,
-                pointRadius: 4,
-                pointBackgroundColor: accentColor,
-                tension: 0.4, // Згладжування лінії
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false } // Ховаємо легенду, бо назва є в заголовку h2
-            },
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: 'rgba(255, 255, 255, 0.7)' }
-                }
-            }
-        }
-    });
-}
-
 // Функція закриття (додай до кнопки "Закрити")
-function closeChart() {
-    document.getElementById('chart-modal').style.display = 'none';
-}
 
 avatar.addEventListener('click', () => {
   menu.classList.toggle('hidden');
@@ -481,3 +424,55 @@ returnBtn.addEventListener('click', () => {
     // Використовуємо origin, щоб автоматично підставити домен
     window.location.href = window.location.origin + '/index.html';
 });
+
+
+function showChartModal(historyData, label) {
+    const modal = document.getElementById('chart-modal');
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+    
+    // Показуємо модалку (вона має стати за твоїм CSS стилем)
+    modal.style.display = 'flex';
+
+    if (myChart) myChart.destroy();
+
+    // Використовуємо кольори, які вже є на твоїх скріншотах
+    const neonGreen = '#6fdc8c'; 
+
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: historyData.map(d => d.time),
+            datasets: [{
+                label: label,
+                data: historyData.map(d => d.value),
+                borderColor: neonGreen, // Неоновий як у статус-ок
+                backgroundColor: 'rgba(111, 220, 140, 0.1)', 
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: neonGreen
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#ffffff' } // Білий текст на темному фоні
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#ffffff' }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+function closeChart() {
+    document.getElementById('chart-modal').style.display = 'none';
+}
