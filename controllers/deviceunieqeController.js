@@ -131,6 +131,11 @@ export const deviceParameterGet = async (req, res) => {
     }
 };
 
+
+
+
+/////////////////////////////////////////////////////////////////////////
+
 export const doorStatus = async (req, res) => {
   const { deviceId } = req.params;
   
@@ -148,6 +153,7 @@ export const doorStatus = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
 };
+
 
 export const updateDoorStatus = async (req, res) => {
   const { deviceId } = req.params;
@@ -184,6 +190,12 @@ export const isAlert = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Внутрішня помилка сервера' });
   }
 };
+
+/////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 export const getDeviceHistory = async (req, res) => {
